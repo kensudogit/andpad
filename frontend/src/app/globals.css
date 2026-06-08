@@ -1363,14 +1363,64 @@ html, body {
 }
 
 .saas-card {
+  position: relative;
   display: block;
-  padding: 1.1rem;
+  padding: 0;
   border-radius: 14px;
   border: 1px solid var(--border);
   background: var(--panel);
   color: inherit;
+  overflow: hidden;
   transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
   animation: saas-card-in 0.45s ease backwards;
+}
+
+.saas-card-art {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center right;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.saas-card-art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    rgba(255, 255, 255, 0.97) 0%,
+    rgba(255, 255, 255, 0.88) 42%,
+    rgba(255, 255, 255, 0.55) 100%
+  );
+}
+
+.saas-card.disabled .saas-card-art {
+  filter: grayscale(0.85) saturate(0.6);
+  opacity: 0.65;
+}
+
+.saas-card.disabled .saas-card-art::after {
+  background: linear-gradient(
+    105deg,
+    rgba(248, 250, 252, 0.98) 0%,
+    rgba(248, 250, 252, 0.92) 50%,
+    rgba(248, 250, 252, 0.75) 100%
+  );
+}
+
+.saas-card-inner {
+  position: relative;
+  z-index: 1;
+  padding: 1.1rem;
+}
+
+.saas-card:hover:not(.disabled) {
+  border-color: rgba(79, 70, 229, 0.28);
+  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.1);
+  transform: translateY(-2px);
 }
 
 @keyframes saas-card-in {
@@ -1501,13 +1551,12 @@ html, body {
   opacity: 0.5;
 }
 
-.saas-card:hover {
-  border-color: rgba(79, 70, 229, 0.35);
-  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.08);
+.saas-card.disabled {
+  opacity: 1;
 }
 
-.saas-card.disabled {
-  opacity: 0.55;
+.saas-card.disabled .saas-card-inner {
+  opacity: 0.72;
 }
 
 .saas-card h3 {

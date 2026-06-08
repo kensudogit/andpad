@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef3c7"/>
+      <stop offset="100%" stop-color="#fcd34d"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="240" fill="url(#bg)"/>
+  <rect x="220" y="60" width="100" height="130" fill="#fff" opacity="0.55"/>
+      <rect x="260" y="80" width="100" height="130" fill="#fff" opacity="0.65"/>
+      <circle cx="330" cy="160" r="35" fill="#d97706" opacity="0.35"/>
+      <text x="315" y="170" font-size="22" fill="#fff" opacity="0.8" font-family="serif">承</text>
+</svg>

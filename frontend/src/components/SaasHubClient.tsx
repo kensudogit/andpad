@@ -13,6 +13,7 @@ import {
   MemberRole,
 } from '@/lib/generated/graphql'
 import { isAuthRequiredGraphQLError } from '@/lib/graphql-errors'
+import { saasModuleArtUrl } from '@/lib/saas-module-art'
 import { ui } from '@/lib/ui'
 
 function canManageModules(role: MemberRole | undefined): boolean {
@@ -63,6 +64,7 @@ export function SaasHubClient() {
 
   function renderModuleCard(
     item: {
+      slug: string
       href: string
       code: SaasModuleCode
       label: string
@@ -79,38 +81,45 @@ export function SaasHubClient() {
         className={`saas-card saas-card--${item.tone}${on ? '' : ' disabled'}`}
         style={{ animationDelay: `${index * 0.04}s` }}
       >
-        <div className="saas-card-head">
-          <span className={`saas-card-icon saas-card-icon--${item.tone}`} aria-hidden>
-            {item.icon}
-          </span>
-          <div className="saas-card-body">
-            <Link href={on ? item.href : '/saas'} className="saas-card-link">
-              <h3>{item.label}</h3>
-              <p>{description}</p>
-            </Link>
+        <div
+          className="saas-card-art"
+          style={{ backgroundImage: `url(${saasModuleArtUrl(item.slug)})` }}
+          aria-hidden
+        />
+        <div className="saas-card-inner">
+          <div className="saas-card-head">
+            <span className={`saas-card-icon saas-card-icon--${item.tone}`} aria-hidden>
+              {item.icon}
+            </span>
+            <div className="saas-card-body">
+              <Link href={on ? item.href : '/saas'} className="saas-card-link">
+                <h3>{item.label}</h3>
+                <p>{description}</p>
+              </Link>
+            </div>
+            {canToggle ? (
+              <label className="saas-toggle" title={on ? ui.saasDisable : ui.saasEnable}>
+                <input
+                  type="checkbox"
+                  checked={on}
+                  disabled={toggling}
+                  onChange={(e) => toggle(item.code, e.target.checked)}
+                />
+                <span className="saas-toggle-ui" aria-hidden />
+              </label>
+            ) : null}
           </div>
-          {canToggle ? (
-            <label className="saas-toggle" title={on ? ui.saasDisable : ui.saasEnable}>
-              <input
-                type="checkbox"
-                checked={on}
-                disabled={toggling}
-                onChange={(e) => toggle(item.code, e.target.checked)}
-              />
-              <span className="saas-toggle-ui" aria-hidden />
-            </label>
-          ) : null}
-        </div>
-        <div className="saas-card-foot">
-          <span className={`saas-badge${on ? ' on' : ''}`}>
-            {on ? ui.saasEnabled : ui.saasDisabled}
-          </span>
-          {on ? (
-            <Link href={item.href} className="saas-open-link">
-              {ui.saasOpen}
-              <span aria-hidden>›</span>
-            </Link>
-          ) : null}
+          <div className="saas-card-foot">
+            <span className={`saas-badge${on ? ' on' : ''}`}>
+              {on ? ui.saasEnabled : ui.saasDisabled}
+            </span>
+            {on ? (
+              <Link href={item.href} className="saas-open-link">
+                {ui.saasOpen}
+                <span aria-hidden>›</span>
+              </Link>
+            ) : null}
+          </div>
         </div>
       </article>
     )
