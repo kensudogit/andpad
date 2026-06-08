@@ -105,17 +105,13 @@ export function SaasHubClient() {
           <span className={`saas-badge${on ? ' on' : ''}`}>
             {on ? ui.saasEnabled : ui.saasDisabled}
           </span>
+          {on ? (
+            <Link href={item.href} className="saas-open-link">
+              {ui.saasOpen}
+              <span aria-hidden>›</span>
+            </Link>
+          ) : null}
         </div>
-        {on ? (
-          <Link href={item.href} className="saas-open-bar">
-            <span className="saas-open-bar__method">GET</span>
-            <span className="saas-open-bar__path">{item.href}</span>
-            <span className="saas-open-bar__label">{item.label}</span>
-            <span className="saas-open-bar__chevron" aria-hidden>
-              ▾
-            </span>
-          </Link>
-        ) : null}
       </article>
     )
   }
