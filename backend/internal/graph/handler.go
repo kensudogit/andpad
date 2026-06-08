@@ -54,7 +54,7 @@ func RegisterRoutes(r chi.Router, svc *service.Service) error {
 	// 認証 → DataLoader の順でコンテキストを enrich
 	authed := auth.Middleware(svc.Cfg.JWTSecret, svc.APIKeyLookup)(resolver.loaders.Middleware(srv))
 	r.Handle("/graphql", authed)
-	r.Handle("/graphiql", playground.Handler("Dental Video GraphQL", "/graphql"))
+	r.Handle("/graphiql", playground.Handler("ANDPAD GraphQL", "/graphql"))
 	return nil
 }
 

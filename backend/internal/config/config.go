@@ -63,6 +63,15 @@ func Load() Config {
 			}
 		}
 	}
+	if pub := railwayPublicOrigin(); pub != "" {
+		origins = mergeOrigins(origins, pub)
+	}
+	appPublic := strings.TrimRight(strings.TrimSpace(envOr("APP_PUBLIC_URL", "http://localhost:3000")), "/")
+	if appPublic == "http://localhost:3000" {
+		if pub := railwayPublicOrigin(); pub != "" && IsRailway() {
+			appPublic = pub
+		}
+	}
 	model := os.Getenv("OPENAI_MODEL")
 	if model == "" {
 		model = "gpt-4o-mini"
@@ -89,7 +98,7 @@ func Load() Config {
 		OpenAIAPIKey:      strings.TrimSpace(os.Getenv("OPENAI_API_KEY")),
 		OpenAIModel:       model,
 		AllowedOrigins:    origins,
-		AppPublicURL:      strings.TrimRight(strings.TrimSpace(envOr("APP_PUBLIC_URL", "http://localhost:3000")), "/"),
+		AppPublicURL:      appPublic,
 		EnableMemoryStore: enableMemory,
 		SaasDxURL:         envOr("SAAS_DX_URL", "http://127.0.0.1:8081"),
 		SaasCrmURL:        envOr("SAAS_CRM_URL", "http://127.0.0.1:8082"),
@@ -180,6 +189,28 @@ func IsRailway() bool {
 		os.Getenv("RAILWAY_SERVICE_ID") != ""
 }
 
+func railwayPublicOrigin() string {
+	domain := strings.TrimSpace(os.Getenv("RAILWAY_PUBLIC_DOMAIN"))
+	if domain == "" {
+		return ""
+	}
+	return "https://" + strings.TrimRight(domain, "/")
+}
+
+func mergeOrigins(origins []string, extra ...string) []string {
+	seen := make(map[string]bool, len(origins)+len(extra))
+	out := make([]string, 0, len(origins)+len(extra))
+	for _, o := range append(origins, extra...) {
+		t := strings.TrimSpace(o)
+		if t == "" || seen[t] {
+			continue
+		}
+		seen[t] = true
+		out = append(out, t)
+	}
+	return out
+}
+
 func envOr(key, def string) string {
 	if v := strings.TrimSpace(os.Getenv(key)); v != "" {
 		return v
@@ -215,7 +246,10 @@ func SetupStatus(postgresConnected bool, dbSource string) map[string]any {
 		out["jwtSecretWarning"] = w
 	}
 	if !postgresConnected && IsRailway() {
-		out["hint"] = "dental_video service → Variables → + New Variable → Reference → Postgres → DATABASE_URL. JWT_SECRET = random string (not API key). Redeploy."
+		out["hint"] = "andpad service → Variables → + New Variable → Reference → Postgres → DATABASE_URL. JWT_SECRET = random string (not API key). Redeploy."
+	}
+	if pub := railwayPublicOrigin(); pub != "" {
+		out["publicUrl"] = pub
 	}
 	if postgresConnected && envPresence("OPENAI_API_KEY") != "set" {
 		out["openaiHint"] = "AI チャットボット / AI Board 用に OPENAI_API_KEY を Variables に追加して Redeploy してください。"

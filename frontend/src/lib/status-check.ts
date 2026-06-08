@@ -62,7 +62,7 @@ export async function fetchApiStatus(): Promise<StatusPayload> {
   }
 
   const payload: StatusPayload = {
-    service: 'dental-video-web',
+    service: 'andpad-web',
     ok: apiReachable,
     apiUrl,
     graphqlProxy: '/graphql',

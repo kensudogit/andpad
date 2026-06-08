@@ -1,103 +1,101 @@
-# Railway ???????Dental Video?
+# Railway デプロイ（ANDPAD）
 
-**??: ???? 1 ?**? Go API + Next.js ?????????????`Dockerfile.unified` + `/railway.toml`??
+**推奨: サービス 1 本** — Go API + Next.js を同一コンテナで動かします（`Dockerfile.unified` + `/railway.toml`）。
 
-## 1. GitHub ??????????
+## 1. GitHub 連携でデプロイ（推奨）
 
-1. [Railway](https://railway.com) ? **New Project** ? **Deploy from GitHub**
-2. ????? `kensudogit/dental_video` ???
-3. ???? **Settings**:
+1. [Railway](https://railway.com) で **New Project** → **Deploy from GitHub**
+2. リポジトリ `andpad`（またはフォーク先）を選択
+3. アプリサービスの **Settings**:
 
-| ?? | ? |
+| 項目 | 値 |
 |------|-----|
-| **Root Directory** | **??**?????????? |
+| **Root Directory** | **空**（リポジトリルート） |
 | **Config file path** | `/railway.toml` |
-| Builder | Dockerfile ? `Dockerfile.unified` |
+| Builder | Dockerfile → `Dockerfile.unified` |
 
-4. **+ New** ? **Database** ? **PostgreSQL**
-5. ??????? **Variables**:
+4. **+ New** → **Database** → **PostgreSQL**
+5. アプリサービス（Postgres ではない方）の **Variables**:
 
-| ?? | ?? | ?? |
+| 変数 | 必須 | 内容 |
 |------|------|------|
-| `DATABASE_URL` | ?? | Postgres ? **Reference**?`${{Postgres.DATABASE_URL}}`? |
+| `DATABASE_URL` | 必須 | Postgres の **Reference**（`${{Postgres.DATABASE_URL}}`） |
 | `JWT_SECRET` | 必須 | 32 文字以上のランダム文字列（**API キー不可**。`sk-ant-` や `sk-proj-` で始まる値は誤り） |
 | `OPENAI_API_KEY` | 任意 | AI チャットボット / AI Board（未設定時は設定案内メッセージを返します） |
-| `CORS_ORIGINS` | ?? | `https://<your-domain>.up.railway.app` |
-| `APP_PUBLIC_URL` | ?? | ??????? URL |
+| `CORS_ORIGINS` | 任意 | カスタムドメイン利用時のみ。未設定でも `RAILWAY_PUBLIC_DOMAIN` から自動設定されます |
+| `APP_PUBLIC_URL` | 任意 | 同上。未設定時は `https://<your-domain>.up.railway.app` を自動使用 |
 
-> **???????? `API_URL` ????????????**  
-> Next.js ?????? `127.0.0.1:8081` ? API ?????????
+> **統合デプロイでは `API_URL` を設定しないでください。**  
+> Next.js は同一コンテナ内の `127.0.0.1:8081` の API にプロキシします。
 
-6. **Networking** ? **Generate Domain**
-7. ??:
-   - `GET https://<domain>/health` ? `{"ok":true,...}`
-   - `GET https://<domain>/status` ? API ?? OK
-8. ?????DB ?????: `demo@sakura-dental.jp` / `demo1234`
+6. **Networking** → **Generate Domain**
+7. `main`（または接続ブランチ）へ **git push** すると自動ビルド・デプロイされます
+8. 確認:
+   - `GET https://<domain>/health` → `{"ok":true,"service":"andpad-web",...}`
+   - `GET https://<domain>/status` → PostgreSQL: connected
+9. デモログイン（DB シード済み）: `demo@sakura-dental.jp` / `demo1234`
 
-## 2. CLI?`railway link`?
+## 2. CLI（`railway link`）
 
-`railway link` ?????????????? **??**??????????????????????????
+`railway link` は対話式のため、**既存プロジェクト**へ接続する場合は Project ID を指定するのが確実です。
 
-### ????????????
+### 既存プロジェクトに接続
 
-1. [Railway Dashboard](https://railway.com/dashboard) ? **dental_video ????????**???
-2. **Settings** ? **Project ID** ????
-3. ????????????????:
+1. [Railway Dashboard](https://railway.com/dashboard) で ANDPAD プロジェクトを開く
+2. **Settings** → **Project ID** をコピー
+3. リポジトリルートで:
 
 ```powershell
-cd C:\devlop\dental_video
+cd C:\devlop\andpad
 railway login
 railway link -p <Project-ID>
-# ???????????Web/API ??????????
 railway variables set JWT_SECRET=your-long-random-secret
-railway up
+git push origin main
 ```
 
-????????`joyful-acceptance` ???????????????????**?? Project ID** ?????????
+GitHub 未連携の場合は `railway up` でもデプロイできます。
 
-### ?????????????
+### 新規プロジェクト
 
 ```powershell
-cd C:\devlop\dental_video
+cd C:\devlop\andpad
 railway login
-railway init          # ??????????
+railway init
 railway add -d postgres
 railway variables set JWT_SECRET=your-long-random-secret
 railway up
 ```
 
-Dashboard ? **Config file path** ? `/railway.toml`?**Root Directory** ?????????????????
+Dashboard で **Config file path** = `/railway.toml`、**Root Directory** = 空 を確認してください。
 
-## 3. ????????
+## 3. git push 時の挙動
 
-| ?? | ????? |
+| イベント | 動作 |
 |------|------------|
-| ?????????????? | Deploy ??? **????**?`npm run build` / `go build` / healthcheck???? |
-| Postgres ????? | `DATABASE_URL` ? Reference ????`sslmode=require` ?????????? |
-| ???????????????? | `schema_migrations` ???????????????????????????? |
-| `/` ? Go API ? JSON | Root Directory ? `backend` ????? ? **??** + `/railway.toml` |
-| GraphQL 502 | ??? `API_URL` ??????? ? **??**??????? |
-| `git commit "msg"` ??? | `git commit -m "msg"` ??? |
+| `main` へ push | `watchPatterns` に一致する変更で自動ビルド（`frontend/**`, `backend/**`, `graphql/**`, `scripts/**`, `Dockerfile.unified`） |
+| マイグレーション追加 | 起動時に `schema_migrations` を確認し、未適用 SQL を自動実行 |
+| ヘルスチェック | Next.js `/health` が 300 秒以内に `ok: true` を返すまで待機 |
 
-## 4. ??????
+## 4. 関連ファイル
 
-| ???? | ?? |
+| ファイル | 役割 |
 |----------|------|
-| `railway.toml` | ?????????????????? |
-| `Dockerfile.unified` | Go 1.25 + Next.js ?????? |
-| `scripts/start-unified.sh` | API ? Web ???? |
-| `.env.railway.example` | ???????? |
-| `frontend/railway.toml` | ???????????? |
-| `backend/railway.toml` | ???????????? |
+| `railway.toml` | ルートの Railway 設定（git デプロイ用） |
+| `Dockerfile.unified` | Go 1.25 + Next.js 統合イメージ |
+| `scripts/start-unified.sh` | API → Web の起動順序 |
+| `.env.railway.example` | 変数のメモ |
+| `frontend/railway.toml` | Web のみの 2 サービス構成用（通常は未使用） |
+| `backend/railway.toml` | API のみの 2 サービス構成用（通常は未使用） |
 
 ## 5. よくあるエラー
 
 | 症状 | 原因 | 対処 |
 |------|------|------|
-| `postgresql not configured` | `dental_video` サービスに `DATABASE_URL` がない | Variables → **+ New Variable** → Name: `DATABASE_URL` → **Add Reference** → Postgres → `DATABASE_URL` → Redeploy |
+| `postgresql not configured` | アプリサービスに `DATABASE_URL` がない | Variables → **+ New Variable** → Name: `DATABASE_URL` → **Add Reference** → Postgres → `DATABASE_URL` → Redeploy |
 | ログインが「ログイン中…」のまま | 上記 + プロキシタイムアウト | `/status` で PostgreSQL: connected を確認 |
 | `JWT_SECRET looks like an API key` | Anthropic/OpenAI キーを JWT_SECRET に設定 | JWT_SECRET をランダム文字列に変更。API キーは `OPENAI_API_KEY` へ |
 | `Cannot reach API HTTP 503` | API 起動失敗（DB 未設定） | Deploy ログで `[unified] ERROR: DATABASE_URL` を確認 |
+| ビルド失敗 | Root Directory が `frontend` や `backend` になっている | **空**に戻し `/railway.toml` を使用 |
 
 PowerShell で JWT_SECRET 生成例:
 
@@ -106,4 +104,3 @@ PowerShell で JWT_SECRET 生成例:
 ```
 
 Redeploy 後: `https://<domain>/status` → PostgreSQL: **connected** → ログイン `demo@sakura-dental.jp` / `demo1234`
-

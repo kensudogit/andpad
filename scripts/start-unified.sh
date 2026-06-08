@@ -1,5 +1,5 @@
 #!/bin/sh
-# Railway ???????: ?? Go API (8081) ? Next.js (PORT) ???????????
+# Railway ??????: ???????? Go API (8081) ? Next.js (PORT) ???
 set -e
 
 WEB_PORT="${PORT:-3000}"
@@ -13,7 +13,7 @@ external_api_healthy() {
     http://*|https://*)
       api_base="${API_URL%/}"
       body="$(curl -sf --max-time 8 "${api_base}/health" 2>/dev/null)" || return 1
-      echo "$body" | grep -q 'dental-video-api' || return 1
+      echo "$body" | grep -qE '"ok"\s*:\s*true|"service"\s*:\s*"(andpad-api|dental-video-api)"' || return 1
       return 0
       ;;
     *)
@@ -48,7 +48,7 @@ echo "[unified] JWT_SECRET=${JWT_SECRET:+set}${JWT_SECRET:-empty}"
 echo "[unified] OPENAI_API_KEY=${OPENAI_API_KEY:+set}${OPENAI_API_KEY:-empty}"
 if [ -z "${DATABASE_URL:-}" ] && [ -z "${DATABASE_PRIVATE_URL:-}" ] && [ -z "${PGHOST:-}" ]; then
   echo "[unified] ERROR: DATABASE_URL is required"
-  echo "[unified]   dental_video service ? Variables ? + New Variable ? Reference ? Postgres ? DATABASE_URL"
+  echo "[unified]   andpad service ? Variables ? + New Variable ? Reference ? Postgres ? DATABASE_URL"
   exit 1
 fi
 if [ -z "${JWT_SECRET:-}" ] || [ "${JWT_SECRET}" = "dev-only-change-in-production" ]; then

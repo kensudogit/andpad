@@ -2,7 +2,7 @@
 # Usage: docker compose up --build
 # Web http://localhost:${WEB_HOST_PORT:-3001}  Gateway http://localhost:${GATEWAY_HOST_PORT:-18080}/graphql
 #
-# Defaults 3001 / 18080 avoid conflict with local `npm run dev:monolith` (3000 / 8080).
+# Defaults 3001 / 18080 / 19000 avoid conflict with local dev (3000/8080) and other stacks (9000 MinIO).
 # Override: GATEWAY_HOST_PORT=8080 docker compose up -d  (stop other listeners on 8080 first)
 
 x-saas-env: &saas-env
@@ -37,8 +37,8 @@ services:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio12345
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - "${MINIO_API_HOST_PORT:-19000}:9000"
+      - "${MINIO_CONSOLE_HOST_PORT:-19001}:9001"
     volumes:
       - miniodata:/data
 
@@ -163,7 +163,7 @@ services:
       S3_ACCESS_KEY: minio
       S3_SECRET_KEY: minio12345
       S3_FORCE_PATH_STYLE: "true"
-      S3_PUBLIC_BASE_URL: http://localhost:9000/dental-video
+      S3_PUBLIC_BASE_URL: http://localhost:${MINIO_API_HOST_PORT:-19000}/dental-video
       CORS_ORIGINS: http://localhost:${WEB_HOST_PORT:-3001},http://127.0.0.1:${WEB_HOST_PORT:-3001},http://localhost:3000,http://127.0.0.1:3000
       APP_PUBLIC_URL: http://localhost:${WEB_HOST_PORT:-3001}
       SAAS_DX_URL: http://saas-dx:8081

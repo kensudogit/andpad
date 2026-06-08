@@ -1,4 +1,4 @@
-# Dental Video — Railway CLI helper (run from repo root)
+# ANDPAD — Railway CLI helper (run from repo root)
 # Usage:
 #   .\scripts\railway-setup.ps1
 #   .\scripts\railway-setup.ps1 -ProjectId "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
@@ -12,7 +12,7 @@ $Root = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
 Set-Location $Root
 
 Write-Host ""
-Write-Host "=== Dental Video / Railway ===" -ForegroundColor Cyan
+Write-Host "=== ANDPAD / Railway ===" -ForegroundColor Cyan
 Write-Host "Repo:  $Root"
 Write-Host "Docs:  docs/RAILWAY.md"
 Write-Host ""
@@ -30,12 +30,13 @@ Write-Host "3) Postgres: railway add -d postgres   # or link plugin in Dashboard
 Write-Host "4) Variables:"
 Write-Host "   railway variables set JWT_SECRET=<32+ random chars>"
 Write-Host "   # DATABASE_URL: set Reference to Postgres in Dashboard"
-Write-Host "5) Deploy: railway up   # or push main if GitHub connected"
+Write-Host "5) Deploy: git push origin main   # or railway up if not using GitHub"
 Write-Host ""
 Write-Host "Dashboard checks:" -ForegroundColor Green
 Write-Host "  Root Directory: EMPTY"
 Write-Host "  Config file:    /railway.toml"
 Write-Host "  Do NOT set API_URL on unified deploy"
+Write-Host "  CORS_ORIGINS / APP_PUBLIC_URL: optional (auto from RAILWAY_PUBLIC_DOMAIN)"
 Write-Host ""
 Write-Host "After deploy:" -ForegroundColor Green
 Write-Host "  https://<domain>/health"

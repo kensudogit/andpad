@@ -22,7 +22,7 @@ func fmtTime(t time.Time) string {
 }
 
 func ToHealth() *generated.Health {
-	return &generated.Health{Ok: true, Service: "dental-video-api", Version: "2.0.0-gqlgen"}
+	return &generated.Health{Ok: true, Service: "andpad-api", Version: "2.0.0-gqlgen"}
 }
 
 func ToDashboard(d models.DashboardStats) *generated.DashboardStats {

@@ -24,14 +24,14 @@ func NewHandler(svc *service.Service) *Handler {
 // Health はロードバランサ・監視向けの生存確認。
 func (h *Handler) Health(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, models.HealthResponse{
-		OK: true, Service: "dental-video-api", Version: "2.0.0-saas",
+		OK: true, Service: "andpad-api", Version: "2.0.0-saas",
 	})
 }
 
 func (h *Handler) Root(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, map[string]any{
-		"service": "dental-video-api",
-		"message": "Dental video learning SaaS API. GraphQL at /graphql",
+		"service": "andpad-api",
+		"message": "ANDPAD construction PM SaaS API. GraphQL at /graphql",
 		"links": map[string]string{
 			"health": "/health", "graphql": "/graphql", "authLogin": "/auth/login",
 		},
@@ -41,7 +41,7 @@ func (h *Handler) Root(w http.ResponseWriter, r *http.Request) {
 // Status は Postgres/S3/OpenAI の接続可否とセットアップヒントを返す（運用デバッグ用）。
 func (h *Handler) Status(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, map[string]any{
-		"service":  "dental-video-api",
+		"service":  "andpad-api",
 		"ok":       true,
 		"postgres": h.svc.UsePostgres(),
 		"s3":       h.svc.S3 != nil,
