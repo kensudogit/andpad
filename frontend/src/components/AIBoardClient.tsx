@@ -1,10 +1,10 @@
 'use client'
 
 /**
- * AI Board: 学習 KPI 表示と OpenAI 経営インサイト生成。
+ * AI Board: 建設 PM KPI 表示と OpenAI 経営インサイト生成。
  */
 import { useMutation, useQuery } from '@apollo/client/react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { IconRefresh, IconSpark } from '@/components/ui/ButtonIcons'
 import {
   BoardAnalyticsPageDocument,
@@ -12,12 +12,17 @@ import {
 } from '@/lib/generated/graphql'
 import { ui } from '@/lib/ui'
 
-const kpiLabels: Record<string, string> = {
-  watch_hours: '\u8996\u8074\u6642\u9593',
-  completions: '\u5b8c\u4e86\u6570',
-  active_learners: '\u30a2\u30af\u30c6\u30a3\u30d6\u5b66\u7fd2\u8005',
-  new_enrollments: '\u65b0\u898f\u53d7\u8b16',
-  video_library: '\u52d5\u753b\u6570',
+const statusLabels: Record<string, string> = {
+  PLANNING: ui.projectPlanning,
+  IN_PROGRESS: ui.projectInProgress,
+  COMPLETED: ui.projectCompleted,
+  ON_HOLD: ui.projectOnHold,
+}
+
+function formatKpiValue(value: number, unit?: string | null) {
+  if (unit === '円') return `¥${value.toLocaleString()}`
+  if (unit) return `${value.toLocaleString()}${unit}`
+  return value.toLocaleString()
 }
 
 export function AIBoardClient() {
@@ -25,8 +30,12 @@ export function AIBoardClient() {
   const { data, loading, refetch } = useQuery(BoardAnalyticsPageDocument, { variables: { periodDays } })
   const [generate, { loading: aiBusy, data: insightData }] = useMutation(GenerateAnalyticsInsightDocument)
 
-  const board = data?.analyticsBoard
+  const board = data?.andpadAnalytics
   const insight = insightData?.generateAnalyticsInsight
+  const maxWeekly = useMemo(
+    () => Math.max(1, ...(board?.recordsByWeek ?? [1])),
+    [board?.recordsByWeek],
+  )
 
   return (
     <div className="board-layout">
@@ -61,29 +70,27 @@ export function AIBoardClient() {
           <section className="stat-grid">
             {board.kpis.map((k) => (
               <div key={k.label} className="stat-card">
-                <div className="stat-label">{kpiLabels[k.label] ?? k.label}</div>
-                <div className="stat-value">
-                  {/* watch_hours のみ小数 1 桁表示 */}
-                  {k.value.toFixed(k.label === 'watch_hours' ? 1 : 0)}
-                  {k.unit ? ` ${k.unit}` : ''}
-                </div>
+                <div className="stat-label">{k.label}</div>
+                <div className="stat-value">{formatKpiValue(k.value, k.unit)}</div>
               </div>
             ))}
             <div className="stat-card">
-              <div className="stat-label">{ui.boardEngagement}</div>
-              <div className="stat-value">{board.learnerEngagementScore.toFixed(0)}</div>
+              <div className="stat-label">{ui.boardHealthScore}</div>
+              <div className="stat-value">{board.projectHealthScore.toFixed(0)}</div>
             </div>
           </section>
 
           <section className="panel">
-            <h3>{ui.boardWeeklyWatch}</h3>
+            <h3>{ui.boardWeeklyRecords}</h3>
             <div className="bar-chart">
-              {board.watchHoursByWeek.map((h, i) => (
+              {board.recordsByWeek.map((count, i) => (
                 <div key={i} className="bar-col">
-                  {/* 週次時間を棒グラフ高さに正規化（最大 5h ≒ 100%） */}
-                  <div className="bar-fill" style={{ height: `${Math.min(100, h * 20)}%` }} />
+                  <div
+                    className="bar-fill"
+                    style={{ height: `${Math.min(100, (count / maxWeekly) * 100)}%` }}
+                  />
                   <span>W{i + 1}</span>
-                  <em>{h.toFixed(1)}h</em>
+                  <em>{count.toFixed(0)}</em>
                 </div>
               ))}
             </div>
@@ -91,25 +98,37 @@ export function AIBoardClient() {
 
           <section className="panel board-two-col">
             <div>
-              <h3>{ui.boardByCategory}</h3>
+              <h3>{ui.boardByStatus}</h3>
               <ul className="metric-list">
-                {board.completionsByCategory.map((c) => (
-                  <li key={c.category}>
-                    <span>{c.category}</span>
-                    <strong>{c.count}</strong>
+                {board.projectsByStatus.length === 0 ? (
+                  <li>
+                    <span className="muted">{ui.boardNoData}</span>
                   </li>
-                ))}
+                ) : (
+                  board.projectsByStatus.map((s) => (
+                    <li key={s.status}>
+                      <span>{statusLabels[s.status] ?? s.status}</span>
+                      <strong>{s.count}</strong>
+                    </li>
+                  ))
+                )}
               </ul>
             </div>
             <div>
-              <h3>{ui.boardTopVideos}</h3>
+              <h3>{ui.boardModuleUsage}</h3>
               <ul className="metric-list">
-                {board.topVideos.map((v) => (
-                  <li key={v.videoId}>
-                    <span>{v.title}</span>
-                    <strong>{ui.viewsCompletions(v.views, v.completions)}</strong>
+                {board.moduleUsage.length === 0 ? (
+                  <li>
+                    <span className="muted">{ui.boardNoData}</span>
                   </li>
-                ))}
+                ) : (
+                  board.moduleUsage.slice(0, 5).map((m) => (
+                    <li key={m.moduleCode}>
+                      <span>{m.moduleName}</span>
+                      <strong>{m.recordCount}</strong>
+                    </li>
+                  ))
+                )}
               </ul>
             </div>
           </section>

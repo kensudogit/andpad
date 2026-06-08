@@ -21,6 +21,8 @@ fragment AndpadAnalyticsDashboardFields on AndpadAnalyticsDashboard {
   }
   billingTotal
   activeProjects
+  recordsByWeek
+  projectHealthScore
   generatedAt
 }
 

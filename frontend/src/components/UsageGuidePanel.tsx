@@ -148,7 +148,7 @@ const L = {
     },
     {
       title: '7. AI Board',
-      body: '学習 KPI 集約 + OpenAI 経営インサイト（Gateway 内）。',
+      body: '建設 PM KPI 集約 + OpenAI 経営インサイト（Gateway 内）。',
       items: [
         '/board — 期間 KPI → AI 経営インサイト生成',
         'OPENAI_API_KEY 未設定時はルールベース表示',

@@ -73,13 +73,15 @@ type ComplexityRoot struct {
 	}
 
 	AndpadAnalyticsDashboard struct {
-		ActiveProjects   func(childComplexity int) int
-		BillingTotal     func(childComplexity int) int
-		GeneratedAt      func(childComplexity int) int
-		Kpis             func(childComplexity int) int
-		ModuleUsage      func(childComplexity int) int
-		PeriodDays       func(childComplexity int) int
-		ProjectsByStatus func(childComplexity int) int
+		ActiveProjects     func(childComplexity int) int
+		BillingTotal       func(childComplexity int) int
+		GeneratedAt        func(childComplexity int) int
+		Kpis               func(childComplexity int) int
+		ModuleUsage        func(childComplexity int) int
+		PeriodDays         func(childComplexity int) int
+		ProjectHealthScore func(childComplexity int) int
+		ProjectsByStatus   func(childComplexity int) int
+		RecordsByWeek      func(childComplexity int) int
 	}
 
 	AndpadAnalyticsKpi struct {
@@ -786,12 +788,26 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.AndpadAnalyticsDashboard.PeriodDays(childComplexity), true
 
+	case "AndpadAnalyticsDashboard.projectHealthScore":
+		if e.complexity.AndpadAnalyticsDashboard.ProjectHealthScore == nil {
+			break
+		}
+
+		return e.complexity.AndpadAnalyticsDashboard.ProjectHealthScore(childComplexity), true
+
 	case "AndpadAnalyticsDashboard.projectsByStatus":
 		if e.complexity.AndpadAnalyticsDashboard.ProjectsByStatus == nil {
 			break
 		}
 
 		return e.complexity.AndpadAnalyticsDashboard.ProjectsByStatus(childComplexity), true
+
+	case "AndpadAnalyticsDashboard.recordsByWeek":
+		if e.complexity.AndpadAnalyticsDashboard.RecordsByWeek == nil {
+			break
+		}
+
+		return e.complexity.AndpadAnalyticsDashboard.RecordsByWeek(childComplexity), true
 
 	case "AndpadAnalyticsKpi.label":
 		if e.complexity.AndpadAnalyticsKpi.Label == nil {
@@ -4061,6 +4077,8 @@ type AndpadAnalyticsDashboard {
   moduleUsage: [ModuleUsageMetric!]!
   billingTotal: Float!
   activeProjects: Int!
+  recordsByWeek: [Float!]!
+  projectHealthScore: Float!
   generatedAt: String!
 }
 
@@ -6939,6 +6957,94 @@ func (ec *executionContext) fieldContext_AndpadAnalyticsDashboard_activeProjects
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _AndpadAnalyticsDashboard_recordsByWeek(ctx context.Context, field graphql.CollectedField, obj *AndpadAnalyticsDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_AndpadAnalyticsDashboard_recordsByWeek(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.RecordsByWeek, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]float64)
+	fc.Result = res
+	return ec.marshalNFloat2ᚕfloat64ᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_AndpadAnalyticsDashboard_recordsByWeek(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "AndpadAnalyticsDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _AndpadAnalyticsDashboard_projectHealthScore(ctx context.Context, field graphql.CollectedField, obj *AndpadAnalyticsDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_AndpadAnalyticsDashboard_projectHealthScore(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ProjectHealthScore, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_AndpadAnalyticsDashboard_projectHealthScore(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "AndpadAnalyticsDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
 		},
 	}
 	return fc, nil
@@ -18505,6 +18611,10 @@ func (ec *executionContext) fieldContext_Query_andpadAnalytics(ctx context.Conte
 				return ec.fieldContext_AndpadAnalyticsDashboard_billingTotal(ctx, field)
 			case "activeProjects":
 				return ec.fieldContext_AndpadAnalyticsDashboard_activeProjects(ctx, field)
+			case "recordsByWeek":
+				return ec.fieldContext_AndpadAnalyticsDashboard_recordsByWeek(ctx, field)
+			case "projectHealthScore":
+				return ec.fieldContext_AndpadAnalyticsDashboard_projectHealthScore(ctx, field)
 			case "generatedAt":
 				return ec.fieldContext_AndpadAnalyticsDashboard_generatedAt(ctx, field)
 			}
@@ -25768,6 +25878,16 @@ func (ec *executionContext) _AndpadAnalyticsDashboard(ctx context.Context, sel a
 			}
 		case "activeProjects":
 			out.Values[i] = ec._AndpadAnalyticsDashboard_activeProjects(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "recordsByWeek":
+			out.Values[i] = ec._AndpadAnalyticsDashboard_recordsByWeek(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "projectHealthScore":
+			out.Values[i] = ec._AndpadAnalyticsDashboard_projectHealthScore(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}

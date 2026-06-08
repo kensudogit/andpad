@@ -21,13 +21,15 @@ type ModuleUsageMetric struct {
 }
 
 type AndpadAnalyticsDashboard struct {
-	PeriodDays       int
-	Kpis             []AndpadAnalyticsKpi
-	ProjectsByStatus []ProjectStatusCount
-	ModuleUsage      []ModuleUsageMetric
-	BillingTotal     float64
-	ActiveProjects   int
-	GeneratedAt      time.Time
+	PeriodDays         int
+	Kpis               []AndpadAnalyticsKpi
+	ProjectsByStatus   []ProjectStatusCount
+	ModuleUsage        []ModuleUsageMetric
+	BillingTotal       float64
+	ActiveProjects     int
+	RecordsByWeek      []float64
+	ProjectHealthScore float64
+	GeneratedAt        time.Time
 }
 
 type ApiIntegration struct {

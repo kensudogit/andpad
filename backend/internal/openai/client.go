@@ -89,10 +89,13 @@ func (c *Client) Chat(ctx context.Context, systemPrompt string, history []ChatMe
 	return out.Choices[0].Message.Content, nil
 }
 
-// DentalAnalyticsSystem は KPI JSON から経営向けインサイト JSON を生成させるシステムプロンプト。
-const DentalAnalyticsSystem = `You are a dental clinic management analyst (AI Board). Given JSON analytics KPIs for a learning platform, respond ONLY with valid JSON:
+// ConstructionAnalyticsSystem は建設 PM KPI JSON から経営向けインサイト JSON を生成させる。
+const ConstructionAnalyticsSystem = `You are a construction project management analyst (AI Board). Given JSON analytics KPIs for a construction PM platform, respond ONLY with valid JSON:
 {"summary":"...","strengths":["..."],"risks":["..."],"recommendations":["..."]}
-Write in Japanese. Focus on staff training ROI, completion rates, engagement, and actionable clinic management advice.`
+Write in Japanese. Focus on project delivery, schedule risk, module adoption, billing trends, safety/compliance awareness, and actionable site management advice.`
+
+// DentalAnalyticsSystem は後方互換の別名。
+const DentalAnalyticsSystem = ConstructionAnalyticsSystem
 
 // ConstructionConsultSystem は建設プロジェクト管理向け AI アシスタントの振る舞いを定義する。
 const ConstructionConsultSystem = `You are an AI assistant for construction project management professionals in Japan (ANDPAD-style platform).

@@ -9,14 +9,12 @@ import (
 )
 
 func (s *Service) AndpadAnalytics(ctx context.Context, periodDays int) (models.AndpadAnalyticsDashboard, error) {
-	if _, err := s.requireModule(ctx, models.ModuleAnalytics); err != nil {
-		return models.AndpadAnalyticsDashboard{}, err
-	}
 	if s.memoryMode() {
 		trend := 8.5
 		return models.AndpadAnalyticsDashboard{
 			PeriodDays: periodDays, ActiveProjects: 1, BillingTotal: 12500000,
-			GeneratedAt: time.Now(),
+			GeneratedAt: time.Now(), ProjectHealthScore: 78,
+			RecordsByWeek: []float64{2, 4, 3, 5},
 			Kpis: []models.AndpadAnalyticsKpi{
 				{Label: "進行中案件", Value: 1, Unit: "件", TrendPct: &trend},
 				{Label: "登録案件", Value: 1, Unit: "件"},
@@ -25,6 +23,10 @@ func (s *Service) AndpadAnalytics(ctx context.Context, periodDays int) (models.A
 			},
 			ProjectsByStatus: []models.ProjectStatusCount{
 				{Status: models.ProjectInProgress, Count: 1},
+			},
+			ModuleUsage: []models.ModuleUsageMetric{
+				{ModuleCode: "BILLING", ModuleName: "請求管理", RecordCount: 2},
+				{ModuleCode: "SCHEDULE", ModuleName: "工程管理", RecordCount: 1},
 			},
 		}, nil
 	}

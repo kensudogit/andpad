@@ -653,6 +653,8 @@ type AndpadAnalyticsDashboard {
   moduleUsage: [ModuleUsageMetric!]!
   billingTotal: Float!
   activeProjects: Int!
+  recordsByWeek: [Float!]!
+  projectHealthScore: Float!
   generatedAt: String!
 }
 

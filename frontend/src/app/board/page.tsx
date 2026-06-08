@@ -1,4 +1,4 @@
-/** AI Board（学習 KPI と OpenAI 経営インサイト）。 */
+/** AI Board（建設 PM KPI と OpenAI 経営インサイト）。 */
 import { AIBoardClient } from '@/components/AIBoardClient'
 import { ui } from '@/lib/ui'
 

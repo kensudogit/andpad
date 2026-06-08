@@ -1,6 +1,6 @@
 package service
 
-// クリニック向け学習 KPI ボードと OpenAI による経営インサイト生成
+// 建設 PM KPI ボードと OpenAI による経営インサイト生成
 
 import (
 	"context"
@@ -34,25 +34,25 @@ func memoryAnalyticsBoard(s *Service) models.AnalyticsBoard {
 			{Label: "active_learners", Value: float64(d.ActiveLearners), Unit: ""},
 			{Label: "video_library", Value: float64(d.VideosTotal), Unit: ""},
 		},
-		WatchHoursByWeek:        []float64{d.WatchHoursThisMonth * 0.2, d.WatchHoursThisMonth * 0.25, d.WatchHoursThisMonth * 0.3, d.WatchHoursThisMonth * 0.25},
-		LearnerEngagementScore:  72,
+		WatchHoursByWeek:       []float64{d.WatchHoursThisMonth * 0.2, d.WatchHoursThisMonth * 0.25, d.WatchHoursThisMonth * 0.3, d.WatchHoursThisMonth * 0.25},
+		LearnerEngagementScore: 72,
 	}
 }
 
 // GenerateAnalyticsInsight は KPI JSON を LLM に渡し、失敗時はルールベースの日本語要約にフォールバックする。
 func (s *Service) GenerateAnalyticsInsight(ctx context.Context, periodDays int) (models.AnalyticsInsight, error) {
-	board, err := s.AnalyticsBoard(ctx, periodDays)
+	dash, err := s.AndpadAnalytics(ctx, periodDays)
 	if err != nil {
 		return models.AnalyticsInsight{}, err
 	}
 	now := time.Now().UTC().Format(time.RFC3339)
 	if s.OpenAI == nil {
-		return fallbackInsight(board, now), nil
+		return fallbackConstructionInsight(dash, now), nil
 	}
-	payload, _ := json.Marshal(board)
-	reply, err := s.OpenAI.Chat(ctx, openai.DentalAnalyticsSystem, nil, string(payload))
+	payload, _ := json.Marshal(dash)
+	reply, err := s.OpenAI.Chat(ctx, openai.ConstructionAnalyticsSystem, nil, string(payload))
 	if err != nil {
-		return fallbackInsight(board, now), nil
+		return fallbackConstructionInsight(dash, now), nil
 	}
 	var parsed struct {
 		Summary         string   `json:"summary"`
@@ -61,7 +61,7 @@ func (s *Service) GenerateAnalyticsInsight(ctx context.Context, periodDays int) 
 		Recommendations []string `json:"recommendations"`
 	}
 	if err := json.Unmarshal([]byte(extractJSON(reply)), &parsed); err != nil {
-		return fallbackInsight(board, now), nil
+		return fallbackConstructionInsight(dash, now), nil
 	}
 	return models.AnalyticsInsight{
 		Summary: parsed.Summary, Strengths: parsed.Strengths,
@@ -70,16 +70,13 @@ func (s *Service) GenerateAnalyticsInsight(ctx context.Context, periodDays int) 
 	}, nil
 }
 
-func fallbackInsight(b models.AnalyticsBoard, at string) models.AnalyticsInsight {
-	watch := 0.0
-	if len(b.Kpis) > 0 {
-		watch = b.Kpis[0].Value
-	}
+func fallbackConstructionInsight(d models.AndpadAnalyticsDashboard, at string) models.AnalyticsInsight {
 	return models.AnalyticsInsight{
-		Summary: fmt.Sprintf("\u904e\u53bb%d\u65e5\u9593\u306e\u8996\u8074\u306f%.1f\u6642\u9593\u3002\u5b66\u7fd2\u53c2\u52a0\u30b9\u30b3\u30a2\u306f%.0f\u70b9\u3067\u3059\u3002", b.PeriodDays, watch, b.LearnerEngagementScore),
-		Strengths:       []string{"\u52d5\u753b\u30e9\u30a4\u30d6\u30e9\u30ea\u304c\u6574\u5099\u3055\u308c\u3066\u3044\u307e\u3059"},
-		Risks:           []string{"OPENAI_API_KEY \u672a\u8a2d\u5b9a\u6642\u306f\u30eb\u30fc\u30eb\u30d9\u30fc\u30b9\u5206\u6790\u306e\u307f\u8868\u793a"},
-		Recommendations: []string{"\u7406\u89e3\u5ea6\u30c6\u30b9\u30c8\u5b8c\u4e86\u7387\u3092\u9031\u6b21\u78ba\u8a8d", "\u5b66\u7fd2\u30d1\u30b9\u53d7\u8b16\u7387\u3092\u5411\u4e0a"},
+		Summary: fmt.Sprintf("過去%d日間: 進行中案件%d件、プロジェクト健全性スコア%.0f点。請求合計¥%.0f。",
+			d.PeriodDays, d.ActiveProjects, d.ProjectHealthScore, d.BillingTotal),
+		Strengths:       []string{"案件データが集約され、モジュール利用状況を可視化できます"},
+		Risks:           []string{"OPENAI_API_KEY 未設定時はルールベース分析のみ表示"},
+		Recommendations: []string{"保留案件の原因を週次で確認", "工程・安全モジュールの記録頻度を向上"},
 		GeneratedAt:     at,
 	}
 }

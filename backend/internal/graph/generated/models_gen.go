@@ -35,13 +35,15 @@ type AnalyticsKpi struct {
 }
 
 type AndpadAnalyticsDashboard struct {
-	PeriodDays       int                   `json:"periodDays"`
-	Kpis             []*AndpadAnalyticsKpi `json:"kpis"`
-	ProjectsByStatus []*ProjectStatusCount `json:"projectsByStatus"`
-	ModuleUsage      []*ModuleUsageMetric  `json:"moduleUsage"`
-	BillingTotal     float64               `json:"billingTotal"`
-	ActiveProjects   int                   `json:"activeProjects"`
-	GeneratedAt      string                `json:"generatedAt"`
+	PeriodDays         int                   `json:"periodDays"`
+	Kpis               []*AndpadAnalyticsKpi `json:"kpis"`
+	ProjectsByStatus   []*ProjectStatusCount `json:"projectsByStatus"`
+	ModuleUsage        []*ModuleUsageMetric  `json:"moduleUsage"`
+	BillingTotal       float64               `json:"billingTotal"`
+	ActiveProjects     int                   `json:"activeProjects"`
+	RecordsByWeek      []float64             `json:"recordsByWeek"`
+	ProjectHealthScore float64               `json:"projectHealthScore"`
+	GeneratedAt        string                `json:"generatedAt"`
 }
 
 type AndpadAnalyticsKpi struct {

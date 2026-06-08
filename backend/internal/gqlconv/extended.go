@@ -28,7 +28,8 @@ func ToAndpadAnalyticsDashboard(d models.AndpadAnalyticsDashboard) *generated.An
 	return &generated.AndpadAnalyticsDashboard{
 		PeriodDays: d.PeriodDays, Kpis: kpis, ProjectsByStatus: statuses,
 		ModuleUsage: usage, BillingTotal: d.BillingTotal,
-		ActiveProjects: d.ActiveProjects, GeneratedAt: fmtTime(d.GeneratedAt),
+		ActiveProjects: d.ActiveProjects, RecordsByWeek: d.RecordsByWeek,
+		ProjectHealthScore: d.ProjectHealthScore, GeneratedAt: fmtTime(d.GeneratedAt),
 	}
 }
 

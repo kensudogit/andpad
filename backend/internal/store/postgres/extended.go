@@ -72,6 +72,44 @@ func (db *DB) AndpadAnalytics(ctx context.Context, orgID string, periodDays int)
 	_ = db.Pool.QueryRow(ctx, `
 		SELECT COUNT(*) FROM construction_projects WHERE org_id=$1`, orgID).Scan(&totalProjects)
 
+	// 週別モジュール記録数（直近4週）
+	now := time.Now()
+	out.RecordsByWeek = make([]float64, 4)
+	for i := 0; i < 4; i++ {
+		weekStart := now.AddDate(0, 0, -7*(4-i))
+		weekEnd := now.AddDate(0, 0, -7*(3-i))
+		var weekCount int
+		_ = db.Pool.QueryRow(ctx, `
+			SELECT COUNT(*) FROM project_module_records
+			WHERE org_id=$1 AND created_at >= $2 AND created_at < $3`, orgID, weekStart, weekEnd).Scan(&weekCount)
+		out.RecordsByWeek[i] = float64(weekCount)
+	}
+
+	var inProgress, completed, onHold int
+	for _, s := range out.ProjectsByStatus {
+		switch s.Status {
+		case models.ProjectInProgress:
+			inProgress = s.Count
+		case models.ProjectCompleted:
+			completed = s.Count
+		case models.ProjectOnHold:
+			onHold = s.Count
+		}
+	}
+	if totalProjects == 0 {
+		out.ProjectHealthScore = 0
+	} else {
+		score := float64(inProgress+completed) / float64(totalProjects) * 100
+		score -= float64(onHold) / float64(totalProjects) * 25
+		if score < 0 {
+			score = 0
+		}
+		if score > 100 {
+			score = 100
+		}
+		out.ProjectHealthScore = score
+	}
+
 	trend := 5.2
 	out.Kpis = []models.AndpadAnalyticsKpi{
 		{Label: "進行中案件", Value: float64(active), Unit: "件", TrendPct: &trend},
