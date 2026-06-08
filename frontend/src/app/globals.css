@@ -1739,6 +1739,31 @@ html, body {
 
 .saas-chat-threads h2 {
   font-size: 0.9rem;
+  margin: 0;
+}
+
+.saas-chat-threads-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.65rem;
+}
+
+.saas-section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.75rem;
+  color: var(--text);
+}
+
+.saas-chat-welcome {
+  padding: 1rem 0.5rem;
+  text-align: center;
+}
+
+.saas-chat-compose {
+  align-items: flex-end;
 }
 
 .saas-chat-threads ul {

@@ -17,7 +17,7 @@ func GenerateReply(ctx context.Context, cfg config.Config, ai *openai.Client, hi
 	if ai == nil || !cfg.OpenAIEnabled() {
 		return replyWithoutOpenAI(msg)
 	}
-	answer, err := ai.Chat(ctx, openai.DentalConsultSystem, history, message)
+	answer, err := ai.Chat(ctx, openai.ConstructionConsultSystem, history, message)
 	if err != nil {
 		slog.Warn("consult openai chat failed", "error", err)
 		return replyOpenAIError(msg, err)
@@ -36,9 +36,9 @@ func replyWithoutOpenAI(message string) string {
 	}
 	return fmt.Sprintf(
 		"現在 OpenAI 連携（OPENAI_API_KEY）が未設定のため、AI による詳細回答を生成できません。\n\n"+
-			"Railway の dental_video サービス → Variables → OPENAI_API_KEY を追加し Redeploy すると、"+
+			"Railway の andpad サービス → Variables → OPENAI_API_KEY を追加し Redeploy すると、"+
 			"ご質問「%s」に対する本格的な回答が得られます。\n\n"+
-			"※ 文書検索 RAG は組織設定で別途有効化できます。",
+			"※ デモ応答として受け付けました。建設現場の安全・工程・品質管理などについてお気軽にご質問ください。",
 		topic,
 	)
 }
