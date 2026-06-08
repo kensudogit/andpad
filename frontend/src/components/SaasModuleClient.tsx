@@ -670,6 +670,10 @@ function ChatModuleView() {
     await loadThread({ variables: { id } })
   }
 
+  function startNewThread() {
+    setActiveThreadId(null)
+  }
+
   async function send() {
     if (!input.trim() || sending) return
     try {
@@ -706,31 +710,40 @@ function ChatModuleView() {
       <section className="saas-panel">
         <div className="saas-chat-layout">
           <aside className="saas-chat-threads">
-            <h2>{ui.saasChatThreads}</h2>
+            <div className="saas-chat-threads-head">
+              <h2>{ui.saasChatThreads}</h2>
+              <button type="button" className="btn outline saas-btn-sm" onClick={startNewThread}>
+                {ui.saasChatNewThread}
+              </button>
+            </div>
             {threadsLoading ? (
-              <p className="muted">{ui.boardLoading}</p>
-            ) : threads.length === 0 ? (
-              <p className="muted">{ui.saasEmpty}</p>
+              <p className="muted saas-chat-threads-empty">{ui.boardLoading}</p>
+            ) : threads.length === 0 && !activeThreadId ? (
+              <p className="muted saas-chat-threads-empty">{ui.saasChatThreadsEmpty}</p>
             ) : (
-              <ul>
-                {threads.map((t) => (
-                  <li key={t.id}>
-                    <button
-                      type="button"
-                      className={activeThreadId === t.id ? 'active' : ''}
-                      onClick={() => openThread(t.id)}
-                    >
-                      {t.title || ui.saasChatThread}
-                      <span>{fmtDateTime(t.createdAt)}</span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
+              <div className="saas-chat-threads-list">
+                <ul>
+                  {threads.map((t) => (
+                    <li key={t.id}>
+                      <button
+                        type="button"
+                        className={activeThreadId === t.id ? 'active' : ''}
+                        onClick={() => openThread(t.id)}
+                      >
+                        <span className="saas-chat-thread-title">{t.title || ui.saasChatThread}</span>
+                        <span className="saas-chat-thread-date">{fmtDateTime(t.createdAt)}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
           </aside>
           <div className="saas-chat-main">
             <div className="saas-chat-log">
-              {threadLoading ? (
+              {activeThreadId === null && messages.length === 0 ? (
+                <p className="muted saas-chat-welcome">{ui.saasChatWelcome}</p>
+              ) : threadLoading && messages.length === 0 ? (
                 <p className="muted">{ui.boardLoading}</p>
               ) : messages.length === 0 ? (
                 <p className="muted">{ui.saasChatEmpty}</p>
@@ -743,7 +756,7 @@ function ChatModuleView() {
                 ))
               )}
             </div>
-            <div className="saas-form">
+            <div className="saas-form saas-chat-compose">
               <textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}

@@ -155,24 +155,26 @@ export function ChatModuleClient() {
               </button>
             </div>
             {threadsLoading ? (
-              <p className="muted">{ui.boardLoading}</p>
+              <p className="muted saas-chat-threads-empty">{ui.boardLoading}</p>
             ) : threads.length === 0 && !activeThreadId ? (
-              <p className="muted">{ui.saasChatEmpty}</p>
+              <p className="muted saas-chat-threads-empty">{ui.saasChatThreadsEmpty}</p>
             ) : (
-              <ul>
-                {threads.map((t) => (
-                  <li key={t.id}>
-                    <button
-                      type="button"
-                      className={activeThreadId === t.id ? 'active' : ''}
-                      onClick={() => void openThread(t.id)}
-                    >
-                      {t.title || ui.saasChatThread}
-                      <span>{fmtDateTime(t.createdAt)}</span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
+              <div className="saas-chat-threads-list">
+                <ul>
+                  {threads.map((t) => (
+                    <li key={t.id}>
+                      <button
+                        type="button"
+                        className={activeThreadId === t.id ? 'active' : ''}
+                        onClick={() => void openThread(t.id)}
+                      >
+                        <span className="saas-chat-thread-title">{t.title || ui.saasChatThread}</span>
+                        <span className="saas-chat-thread-date">{fmtDateTime(t.createdAt)}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
           </aside>
           <div className="saas-chat-main">

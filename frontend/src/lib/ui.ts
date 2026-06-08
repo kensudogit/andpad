@@ -281,6 +281,7 @@ export const ui = {
   saasSign: '\u7f72\u540d',
   saasContractTemplates: '\u30c6\u30f3\u30d7\u30ec\u30fc\u30c8',
   saasChatThreads: '\u30b9\u30ec\u30c3\u30c9',
+  saasChatThreadsEmpty: '新規スレッドで相談を始めましょう',
   saasChatThread: '\u76f8\u8ac7',
   saasChatEmpty: '\u30e1\u30c3\u30bb\u30fc\u30b8\u3092\u9001\u4fe1\u3057\u3066\u304f\u3060\u3055\u3044',
   saasChatOpenaiHint:

@@ -1781,22 +1781,64 @@ html, body {
 
 .saas-chat-layout {
   display: grid;
-  grid-template-columns: minmax(160px, 220px) 1fr;
-  gap: 1rem;
-  min-height: 320px;
+  grid-template-columns: minmax(260px, 280px) minmax(0, 1fr);
+  gap: 1.25rem;
+  min-height: 360px;
+  align-items: stretch;
+}
+
+.saas-chat-threads {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  padding-right: 0.75rem;
+  border-right: 1px solid var(--border);
+  box-sizing: border-box;
 }
 
 .saas-chat-threads h2 {
   font-size: 0.9rem;
   margin: 0;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .saas-chat-threads-head {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: stretch;
   gap: 0.5rem;
-  margin-bottom: 0.65rem;
+  margin-bottom: 0;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.saas-chat-threads-head .btn {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.saas-chat-threads-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-top: 0.65rem;
+  padding-right: 0.15rem;
+}
+
+.saas-chat-threads-empty {
+  font-size: 0.78rem;
+  line-height: 1.55;
+  word-break: keep-all;
+  margin: 0.65rem 0 0;
+  padding: 0 0.1rem;
 }
 
 .saas-section-title {
@@ -1809,10 +1851,8 @@ html, body {
 .saas-chat-welcome {
   padding: 1rem 0.5rem;
   text-align: center;
-}
-
-.saas-chat-compose {
-  align-items: flex-end;
+  line-height: 1.55;
+  word-break: keep-all;
 }
 
 .saas-chat-threads ul {
@@ -1823,6 +1863,8 @@ html, body {
 
 .saas-chat-threads button {
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   text-align: left;
   padding: 0.55rem 0.65rem;
   border: 1px solid var(--border);
@@ -1831,6 +1873,25 @@ html, body {
   margin-bottom: 0.35rem;
   cursor: pointer;
   font-size: 0.82rem;
+  line-height: 1.35;
+  overflow: hidden;
+}
+
+.saas-chat-thread-title {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.saas-chat-thread-date {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-top: 0.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .saas-chat-threads button.active {
@@ -1838,28 +1899,46 @@ html, body {
   background: var(--accent-soft);
 }
 
-.saas-chat-threads button span {
-  display: block;
-  font-size: 0.72rem;
-  color: var(--muted);
-  margin-top: 0.15rem;
-}
-
 .saas-chat-main {
   display: flex;
   flex-direction: column;
   min-height: 320px;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .saas-chat-log {
-  flex: 1;
+  flex: 1 1 auto;
+  min-height: 140px;
   overflow-y: auto;
-  max-height: 360px;
-  padding: 0.5rem;
+  overflow-x: hidden;
+  padding: 0.75rem;
   border: 1px solid var(--border);
   border-radius: 10px;
   margin-bottom: 0.75rem;
   background: #fafafa;
+}
+
+.saas-chat-compose {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  margin-bottom: 0;
+}
+
+.saas-chat-compose .saas-textarea {
+  width: 100%;
+  margin-bottom: 0;
+  box-sizing: border-box;
+  resize: vertical;
+  min-height: 4.5rem;
+}
+
+.saas-chat-compose .btn {
+  align-self: flex-end;
+  flex-shrink: 0;
 }
 
 .saas-chat-bubble {
@@ -1898,6 +1977,19 @@ html, body {
 @media (max-width: 720px) {
   .saas-chat-layout {
     grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .saas-chat-threads {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding-right: 0;
+    padding-bottom: 0.75rem;
+    max-height: 220px;
+  }
+
+  .saas-chat-threads-list {
+    max-height: 140px;
   }
 }
 
