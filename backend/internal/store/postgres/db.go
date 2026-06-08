@@ -46,6 +46,20 @@ func (db *DB) Close() {
 // Migrate は未適用 SQL を schema_migrations で追跡しながら適用する。
 func (db *DB) Migrate() error {
 	ctx := context.Background()
+	if err := db.ensureMigrationTable(ctx); err != nil {
+		return err
+	}
+	if err := db.applyFromFS(ctx, migrations.FS); err == nil {
+		return db.validateCoreSchema(ctx)
+	}
+	if err := db.migrateFromDisk(ctx); err != nil {
+		return err
+	}
+	return db.validateCoreSchema(ctx)
+}
+
+// ensureMigrationTable は追跡テーブルを用意する。他プロジェクト由来の version 列も吸収する。
+func (db *DB) ensureMigrationTable(ctx context.Context) error {
 	if _, err := db.Pool.Exec(ctx, `
 		CREATE TABLE IF NOT EXISTS schema_migrations (
 			filename TEXT PRIMARY KEY,
@@ -53,10 +67,46 @@ func (db *DB) Migrate() error {
 		)`); err != nil {
 		return err
 	}
-	if err := db.applyFromFS(ctx, migrations.FS); err == nil {
+	var hasFilename, hasVersion bool
+	err := db.Pool.QueryRow(ctx, `
+		SELECT
+			EXISTS (
+				SELECT 1 FROM information_schema.columns
+				WHERE table_schema = 'public' AND table_name = 'schema_migrations' AND column_name = 'filename'
+			),
+			EXISTS (
+				SELECT 1 FROM information_schema.columns
+				WHERE table_schema = 'public' AND table_name = 'schema_migrations' AND column_name = 'version'
+			)`).Scan(&hasFilename, &hasVersion)
+	if err != nil {
+		return err
+	}
+	if hasVersion && !hasFilename {
+		if _, err := db.Pool.Exec(ctx, `ALTER TABLE schema_migrations RENAME COLUMN version TO filename`); err != nil {
+			return fmt.Errorf("schema_migrations: rename version→filename: %w", err)
+		}
+	}
+	return nil
+}
+
+// validateCoreSchema は別プロジェクトの Postgres を誤接続したときに明確なエラーを返す。
+func (db *DB) validateCoreSchema(ctx context.Context) error {
+	var exists bool
+	if err := db.Pool.QueryRow(ctx, `
+		SELECT EXISTS (
+			SELECT 1 FROM information_schema.tables
+			WHERE table_schema = 'public' AND table_name = 'organizations'
+		)`).Scan(&exists); err != nil {
+		return err
+	}
+	if exists {
 		return nil
 	}
-	return db.migrateFromDisk(ctx)
+	return fmt.Errorf(
+		"incompatible database: organizations table missing after migrations. " +
+			"This Postgres was likely used by another project. " +
+			"Add a fresh Postgres plugin on Railway (or drop public tables + schema_migrations) and point DATABASE_URL to it",
+	)
 }
 
 func (db *DB) applyFromFS(ctx context.Context, filesystem fs.FS) error {

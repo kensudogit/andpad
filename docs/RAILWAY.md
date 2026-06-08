@@ -96,6 +96,8 @@ Dashboard で **Config file path** = `/railway.toml`、**Root Directory** = 空 
 | `JWT_SECRET looks like an API key` | Anthropic/OpenAI キーを JWT_SECRET に設定 | JWT_SECRET をランダム文字列に変更。API キーは `OPENAI_API_KEY` へ |
 | `Cannot reach API HTTP 503` | API 起動失敗（DB 未設定） | Deploy ログで `[unified] ERROR: DATABASE_URL` を確認 |
 | ビルド失敗 | Root Directory が `frontend` や `backend` になっている | **空**に戻し `/railway.toml` を使用 |
+| ビルド成功だがデプロイが 5 分以上「Deploying」 | ヘルスチェック失敗（Go API 起動エラー） | Deploy ログで `[unified] ERROR` と API ログを確認 |
+| `incompatible database` / `organizations table missing` | 別プロジェクトで使っていた Postgres を接続している | **新しい Postgres プラグイン**を追加し `DATABASE_URL` を差し替え（または public テーブルを全削除） |
 
 PowerShell で JWT_SECRET 生成例:
 

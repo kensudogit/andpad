@@ -5,6 +5,14 @@ set -e
 WEB_PORT="${PORT:-3000}"
 API_PORT="${API_INTERNAL_PORT:-8081}"
 
+env_state() {
+  if [ -n "${1:-}" ]; then
+    echo set
+  else
+    echo empty
+  fi
+}
+
 external_api_healthy() {
   case "${API_URL:-}" in
     *127.0.0.1*|*localhost*)
@@ -23,7 +31,7 @@ external_api_healthy() {
 }
 
 if external_api_healthy; then
-  echo "[web] external API_URL=${API_URL} — Next.js only (separate api service)"
+  echo "[web] external API_URL=${API_URL}  Next.js only (separate api service)"
   unset UNIFIED_DEPLOY
   cd /app/frontend
   PORT="${WEB_PORT}" HOSTNAME=0.0.0.0 exec npm start
@@ -41,11 +49,11 @@ if [ -z "${DATABASE_URL:-}" ] && [ -n "${DATABASE_PRIVATE_URL:-}" ]; then
 fi
 
 echo "[unified] web=${WEB_PORT} api=${API_PORT}"
-echo "[unified] DATABASE_URL=${DATABASE_URL:+set}${DATABASE_URL:-empty}"
-echo "[unified] DATABASE_PRIVATE_URL=${DATABASE_PRIVATE_URL:+set}${DATABASE_PRIVATE_URL:-empty}"
-echo "[unified] PGHOST=${PGHOST:+set}${PGHOST:-empty}"
-echo "[unified] JWT_SECRET=${JWT_SECRET:+set}${JWT_SECRET:-empty}"
-echo "[unified] OPENAI_API_KEY=${OPENAI_API_KEY:+set}${OPENAI_API_KEY:-empty}"
+echo "[unified] DATABASE_URL=$(env_state "${DATABASE_URL:-}")"
+echo "[unified] DATABASE_PRIVATE_URL=$(env_state "${DATABASE_PRIVATE_URL:-}")"
+echo "[unified] PGHOST=$(env_state "${PGHOST:-}")"
+echo "[unified] JWT_SECRET=$(env_state "${JWT_SECRET:-}")"
+echo "[unified] OPENAI_API_KEY=$(env_state "${OPENAI_API_KEY:-}")"
 if [ -z "${DATABASE_URL:-}" ] && [ -z "${DATABASE_PRIVATE_URL:-}" ] && [ -z "${PGHOST:-}" ]; then
   echo "[unified] ERROR: DATABASE_URL is required"
   echo "[unified]   andpad service ? Variables ? + New Variable ? Reference ? Postgres ? DATABASE_URL"
@@ -56,7 +64,8 @@ if [ -z "${JWT_SECRET:-}" ] || [ "${JWT_SECRET}" = "dev-only-change-in-productio
 fi
 
 echo "[unified] starting Go API..."
-PORT="${API_PORT}" /app/server &
+API_LOG="/tmp/api.log"
+PORT="${API_PORT}" /app/server >"${API_LOG}" 2>&1 &
 API_PID=$!
 
 echo "[unified] waiting for API /health..."
@@ -69,6 +78,9 @@ while [ "$i" -lt 120 ]; do
   fi
   if ! kill -0 "$API_PID" 2>/dev/null; then
     echo "[unified] ERROR: Go API process exited before becoming ready"
+    if [ -f "${API_LOG}" ]; then
+      tail -n 40 "${API_LOG}" 2>/dev/null || true
+    fi
     wait "$API_PID" 2>/dev/null || true
     exit 1
   fi
@@ -78,6 +90,9 @@ done
 
 if [ "$ready" -ne 1 ]; then
   echo "[unified] ERROR: Go API not ready on 127.0.0.1:${API_PORT} after 60s"
+  if [ -f "${API_LOG}" ]; then
+    tail -n 40 "${API_LOG}" 2>/dev/null || true
+  fi
   kill "$API_PID" 2>/dev/null || true
   exit 1
 fi
