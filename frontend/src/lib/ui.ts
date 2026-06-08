@@ -31,6 +31,27 @@ export const ui = {
     'PostgreSQL \u30e2\u30fc\u30c9\u3067\u306f\u30ed\u30b0\u30a4\u30f3\u304c\u5fc5\u8981\u3067\u3059\u3002',
   settingsSignInHint:
     'API \u306f\u63a5\u7d9a\u6e08\u307f\u3067\u3082\u3001\u672a\u30ed\u30b0\u30a4\u30f3\u306e\u5834\u5408\u306f\u7d44\u7e54\u8a2d\u5b9a\u3092\u8868\u793a\u3067\u304d\u307e\u305b\u3093\u3002\u30c7\u30e2: demo@sakura-dental.jp / demo1234',
+  settingsTitle: '組織設定',
+  settingsDesc: 'テナント情報・プラン・利用量を管理します。',
+  settingsOrgName: '会社名',
+  settingsSlug: 'スラッグ',
+  settingsSeats: 'シート数',
+  settingsTimezone: 'タイムゾーン',
+  settingsPlan: (tier: string, status: string, members: number) =>
+    `プラン: ${tier} / ${status} / メンバー ${members} 名`,
+  settingsSave: '保存',
+  settingsSaving: '保存中...',
+  settingsLoading: '読み込み中...',
+  settingsMembers: 'メンバー',
+  settingsProjects: '登録案件',
+  settingsApiMonth: 'API（月間）',
+  settingsTeam: 'チーム',
+  settingsApiFailedHint:
+    'API への接続に失敗しました。先に /status で接続状態を確認してください。',
+  memberRoleOwner: 'オーナー',
+  memberRoleAdmin: '管理者',
+  memberRoleMember: 'メンバー',
+  memberRoleViewer: '閲覧者',
   graphqlError: 'GraphQL \u306b\u63a5\u7d9a\u3067\u304d\u307e\u305b\u3093',
   dashboardTitle: '\u30c0\u30c3\u30b7\u30e5\u30dc\u30fc\u30c9',
   dashboardDesc:

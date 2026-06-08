@@ -2,19 +2,26 @@
 
 /**
  * 組織設定（SaaS）: テナント情報・利用量・チームメンバー管理。
- * セッション確認後に OrganizationSettings を取得する。
  */
 import { useMutation, useQuery } from '@apollo/client/react'
 import Link from 'next/link'
 import { IconArrowRight, IconSave } from '@/components/ui/ButtonIcons'
 import {
   CurrentSessionDocument,
+  MemberRole,
   OrganizationSettingsDocument,
   SaasModulesDocument,
   UpdateOrganizationDocument,
 } from '@/lib/generated/graphql'
 import { isAuthRequiredGraphQLError, isNetworkGraphQLError } from '@/lib/graphql-errors'
 import { ui } from '@/lib/ui'
+
+const roleLabels: Record<MemberRole, string> = {
+  [MemberRole.Owner]: ui.memberRoleOwner,
+  [MemberRole.Admin]: ui.memberRoleAdmin,
+  [MemberRole.Member]: ui.memberRoleMember,
+  [MemberRole.Viewer]: ui.memberRoleViewer,
+}
 
 export default function SettingsPage() {
   const {
@@ -25,7 +32,7 @@ export default function SettingsPage() {
   const session = sessionData?.currentSession
 
   const { data, loading, error, refetch } = useQuery(OrganizationSettingsDocument, {
-    skip: !session, // 未ログイン時は org クエリを送らない
+    skip: !session,
     fetchPolicy: 'network-only',
   })
   const { data: saasData } = useQuery(SaasModulesDocument, {
@@ -54,25 +61,25 @@ export default function SettingsPage() {
   }
 
   if (sessionLoading || (session && loading)) {
-    return <p className="muted">Loading...</p>
+    return <p className="muted">{ui.settingsLoading}</p>
   }
 
-  // 未ログイン・403 と API 接続失敗を分岐して表示
   const authRequired = !session || isAuthRequiredGraphQLError(error)
   const apiFailed = error && isNetworkGraphQLError(error)
 
   return (
     <>
       <div className="page-head">
-        <h1>Organization settings (SaaS)</h1>
-        <p>Manage tenant isolation, plan, and usage.</p>
+        <h1>{ui.settingsTitle}</h1>
+        <p>{ui.settingsDesc}</p>
       </div>
 
       {apiFailed ? (
         <div className="panel">
           <p className="alert">{error.message}</p>
           <p className="muted small">
-            API connection failed. Check <Link href="/status">/status</Link> first, then redeploy.
+            {ui.settingsApiFailedHint}{' '}
+            <Link href="/status">/status</Link>
           </p>
         </div>
       ) : authRequired ? (
@@ -101,28 +108,28 @@ export default function SettingsPage() {
         <>
           <form className="panel auth-form" onSubmit={save}>
             <label>
-              Clinic name
+              {ui.settingsOrgName}
               <input name="name" defaultValue={org.name} required />
             </label>
             <label>
-              Slug
+              {ui.settingsSlug}
               <input name="slug" defaultValue={org.slug} required />
             </label>
             <label>
-              Seats
+              {ui.settingsSeats}
               <input name="seatCount" type="number" defaultValue={org.seatCount} min={1} />
             </label>
             <label>
-              Timezone
+              {ui.settingsTimezone}
               <input name="timezone" defaultValue={org.timezone} />
             </label>
             <p className="muted small">
-              Plan: {org.planTier} / {org.subscriptionStatus} / members {org.memberCount}
+              {ui.settingsPlan(org.planTier, org.subscriptionStatus, org.memberCount)}
             </p>
             <div className="form-actions">
               <button type="submit" className="btn" disabled={saving}>
                 <IconSave />
-                {saving ? 'Saving...' : 'Save'}
+                {saving ? ui.settingsSaving : ui.settingsSave}
               </button>
             </div>
           </form>
@@ -130,19 +137,19 @@ export default function SettingsPage() {
           {usage ? (
             <section className="stat-grid" style={{ marginTop: '1rem' }}>
               <div className="stat-card">
-                <div className="stat-label">Members</div>
+                <div className="stat-label">{ui.settingsMembers}</div>
                 <div className="stat-value">
                   {usage.members} / {usage.membersLimit}
                 </div>
               </div>
               <div className="stat-card">
-                <div className="stat-label">Videos</div>
+                <div className="stat-label">{ui.settingsProjects}</div>
                 <div className="stat-value">
                   {usage.videos} / {usage.videosLimit}
                 </div>
               </div>
               <div className="stat-card">
-                <div className="stat-label">API (month)</div>
+                <div className="stat-label">{ui.settingsApiMonth}</div>
                 <div className="stat-value">
                   {usage.apiCallsThisMonth} / {usage.apiCallsLimit}
                 </div>
@@ -173,12 +180,12 @@ export default function SettingsPage() {
           ) : null}
 
           <section className="panel" style={{ marginTop: '1rem' }}>
-            <h3>Team</h3>
+            <h3>{ui.settingsTeam}</h3>
             <ul className="metric-list">
               {data?.teamMembers?.map((m) => (
                 <li key={m.id}>
                   <span>
-                    {m.user.name} ({m.user.email}) - {m.role}
+                    {m.user.name} ({m.user.email}) — {roleLabels[m.role] ?? m.role}
                   </span>
                 </li>
               ))}

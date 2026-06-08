@@ -72,10 +72,10 @@ func (db *DB) MemberCount(ctx context.Context, orgID string) (int, error) {
 func (db *DB) UsageSummary(ctx context.Context, orgID string) (models.UsageSummary, error) {
 	var u models.UsageSummary
 	u.MembersLimit = 10
-	u.VideosLimit = 500
+	u.VideosLimit = 50
 	u.APICallsLimit = 10000
 	_ = db.Pool.QueryRow(ctx, `SELECT COUNT(*) FROM team_members WHERE org_id=$1`, orgID).Scan(&u.Members)
-	_ = db.Pool.QueryRow(ctx, `SELECT COUNT(*) FROM videos WHERE org_id=$1`, orgID).Scan(&u.Videos)
+	_ = db.Pool.QueryRow(ctx, `SELECT COUNT(*) FROM construction_projects WHERE org_id=$1`, orgID).Scan(&u.Videos)
 	_ = db.Pool.QueryRow(ctx, `
 		SELECT COALESCE(api_calls_month,0), COALESCE(consult_tokens_month,0) FROM usage_counters WHERE org_id=$1`, orgID).
 		Scan(&u.APICallsThisMonth, &u.ConsultTokensMonth)

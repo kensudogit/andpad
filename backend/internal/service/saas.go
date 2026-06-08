@@ -1,6 +1,6 @@
 package service
 
-// 組織（クリニック）設定・チーム・利用量 — 認証必須の SaaS 管理 API
+// 組織設定・チーム・利用量 — 認証必須の SaaS 管理 API
 
 import (
 	"context"
@@ -38,7 +38,7 @@ func (s *Service) UsageSummary(ctx context.Context) (models.UsageSummary, error)
 	if s.memoryMode() {
 		_ = p
 		return models.UsageSummary{
-			Members: 1, MembersLimit: 10, Videos: 10, VideosLimit: 100,
+			Members: 1, MembersLimit: 10, Videos: 1, VideosLimit: 50,
 			APICallsThisMonth: 0, APICallsLimit: 10000, ConsultTokensMonth: 0,
 		}, nil
 	}

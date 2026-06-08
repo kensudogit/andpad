@@ -132,20 +132,22 @@ func insertDemoOrg(ctx context.Context, db *DB, hash string) error {
 
 	orgID := "org_demo"
 	userID := "user_demo"
-	slug := "sakura-dental"
+	slug := "sample-construction"
 	var slugTaken bool
 	if err := tx.QueryRow(ctx, `SELECT EXISTS(SELECT 1 FROM organizations WHERE slug=$1 AND id<>$2)`, slug, orgID).Scan(&slugTaken); err != nil {
 		return err
 	}
 	if slugTaken {
-		slug = "sakura-dental-demo"
+		slug = "sample-construction-demo"
 	}
 
 	_, err = tx.Exec(ctx, `
 		INSERT INTO organizations (id, name, slug, plan_tier, subscription_status, seat_count, timezone)
 		VALUES ($1, $2, $3, 'PRO', 'ACTIVE', 10, 'Asia/Tokyo')
-		ON CONFLICT (id) DO NOTHING`,
-		orgID, "\u6c37\u82b1\u7c38\u6b6f\u79d1\u30af\u30ea\u30cb\u30c3\u30af", slug)
+		ON CONFLICT (id) DO UPDATE SET
+			name = EXCLUDED.name,
+			slug = EXCLUDED.slug`,
+		orgID, "\u30b5\u30f3\u30d7\u30eb\u5efa\u8a2d\u682a\u5f0f\u4f1a\u793e", slug)
 	if err != nil {
 		return err
 	}
@@ -212,7 +214,7 @@ func seedDemo(ctx context.Context, db *DB) error {
 	_, err = tx.Exec(ctx, `
 		INSERT INTO organizations (id, name, slug, plan_tier, subscription_status, seat_count, timezone)
 		VALUES ($1, $2, $3, 'PRO', 'ACTIVE', 10, 'Asia/Tokyo')`,
-		orgID, "\u6c37\u82b1\u7c38\u6b6f\u79d1\u30af\u30ea\u30cb\u30c3\u30af", "sakura-dental")
+		orgID, "\u30b5\u30f3\u30d7\u30eb\u5efa\u8a2d\u682a\u5f0f\u4f1a\u793e", "sample-construction")
 	if err != nil {
 		return err
 	}
