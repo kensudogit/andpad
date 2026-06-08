@@ -1,0 +1,37 @@
+{
+  "name": "andpad",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -k -n gw,dx,crm,att,ctr,chat,rag,web \"npm run dev:gateway\" \"npm run dev:saas-dx\" \"npm run dev:saas-crm\" \"npm run dev:saas-attendance\" \"npm run dev:saas-contract\" \"npm run dev:saas-chat\" \"npm run dev:saas-rag\" \"npm run dev:web\"",
+    "dev:monolith": "concurrently -k -n api,web \"tsx scripts/run-go-service.ts server --monolith\" \"npm run dev:web\"",
+    "docker:build": "docker compose build saas-image api web",
+    "docker:up": "docker compose build saas-image api web && docker compose up -d",
+    "docker:up:8080": "docker compose build saas-image api web && powershell -NoProfile -Command \"$env:GATEWAY_HOST_PORT='8080'; docker compose up -d\"",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f",
+    "dev:gateway": "tsx scripts/run-go-service.ts server",
+    "dev:saas-dx": "tsx scripts/run-go-service.ts saas-dx",
+    "dev:saas-crm": "tsx scripts/run-go-service.ts saas-crm",
+    "dev:saas-attendance": "tsx scripts/run-go-service.ts saas-attendance",
+    "dev:saas-contract": "tsx scripts/run-go-service.ts saas-contract",
+    "dev:saas-chat": "tsx scripts/run-go-service.ts saas-chat",
+    "dev:saas-rag": "tsx scripts/run-go-service.ts saas-rag",
+    "dev:api": "npm run dev:gateway",
+    "stop:api": "tsx scripts/free-api-port.ts",
+    "dev:web": "cd frontend && npm run dev",
+    "build:web": "cd frontend && npm run build",
+    "codegen": "cd frontend && npm run codegen",
+    "install:all": "npm install && cd frontend && npm install",
+    "typecheck": "npm run typecheck:scripts && npm run typecheck:web",
+    "typecheck:scripts": "tsc -p tsconfig.json --noEmit",
+    "typecheck:web": "cd frontend && npm run typecheck",
+    "railway:help": "powershell -ExecutionPolicy Bypass -File scripts/railway-setup.ps1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "concurrently": "^9.2.1",
+    "tsx": "^4.22.4",
+    "typescript": "^5.7.2"
+  }
+}

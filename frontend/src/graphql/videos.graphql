@@ -1,0 +1,69 @@
+query VideosPage($category: VideoCategory, $skillLevel: SkillLevel, $search: String, $page: Int) {
+  videos(category: $category, skillLevel: $skillLevel, search: $search, page: $page, pageSize: 12) {
+    items {
+      id
+      title
+      description
+      category
+      procedure
+      skillLevel
+      durationSec
+      thumbnailUrl
+      instructorName
+      viewCount
+      featured
+    }
+    pageInfo {
+      total
+      page
+      pageSize
+      totalPages
+    }
+  }
+}
+
+query VideoDetailPage($id: ID!, $learnerId: ID!) {
+  video(id: $id) {
+    id
+    title
+    description
+    category
+    procedure
+    skillLevel
+    durationSec
+    thumbnailUrl
+    videoUrl
+    instructorId
+    instructorName
+    tags
+    viewCount
+    publishedAt
+  }
+  videoNotes(videoId: $id, learnerId: $learnerId) {
+    id
+    timestampSec
+    body
+    createdAt
+  }
+  quizzes(videoId: $id) {
+    id
+    title
+    passingScore
+    questions {
+      id
+      prompt
+      choices {
+        id
+        label
+      }
+    }
+  }
+  myProgress(learnerId: $learnerId) {
+    videoId
+    positionSec
+    completed
+  }
+  myBookmarks(learnerId: $learnerId) {
+    videoId
+  }
+}

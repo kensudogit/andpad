@@ -1,0 +1,36 @@
+query QuizzesPage($learnerId: ID!) {
+  quizzes {
+    id
+    videoId
+    title
+    passingScore
+    questions {
+      id
+    }
+  }
+  myQuizAttempts(learnerId: $learnerId) {
+    id
+    quizId
+    score
+    passed
+    completedAt
+  }
+}
+
+query QuizTakePage($id: ID!) {
+  quiz(id: $id) {
+    id
+    videoId
+    title
+    passingScore
+    questions {
+      id
+      prompt
+      choices {
+        id
+        label
+      }
+      correctIndex
+    }
+  }
+}

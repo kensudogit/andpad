@@ -1,0 +1,28 @@
+query DashboardPage {
+  dashboard {
+    videosTotal
+    learningPathsTotal
+    quizzesTotal
+    completionsThisMonth
+    watchHoursThisMonth
+    activeLearners
+  }
+  featuredVideos {
+    id
+    title
+    category
+    skillLevel
+    durationSec
+    thumbnailUrl
+    instructorName
+    viewCount
+  }
+  learningPaths {
+    id
+    title
+    category
+    skillLevel
+    estimatedMinutes
+    enrolledCount
+  }
+}

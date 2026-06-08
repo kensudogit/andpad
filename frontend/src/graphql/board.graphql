@@ -1,0 +1,20 @@
+query BoardAnalyticsPage($periodDays: Int) {
+  analyticsBoard(periodDays: $periodDays) {
+    periodDays
+    learnerEngagementScore
+    watchHoursByWeek
+    kpis { label value unit trendPct }
+    completionsByCategory { category count }
+    topVideos { videoId title views completions }
+  }
+}
+
+mutation GenerateAnalyticsInsight($periodDays: Int) {
+  generateAnalyticsInsight(periodDays: $periodDays) {
+    summary
+    strengths
+    risks
+    recommendations
+    generatedAt
+  }
+}

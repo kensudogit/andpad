@@ -1,0 +1,44 @@
+mutation UpdateWatchProgress($input: UpdateWatchProgressInput!) {
+  updateWatchProgress(input: $input) {
+    id
+    videoId
+    positionSec
+    completed
+    updatedAt
+  }
+}
+
+mutation CreateVideoNote($input: CreateVideoNoteInput!) {
+  createVideoNote(input: $input) {
+    id
+    videoId
+    timestampSec
+    body
+    createdAt
+  }
+}
+
+mutation ToggleBookmark($videoId: ID!, $learnerId: ID!) {
+  toggleBookmark(videoId: $videoId, learnerId: $learnerId) {
+    id
+    videoId
+    learnerId
+  }
+}
+
+mutation EnrollLearningPath($pathId: ID!, $learnerId: ID!) {
+  enrollLearningPath(pathId: $pathId, learnerId: $learnerId) {
+    id
+    title
+    enrolledCount
+  }
+}
+
+mutation SubmitQuizAttempt($input: SubmitQuizAttemptInput!) {
+  submitQuizAttempt(input: $input) {
+    id
+    score
+    passed
+    completedAt
+  }
+}

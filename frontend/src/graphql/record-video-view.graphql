@@ -1,0 +1,6 @@
+mutation RecordVideoView($videoId: ID!) {
+  recordVideoView(videoId: $videoId) {
+    id
+    viewCount
+  }
+}

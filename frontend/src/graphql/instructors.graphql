@@ -1,0 +1,11 @@
+query InstructorsPage {
+  instructors {
+    id
+    name
+    title
+    specialty
+    bio
+    avatarUrl
+    videoCount
+  }
+}

@@ -1,0 +1,34 @@
+query LearningPage($learnerId: ID!) {
+  myProgress(learnerId: $learnerId) {
+    id
+    videoId
+    positionSec
+    completed
+    updatedAt
+  }
+  myBookmarks(learnerId: $learnerId) {
+    id
+    videoId
+    createdAt
+  }
+  myCertificates(learnerId: $learnerId) {
+    id
+    pathId
+    title
+    issuedAt
+  }
+  videos(page: 1, pageSize: 50) {
+    items {
+      id
+      title
+      thumbnailUrl
+      durationSec
+      category
+    }
+  }
+  learningPaths {
+    id
+    title
+    videoIds
+  }
+}

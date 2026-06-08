@@ -1,0 +1,101 @@
+// Package openai は歯科クリニック向け AI 相談・分析インサイト用の Chat Completions クライアント。
+package openai
+
+import (
+	"bytes"
+	"context"
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+	"strings"
+	"time"
+
+	"github.com/pluszero/dental-video-api/internal/config"
+)
+
+// Client は API キー未設定時は nil（service 層がフォールバック処理）。
+type Client struct {
+	apiKey string
+	model  string
+	http   *http.Client
+}
+
+func New(cfg config.Config) *Client {
+	if !cfg.OpenAIEnabled() {
+		return nil
+	}
+	return &Client{
+		apiKey: cfg.OpenAIAPIKey,
+		model:  cfg.OpenAIModel,
+		http:   &http.Client{Timeout: 90 * time.Second},
+	}
+}
+
+type ChatMessage struct {
+	Role    string `json:"role"`
+	Content string `json:"content"`
+}
+
+type chatRequest struct {
+	Model    string        `json:"model"`
+	Messages []ChatMessage `json:"messages"`
+}
+
+type chatResponse struct {
+	Choices []struct {
+		Message ChatMessage `json:"message"`
+	} `json:"choices"`
+	Error *struct {
+		Message string `json:"message"`
+	} `json:"error"`
+}
+
+func (c *Client) Chat(ctx context.Context, systemPrompt string, history []ChatMessage, userMessage string) (string, error) {
+	if c == nil {
+		return "", fmt.Errorf("OPENAI_API_KEY is not configured")
+	}
+	msgs := []ChatMessage{{Role: "system", Content: systemPrompt}}
+	msgs = append(msgs, history...)
+	msgs = append(msgs, ChatMessage{Role: "user", Content: userMessage})
+
+	body, _ := json.Marshal(chatRequest{Model: c.model, Messages: msgs})
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, "https://api.openai.com/v1/chat/completions", bytes.NewReader(body))
+	if err != nil {
+		return "", err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+c.apiKey)
+
+	res, err := c.http.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer res.Body.Close()
+	raw, _ := io.ReadAll(res.Body)
+	var out chatResponse
+	if err := json.Unmarshal(raw, &out); err != nil {
+		return "", err
+	}
+	if out.Error != nil {
+		return "", fmt.Errorf("openai: %s", out.Error.Message)
+	}
+	if res.StatusCode >= 400 {
+		return "", fmt.Errorf("openai http %d: %s", res.StatusCode, strings.TrimSpace(string(raw)))
+	}
+	if len(out.Choices) == 0 {
+		return "", fmt.Errorf("openai: empty response")
+	}
+	return out.Choices[0].Message.Content, nil
+}
+
+// DentalAnalyticsSystem は KPI JSON から経営向けインサイト JSON を生成させるシステムプロンプト。
+const DentalAnalyticsSystem = `You are a dental clinic management analyst (AI Board). Given JSON analytics KPIs for a learning platform, respond ONLY with valid JSON:
+{"summary":"...","strengths":["..."],"risks":["..."],"recommendations":["..."]}
+Write in Japanese. Focus on staff training ROI, completion rates, engagement, and actionable clinic management advice.`
+
+// DentalConsultSystem は日本の歯科医師向け臨床教育アシスタントの振る舞いを定義する。
+const DentalConsultSystem = `You are a clinical education assistant for licensed dental professionals in Japan.
+Provide evidence-informed, safety-conscious guidance for technique and case discussion.
+Do not diagnose specific patients without full records. Encourage supervision and institutional protocols.
+Respond in Japanese unless the user writes in another language.`

@@ -1,0 +1,697 @@
+"""Construction project management platform GraphQL API"""
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+type Health {
+  ok: Boolean!
+  service: String!
+  version: String!
+}
+
+type DashboardStats {
+  videosTotal: Int!
+  learningPathsTotal: Int!
+  quizzesTotal: Int!
+  completionsThisMonth: Int!
+  watchHoursThisMonth: Float!
+  activeLearners: Int!
+}
+
+enum SkillLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum VideoCategory {
+  ENDODONTICS
+  PERIODONTICS
+  PROSTHODONTICS
+  ORAL_SURGERY
+  IMPLANT
+  ORTHODONTICS
+  PEDIATRIC
+  RADIOLOGY
+  INFECTION_CONTROL
+  COMMUNICATION
+}
+
+enum LearningActivityKind {
+  PROGRESS_UPDATED
+  NOTE_CREATED
+  BOOKMARK_TOGGLED
+  PATH_ENROLLED
+  QUIZ_SUBMITTED
+}
+
+type Instructor {
+  id: ID!
+  name: String!
+  title: String!
+  specialty: String!
+  bio: String!
+  avatarUrl: String!
+  videoCount: Int!
+}
+
+type Video {
+  id: ID!
+  title: String!
+  description: String!
+  category: VideoCategory!
+  procedure: String!
+  skillLevel: SkillLevel!
+  durationSec: Int!
+  thumbnailUrl: String!
+  videoUrl: String!
+  instructorId: ID!
+  instructorName: String
+  tags: [String!]!
+  viewCount: Int!
+  publishedAt: String!
+  featured: Boolean!
+}
+
+type LearningPath {
+  id: ID!
+  title: String!
+  description: String!
+  category: VideoCategory!
+  skillLevel: SkillLevel!
+  videoIds: [ID!]!
+  estimatedMinutes: Int!
+  enrolledCount: Int!
+  certificateTitle: String!
+}
+
+type WatchProgress {
+  id: ID!
+  videoId: ID!
+  learnerId: ID!
+  positionSec: Int!
+  completed: Boolean!
+  updatedAt: String!
+}
+
+type VideoNote {
+  id: ID!
+  videoId: ID!
+  learnerId: ID!
+  timestampSec: Int!
+  body: String!
+  createdAt: String!
+}
+
+type QuizChoice {
+  id: ID!
+  label: String!
+}
+
+type QuizQuestion {
+  id: ID!
+  prompt: String!
+  choices: [QuizChoice!]!
+  correctIndex: Int!
+}
+
+type Quiz {
+  id: ID!
+  videoId: ID
+  title: String!
+  passingScore: Int!
+  questions: [QuizQuestion!]!
+}
+
+type QuizAttempt {
+  id: ID!
+  quizId: ID!
+  learnerId: ID!
+  score: Int!
+  passed: Boolean!
+  completedAt: String!
+}
+
+type Bookmark {
+  id: ID!
+  videoId: ID!
+  learnerId: ID!
+  createdAt: String!
+}
+
+type Certificate {
+  id: ID!
+  pathId: ID!
+  learnerId: ID!
+  title: String!
+  issuedAt: String!
+}
+
+type PageInfo {
+  total: Int!
+  page: Int!
+  pageSize: Int!
+  totalPages: Int!
+}
+
+type VideoPage {
+  items: [Video!]!
+  pageInfo: PageInfo!
+}
+
+type LearningActivityEvent {
+  kind: LearningActivityKind!
+  learnerId: ID!
+  videoId: ID
+  pathId: ID
+  quizId: ID
+  message: String!
+  occurredAt: String!
+}
+
+input UpdateWatchProgressInput {
+  videoId: ID!
+  learnerId: ID!
+  positionSec: Int!
+  completed: Boolean
+}
+
+input CreateVideoNoteInput {
+  videoId: ID!
+  learnerId: ID!
+  timestampSec: Int!
+  body: String!
+}
+
+input SubmitQuizAttemptInput {
+  quizId: ID!
+  learnerId: ID!
+  answers: [Int!]!
+}
+
+# --- SaaS (multi-tenant) ---
+enum MemberRole {
+  OWNER
+  ADMIN
+  MEMBER
+  VIEWER
+}
+
+enum PlanTier {
+  FREE
+  STARTER
+  PRO
+  ENTERPRISE
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  TRIALING
+  PAST_DUE
+  CANCELED
+}
+
+type User {
+  id: ID!
+  email: String!
+  name: String!
+  avatarUrl: String
+}
+
+type Organization {
+  id: ID!
+  name: String!
+  slug: String!
+  planTier: PlanTier!
+  subscriptionStatus: SubscriptionStatus!
+  seatCount: Int!
+  timezone: String!
+  memberCount: Int!
+  createdAt: String!
+  enabledModules: [SaasModule!]!
+}
+
+type TeamMember {
+  id: ID!
+  user: User!
+  role: MemberRole!
+  joinedAt: String!
+  lastActiveAt: String!
+}
+
+type UsageSummary {
+  members: Int!
+  membersLimit: Int!
+  videos: Int!
+  videosLimit: Int!
+  apiCallsThisMonth: Int!
+  apiCallsLimit: Int!
+  consultTokensMonth: Int!
+}
+
+type Session {
+  user: User!
+  organization: Organization!
+  role: MemberRole!
+}
+
+input UpdateOrganizationInput {
+  name: String
+  slug: String
+  seatCount: Int
+  timezone: String
+}
+
+# --- AI Board (clinic management analytics) ---
+type AnalyticsKpi {
+  label: String!
+  value: Float!
+  unit: String
+  trendPct: Float
+}
+
+type CategoryMetric {
+  category: VideoCategory!
+  count: Int!
+}
+
+type VideoMetric {
+  videoId: ID!
+  title: String!
+  views: Int!
+  completions: Int!
+}
+
+type AnalyticsBoard {
+  periodDays: Int!
+  kpis: [AnalyticsKpi!]!
+  watchHoursByWeek: [Float!]!
+  completionsByCategory: [CategoryMetric!]!
+  topVideos: [VideoMetric!]!
+  learnerEngagementScore: Float!
+}
+
+type AnalyticsInsight {
+  summary: String!
+  strengths: [String!]!
+  risks: [String!]!
+  recommendations: [String!]!
+  generatedAt: String!
+}
+
+type Query {
+  health: Health!
+  dashboard: DashboardStats!
+  currentSession: Session
+  organization: Organization!
+  usageSummary: UsageSummary!
+  teamMembers: [TeamMember!]!
+  analyticsBoard(periodDays: Int = 30): AnalyticsBoard!
+  videos(
+    category: VideoCategory
+    skillLevel: SkillLevel
+    search: String
+    page: Int
+    pageSize: Int
+  ): VideoPage!
+  video(id: ID!): Video
+  featuredVideos: [Video!]!
+  instructors: [Instructor!]!
+  instructor(id: ID!): Instructor
+  learningPaths(category: VideoCategory, skillLevel: SkillLevel): [LearningPath!]!
+  learningPath(id: ID!): LearningPath
+  myProgress(learnerId: ID!): [WatchProgress!]!
+  myBookmarks(learnerId: ID!): [Bookmark!]!
+  videoNotes(videoId: ID!, learnerId: ID!): [VideoNote!]!
+  quizzes(videoId: ID): [Quiz!]!
+  quiz(id: ID!): Quiz
+  myQuizAttempts(learnerId: ID!): [QuizAttempt!]!
+  myCertificates(learnerId: ID!): [Certificate!]!
+  saasModules: [SaasModule!]!
+  dxInitiatives: [DxInitiative!]!
+  crmContacts: [CrmContact!]!
+  crmInteractions(contactId: ID!): [CrmInteraction!]!
+  attendanceRecords: [AttendanceRecord!]!
+  leaveRequests: [LeaveRequest!]!
+  contractTemplates: [ContractTemplate!]!
+  contracts: [Contract!]!
+  consultThreads: [ConsultThread!]!
+  consultThread(id: ID!): ConsultThread
+  ragDocuments: [RagDocument!]!
+  ragSearch(query: String!, limit: Int = 5): [RagSearchHit!]!
+  ragAnswer(query: String!): RagAnswer!
+  constructionProjects: [ConstructionProject!]!
+  projectModuleRecords(moduleCode: SaasModuleCode!, projectId: ID): [ProjectModuleRecord!]!
+  andpadAnalytics(periodDays: Int = 30): AndpadAnalyticsDashboard!
+  apiIntegrations: [ApiIntegration!]!
+  bimModels(projectId: ID): [BimModel!]!
+  bimModel(id: ID!): BimModel
+}
+
+type Mutation {
+  updateOrganization(input: UpdateOrganizationInput!): Organization!
+  generateAnalyticsInsight(periodDays: Int = 30): AnalyticsInsight!
+  updateWatchProgress(input: UpdateWatchProgressInput!): WatchProgress!
+  recordVideoView(videoId: ID!): Video!
+  createVideoNote(input: CreateVideoNoteInput!): VideoNote!
+  deleteVideoNote(id: ID!): Boolean!
+  toggleBookmark(videoId: ID!, learnerId: ID!): Bookmark
+  enrollLearningPath(pathId: ID!, learnerId: ID!): LearningPath!
+  submitQuizAttempt(input: SubmitQuizAttemptInput!): QuizAttempt!
+  createDxInitiative(input: CreateDxInitiativeInput!): DxInitiative!
+  createCrmContact(input: CreateCrmContactInput!): CrmContact!
+  createCrmInteraction(contactId: ID!, kind: String!, summary: String!): CrmInteraction!
+  clockIn(note: String): AttendanceRecord!
+  clockOut: AttendanceRecord!
+  createLeaveRequest(input: CreateLeaveRequestInput!): LeaveRequest!
+  approveLeaveRequest(id: ID!): LeaveRequest!
+  createContractTemplate(name: String!, body: String!): ContractTemplate!
+  createContract(input: CreateContractInput!): Contract!
+  signContract(id: ID!): Contract!
+  sendConsultMessage(threadId: ID, message: String!): ConsultMessageReply!
+  createRagDocument(input: CreateRagDocumentInput!): RagDocument!
+  setSaasModuleEnabled(code: SaasModuleCode!, enabled: Boolean!): SaasModule!
+  createConstructionProject(input: CreateConstructionProjectInput!): ConstructionProject!
+  createProjectModuleRecord(input: CreateProjectModuleRecordInput!): ProjectModuleRecord!
+  createApiIntegration(input: CreateApiIntegrationInput!): ApiIntegration!
+  syncApiIntegration(id: ID!): ApiIntegration!
+  createBimModel(input: CreateBimModelInput!): BimModel!
+}
+
+type Subscription {
+  """Dashboard stats refresh (reserved for live analytics)"""
+  dashboardUpdated: DashboardStats!
+  """Learner watch progress updates"""
+  progressUpdated(learnerId: ID!): WatchProgress!
+  """Learning activity stream (progress, notes, bookmarks, enroll, quiz)"""
+  learningActivity(learnerId: ID!): LearningActivityEvent!
+}
+
+# --- SaaS business modules ---
+enum SaasModuleCode {
+  DX
+  CRM
+  ATTENDANCE
+  ECONTRACT
+  CHATBOT
+  DOC_RAG
+  CONSTRUCTION_MGMT
+  DRAWINGS
+  BLACKBOARD
+  INSPECTION
+  PROJECT_BOARD
+  INQUIRY_PROFIT
+  ORDERS
+  REMOTE_SITE
+  DOC_APPROVAL
+  SCAN_3D
+  BILLING
+  WORK_RATE
+  SITE_ACCESS
+  E_DELIVERY
+  BM
+  ANALYTICS
+  API_INTEGRATION
+  BIM
+}
+
+type SaasModule {
+  code: SaasModuleCode!
+  name: String!
+  description: String!
+  enabled: Boolean!
+}
+
+type DxInitiative {
+  id: ID!
+  title: String!
+  description: String!
+  status: String!
+  progressPct: Int!
+  ownerName: String!
+  dueDate: String
+  taskCount: Int!
+  tasksDone: Int!
+  createdAt: String!
+}
+
+type CrmContact {
+  id: ID!
+  name: String!
+  email: String!
+  phone: String!
+  company: String!
+  stage: String!
+  notes: String!
+  createdAt: String!
+}
+
+type CrmInteraction {
+  id: ID!
+  contactId: ID!
+  kind: String!
+  summary: String!
+  occurredAt: String!
+}
+
+type AttendanceRecord {
+  id: ID!
+  userId: ID!
+  userName: String!
+  clockIn: String!
+  clockOut: String
+  note: String!
+}
+
+type LeaveRequest {
+  id: ID!
+  userId: ID!
+  userName: String!
+  startDate: String!
+  endDate: String!
+  reason: String!
+  status: String!
+  createdAt: String!
+}
+
+type ContractTemplate {
+  id: ID!
+  name: String!
+  body: String!
+  createdAt: String!
+}
+
+type Contract {
+  id: ID!
+  templateId: ID
+  title: String!
+  partyName: String!
+  partyEmail: String!
+  body: String!
+  status: String!
+  createdAt: String!
+  signedAt: String
+}
+
+type ConsultMessage {
+  id: ID!
+  role: String!
+  content: String!
+  createdAt: String!
+}
+
+type ConsultThread {
+  id: ID!
+  title: String!
+  createdAt: String!
+  messages: [ConsultMessage!]!
+}
+
+type ConsultMessageReply {
+  threadId: ID!
+  userMessage: ConsultMessage!
+  assistantMessage: ConsultMessage!
+}
+
+type RagDocument {
+  id: ID!
+  title: String!
+  content: String!
+  tags: [String!]!
+  createdAt: String!
+}
+
+type RagSearchHit {
+  documentId: ID!
+  title: String!
+  snippet: String!
+  score: Float!
+}
+
+type RagAnswer {
+  answer: String!
+  sources: [RagSearchHit!]!
+}
+
+input CreateDxInitiativeInput {
+  title: String!
+  description: String
+  status: String
+  progressPct: Int
+  ownerName: String
+  dueDate: String
+}
+
+input CreateCrmContactInput {
+  name: String!
+  email: String
+  phone: String
+  company: String
+  stage: String
+  notes: String
+}
+
+input CreateLeaveRequestInput {
+  startDate: String!
+  endDate: String!
+  reason: String
+}
+
+input CreateContractInput {
+  templateId: ID
+  title: String!
+  partyName: String!
+  partyEmail: String
+  body: String
+}
+
+input CreateRagDocumentInput {
+  title: String!
+  content: String!
+  tags: [String!]
+}
+
+# --- Construction project management ---
+enum ConstructionProjectStatus {
+  PLANNING
+  IN_PROGRESS
+  COMPLETED
+  ON_HOLD
+}
+
+type ConstructionProject {
+  id: ID!
+  name: String!
+  siteAddress: String!
+  status: ConstructionProjectStatus!
+  managerName: String!
+  startDate: String
+  endDate: String
+  recordCount: Int!
+  createdAt: String!
+}
+
+type ProjectModuleRecord {
+  id: ID!
+  projectId: ID!
+  projectName: String!
+  moduleCode: SaasModuleCode!
+  title: String!
+  status: String!
+  detail: String!
+  amount: Float
+  personName: String!
+  recordDate: String
+  createdAt: String!
+}
+
+input CreateConstructionProjectInput {
+  name: String!
+  siteAddress: String
+  status: ConstructionProjectStatus
+  managerName: String
+  startDate: String
+  endDate: String
+}
+
+input CreateProjectModuleRecordInput {
+  projectId: ID!
+  moduleCode: SaasModuleCode!
+  title: String!
+  status: String
+  detail: String
+  amount: Float
+  personName: String
+  recordDate: String
+}
+
+# --- Extended modules ---
+type AndpadAnalyticsKpi {
+  label: String!
+  value: Float!
+  unit: String
+  trendPct: Float
+}
+
+type ProjectStatusCount {
+  status: ConstructionProjectStatus!
+  count: Int!
+}
+
+type ModuleUsageMetric {
+  moduleCode: SaasModuleCode!
+  moduleName: String!
+  recordCount: Int!
+}
+
+type AndpadAnalyticsDashboard {
+  periodDays: Int!
+  kpis: [AndpadAnalyticsKpi!]!
+  projectsByStatus: [ProjectStatusCount!]!
+  moduleUsage: [ModuleUsageMetric!]!
+  billingTotal: Float!
+  activeProjects: Int!
+  generatedAt: String!
+}
+
+type ApiIntegration {
+  id: ID!
+  name: String!
+  provider: String!
+  endpointUrl: String!
+  apiKeyHint: String!
+  status: String!
+  lastSyncAt: String
+  createdAt: String!
+}
+
+type BimModel {
+  id: ID!
+  projectId: ID!
+  projectName: String!
+  title: String!
+  format: String!
+  viewerUrl: String!
+  fileSizeMb: Float
+  status: String!
+  uploadedBy: String!
+  createdAt: String!
+}
+
+input CreateApiIntegrationInput {
+  name: String!
+  provider: String
+  endpointUrl: String
+  apiKeyHint: String
+}
+
+input CreateBimModelInput {
+  projectId: ID!
+  title: String!
+  format: String
+  viewerUrl: String
+  fileSizeMb: Float
+  uploadedBy: String
+}

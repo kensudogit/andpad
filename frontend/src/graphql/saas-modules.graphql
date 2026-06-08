@@ -1,0 +1,238 @@
+fragment DxInitiativeFields on DxInitiative {
+  id
+  title
+  description
+  status
+  progressPct
+  ownerName
+  dueDate
+  taskCount
+  tasksDone
+  createdAt
+}
+
+query DxInitiatives {
+  dxInitiatives {
+    ...DxInitiativeFields
+  }
+}
+
+mutation CreateDxInitiative($input: CreateDxInitiativeInput!) {
+  createDxInitiative(input: $input) {
+    ...DxInitiativeFields
+  }
+}
+
+fragment CrmContactFields on CrmContact {
+  id
+  name
+  email
+  phone
+  company
+  stage
+  notes
+  createdAt
+}
+
+fragment CrmInteractionFields on CrmInteraction {
+  id
+  contactId
+  kind
+  summary
+  occurredAt
+}
+
+query CrmContacts {
+  crmContacts {
+    ...CrmContactFields
+  }
+}
+
+query CrmInteractions($contactId: ID!) {
+  crmInteractions(contactId: $contactId) {
+    ...CrmInteractionFields
+  }
+}
+
+mutation CreateCrmContact($input: CreateCrmContactInput!) {
+  createCrmContact(input: $input) {
+    ...CrmContactFields
+  }
+}
+
+mutation CreateCrmInteraction($contactId: ID!, $kind: String!, $summary: String!) {
+  createCrmInteraction(contactId: $contactId, kind: $kind, summary: $summary) {
+    ...CrmInteractionFields
+  }
+}
+
+fragment AttendanceRecordFields on AttendanceRecord {
+  id
+  userId
+  userName
+  clockIn
+  clockOut
+  note
+}
+
+fragment LeaveRequestFields on LeaveRequest {
+  id
+  userId
+  userName
+  startDate
+  endDate
+  reason
+  status
+  createdAt
+}
+
+query AttendanceModule {
+  attendanceRecords {
+    ...AttendanceRecordFields
+  }
+  leaveRequests {
+    ...LeaveRequestFields
+  }
+}
+
+mutation ClockIn($note: String) {
+  clockIn(note: $note) {
+    ...AttendanceRecordFields
+  }
+}
+
+mutation ClockOut {
+  clockOut {
+    ...AttendanceRecordFields
+  }
+}
+
+mutation CreateLeaveRequest($input: CreateLeaveRequestInput!) {
+  createLeaveRequest(input: $input) {
+    ...LeaveRequestFields
+  }
+}
+
+mutation ApproveLeaveRequest($id: ID!) {
+  approveLeaveRequest(id: $id) {
+    ...LeaveRequestFields
+  }
+}
+
+fragment ContractTemplateFields on ContractTemplate {
+  id
+  name
+  body
+  createdAt
+}
+
+fragment ContractFields on Contract {
+  id
+  templateId
+  title
+  partyName
+  partyEmail
+  body
+  status
+  createdAt
+  signedAt
+}
+
+query ContractsModule {
+  contractTemplates {
+    ...ContractTemplateFields
+  }
+  contracts {
+    ...ContractFields
+  }
+}
+
+mutation CreateContract($input: CreateContractInput!) {
+  createContract(input: $input) {
+    ...ContractFields
+  }
+}
+
+mutation SignContract($id: ID!) {
+  signContract(id: $id) {
+    ...ContractFields
+  }
+}
+
+fragment ConsultMessageFields on ConsultMessage {
+  id
+  role
+  content
+  createdAt
+}
+
+fragment ConsultThreadFields on ConsultThread {
+  id
+  title
+  createdAt
+  messages {
+    ...ConsultMessageFields
+  }
+}
+
+query ConsultThreads {
+  consultThreads {
+    id
+    title
+    createdAt
+  }
+}
+
+query ConsultThread($id: ID!) {
+  consultThread(id: $id) {
+    ...ConsultThreadFields
+  }
+}
+
+mutation SendConsultMessage($threadId: ID, $message: String!) {
+  sendConsultMessage(threadId: $threadId, message: $message) {
+    threadId
+    userMessage {
+      ...ConsultMessageFields
+    }
+    assistantMessage {
+      ...ConsultMessageFields
+    }
+  }
+}
+
+fragment RagDocumentFields on RagDocument {
+  id
+  title
+  content
+  tags
+  createdAt
+}
+
+fragment RagSearchHitFields on RagSearchHit {
+  documentId
+  title
+  snippet
+  score
+}
+
+query RagDocuments {
+  ragDocuments {
+    ...RagDocumentFields
+  }
+}
+
+query RagAnswer($query: String!) {
+  ragAnswer(query: $query) {
+    answer
+    sources {
+      ...RagSearchHitFields
+    }
+  }
+}
+
+mutation CreateRagDocument($input: CreateRagDocumentInput!) {
+  createRagDocument(input: $input) {
+    ...RagDocumentFields
+  }
+}

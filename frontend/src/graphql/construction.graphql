@@ -1,0 +1,49 @@
+fragment ConstructionProjectFields on ConstructionProject {
+  id
+  name
+  siteAddress
+  status
+  managerName
+  startDate
+  endDate
+  recordCount
+  createdAt
+}
+
+fragment ProjectModuleRecordFields on ProjectModuleRecord {
+  id
+  projectId
+  projectName
+  moduleCode
+  title
+  status
+  detail
+  amount
+  personName
+  recordDate
+  createdAt
+}
+
+query ConstructionProjects {
+  constructionProjects {
+    ...ConstructionProjectFields
+  }
+}
+
+query ProjectModuleRecords($moduleCode: SaasModuleCode!, $projectId: ID) {
+  projectModuleRecords(moduleCode: $moduleCode, projectId: $projectId) {
+    ...ProjectModuleRecordFields
+  }
+}
+
+mutation CreateConstructionProject($input: CreateConstructionProjectInput!) {
+  createConstructionProject(input: $input) {
+    ...ConstructionProjectFields
+  }
+}
+
+mutation CreateProjectModuleRecord($input: CreateProjectModuleRecordInput!) {
+  createProjectModuleRecord(input: $input) {
+    ...ProjectModuleRecordFields
+  }
+}

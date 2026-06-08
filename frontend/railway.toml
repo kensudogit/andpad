@@ -1,0 +1,14 @@
+# Web-only service when API is separate
+# Root Directory: frontend  |  Config file: /frontend/railway.toml
+# Set API_URL to the api service public HTTPS URL.
+
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+watchPatterns = ["**", "../graphql/**"]
+
+[deploy]
+healthcheckPath = "/status"
+healthcheckTimeout = 300
+restartPolicyType = "ON_FAILURE"
+numReplicas = 1

@@ -1,0 +1,209 @@
+# Local full stack: PostgreSQL + MinIO + Gateway + 6 SaaS microservices + Next.js
+# Usage: docker compose up --build
+# Web http://localhost:${WEB_HOST_PORT:-3001}  Gateway http://localhost:${GATEWAY_HOST_PORT:-18080}/graphql
+#
+# Defaults 3001 / 18080 avoid conflict with local `npm run dev:monolith` (3000 / 8080).
+# Override: GATEWAY_HOST_PORT=8080 docker compose up -d  (stop other listeners on 8080 first)
+
+x-saas-env: &saas-env
+  DATABASE_URL: postgres://dental:dental@db:5432/dental_video?sslmode=disable
+  JWT_SECRET: dev-docker-change-me
+
+# One shared image tag for all SaaS microservices.
+x-saas-image: &saas-image
+  image: dental_video-saas:latest
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: dental
+      POSTGRES_PASSWORD: dental
+      POSTGRES_DB: dental_video
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dental -d dental_video"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  minio:
+    image: minio/minio:RELEASE.2025-04-22T22-12-26Z
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio12345
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - miniodata:/data
+
+  minio-init:
+    image: minio/mc:RELEASE.2025-08-13T08-35-41Z
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      sleep 3;
+      mc alias set local http://minio:9000 minio minio12345;
+      mc mb -p local/dental-video || true;
+      exit 0;
+      "
+
+  # Build SaaS image once (other saas-* services reuse the tag).
+  saas-image:
+    <<: *saas-image
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.saas-all
+    entrypoint: ["/bin/sh", "-c", "exit 0"]
+
+  saas-dx:
+    <<: *saas-image
+    command: ["/bin/saas-dx"]
+    environment:
+      <<: *saas-env
+      PORT: "8081"
+    depends_on:
+      db:
+        condition: service_healthy
+      saas-image:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8081/health | grep -q ok"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 10s
+
+  saas-crm:
+    <<: *saas-image
+    command: ["/bin/saas-crm"]
+    environment:
+      <<: *saas-env
+      PORT: "8082"
+    depends_on:
+      db:
+        condition: service_healthy
+      saas-image:
+        condition: service_completed_successfully
+
+  saas-attendance:
+    <<: *saas-image
+    command: ["/bin/saas-attendance"]
+    environment:
+      <<: *saas-env
+      PORT: "8083"
+    depends_on:
+      db:
+        condition: service_healthy
+      saas-image:
+        condition: service_completed_successfully
+
+  saas-contract:
+    <<: *saas-image
+    command: ["/bin/saas-contract"]
+    environment:
+      <<: *saas-env
+      PORT: "8084"
+    depends_on:
+      db:
+        condition: service_healthy
+      saas-image:
+        condition: service_completed_successfully
+
+  saas-chat:
+    <<: *saas-image
+    command: ["/bin/saas-chat"]
+    environment:
+      <<: *saas-env
+      PORT: "8085"
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+    depends_on:
+      db:
+        condition: service_healthy
+      saas-image:
+        condition: service_completed_successfully
+
+  saas-rag:
+    <<: *saas-image
+    command: ["/bin/saas-rag"]
+    environment:
+      <<: *saas-env
+      PORT: "8086"
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+    depends_on:
+      db:
+        condition: service_healthy
+      saas-image:
+        condition: service_completed_successfully
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "${GATEWAY_HOST_PORT:-18080}:8080"
+    environment:
+      PORT: "8080"
+      DATABASE_URL: postgres://dental:dental@db:5432/dental_video?sslmode=disable
+      JWT_SECRET: dev-docker-change-me
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+      SAAS_MONOLITH: "true"
+      S3_ENDPOINT: http://minio:9000
+      S3_REGION: auto
+      S3_BUCKET: dental-video
+      S3_ACCESS_KEY: minio
+      S3_SECRET_KEY: minio12345
+      S3_FORCE_PATH_STYLE: "true"
+      S3_PUBLIC_BASE_URL: http://localhost:9000/dental-video
+      CORS_ORIGINS: http://localhost:${WEB_HOST_PORT:-3001},http://127.0.0.1:${WEB_HOST_PORT:-3001},http://localhost:3000,http://127.0.0.1:3000
+      APP_PUBLIC_URL: http://localhost:${WEB_HOST_PORT:-3001}
+      SAAS_DX_URL: http://saas-dx:8081
+      SAAS_CRM_URL: http://saas-crm:8082
+      SAAS_ATTENDANCE_URL: http://saas-attendance:8083
+      SAAS_CONTRACT_URL: http://saas-contract:8084
+      SAAS_CHAT_URL: http://saas-chat:8085
+      SAAS_RAG_URL: http://saas-rag:8086
+    depends_on:
+      db:
+        condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
+      saas-dx:
+        condition: service_healthy
+      saas-crm:
+        condition: service_started
+      saas-attendance:
+        condition: service_started
+      saas-contract:
+        condition: service_started
+      saas-chat:
+        condition: service_started
+      saas-rag:
+        condition: service_started
+
+  web:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports:
+      - "${WEB_HOST_PORT:-3001}:3000"
+    environment:
+      API_URL: http://api:8080
+      GATEWAY_HOST_PORT: ${GATEWAY_HOST_PORT:-18080}
+      WEB_HOST_PORT: ${WEB_HOST_PORT:-3001}
+      NEXT_PUBLIC_WS_URL: ws://localhost:${GATEWAY_HOST_PORT:-18080}/graphql
+    depends_on:
+      - api
+
+volumes:
+  pgdata:
+  miniodata:

@@ -1,0 +1,91 @@
+fragment AndpadAnalyticsKpiFields on AndpadAnalyticsKpi {
+  label
+  value
+  unit
+  trendPct
+}
+
+fragment AndpadAnalyticsDashboardFields on AndpadAnalyticsDashboard {
+  periodDays
+  kpis {
+    ...AndpadAnalyticsKpiFields
+  }
+  projectsByStatus {
+    status
+    count
+  }
+  moduleUsage {
+    moduleCode
+    moduleName
+    recordCount
+  }
+  billingTotal
+  activeProjects
+  generatedAt
+}
+
+query AndpadAnalytics($periodDays: Int) {
+  andpadAnalytics(periodDays: $periodDays) {
+    ...AndpadAnalyticsDashboardFields
+  }
+}
+
+fragment ApiIntegrationFields on ApiIntegration {
+  id
+  name
+  provider
+  endpointUrl
+  apiKeyHint
+  status
+  lastSyncAt
+  createdAt
+}
+
+query ApiIntegrations {
+  apiIntegrations {
+    ...ApiIntegrationFields
+  }
+}
+
+mutation CreateApiIntegration($input: CreateApiIntegrationInput!) {
+  createApiIntegration(input: $input) {
+    ...ApiIntegrationFields
+  }
+}
+
+mutation SyncApiIntegration($id: ID!) {
+  syncApiIntegration(id: $id) {
+    ...ApiIntegrationFields
+  }
+}
+
+fragment BimModelFields on BimModel {
+  id
+  projectId
+  projectName
+  title
+  format
+  viewerUrl
+  fileSizeMb
+  status
+  uploadedBy
+  createdAt
+}
+
+query BimModels($projectId: ID) {
+  bimModels(projectId: $projectId) {
+    ...BimModelFields
+  }
+}
+
+query BimModelDetail($id: ID!) {
+  bimModel(id: $id) {
+    ...BimModelFields
+  }
+}
+
+mutation CreateBimModel($input: CreateBimModelInput!) {
+  createBimModel(input: $input) {
+    ...BimModelFields
+  }
+}

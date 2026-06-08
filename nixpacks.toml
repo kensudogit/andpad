@@ -1,0 +1,4 @@
+# Force Railway to use Dockerfile from railway.toml (not Nixpacks auto-detect)
+
+[phases.setup]
+cmds = ["echo Use Dockerfile via railway.toml"]

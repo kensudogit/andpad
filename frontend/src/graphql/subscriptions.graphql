@@ -1,0 +1,32 @@
+subscription DashboardUpdated {
+  dashboardUpdated {
+    videosTotal
+    learningPathsTotal
+    quizzesTotal
+    completionsThisMonth
+    watchHoursThisMonth
+    activeLearners
+  }
+}
+
+subscription ProgressUpdated($learnerId: ID!) {
+  progressUpdated(learnerId: $learnerId) {
+    id
+    videoId
+    positionSec
+    completed
+    updatedAt
+  }
+}
+
+subscription LearningActivity($learnerId: ID!) {
+  learningActivity(learnerId: $learnerId) {
+    kind
+    learnerId
+    videoId
+    pathId
+    quizId
+    message
+    occurredAt
+  }
+}

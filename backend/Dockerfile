@@ -1,0 +1,24 @@
+# syntax=docker/dockerfile:1.7
+FROM golang:1.25-alpine AS build
+WORKDIR /app
+ENV GOPROXY=https://proxy.golang.org,https://goproxy.io,direct
+ENV GOSUMDB=sum.golang.org
+COPY go.mod go.sum ./
+RUN --mount=type=cache,target=/go/pkg/mod \
+    set -e; \
+    for i in 1 2 3 4 5 6; do \
+      go mod download && break; \
+      echo "go mod download attempt $i failed, retrying..."; \
+      sleep $((i * 10)); \
+    done
+COPY . .
+RUN --mount=type=cache,target=/go/pkg/mod \
+    --mount=type=cache,target=/root/.cache/go-build \
+    CGO_ENABLED=0 go build -o /server ./cmd/server
+
+FROM alpine:3.20
+RUN apk add --no-cache ca-certificates
+COPY --from=build /server /server
+ENV PORT=8080
+EXPOSE 8080
+CMD ["/server"]

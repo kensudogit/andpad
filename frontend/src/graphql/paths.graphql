@@ -1,0 +1,37 @@
+query PathsPage($category: VideoCategory, $skillLevel: SkillLevel) {
+  learningPaths(category: $category, skillLevel: $skillLevel) {
+    id
+    title
+    description
+    category
+    skillLevel
+    videoIds
+    estimatedMinutes
+    enrolledCount
+    certificateTitle
+  }
+}
+
+query PathDetailPage($id: ID!) {
+  learningPath(id: $id) {
+    id
+    title
+    description
+    category
+    skillLevel
+    videoIds
+    estimatedMinutes
+    enrolledCount
+    certificateTitle
+  }
+  videos(page: 1, pageSize: 50) {
+    items {
+      id
+      title
+      durationSec
+      thumbnailUrl
+      category
+      skillLevel
+    }
+  }
+}

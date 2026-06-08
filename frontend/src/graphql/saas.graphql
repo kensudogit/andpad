@@ -1,0 +1,46 @@
+query CurrentSession {
+  currentSession {
+    user { id email name }
+    organization { id name slug planTier subscriptionStatus seatCount memberCount }
+    role
+  }
+}
+
+query OrganizationSettings {
+  organization {
+    id name slug planTier subscriptionStatus seatCount timezone memberCount createdAt
+    enabledModules { code name description enabled }
+  }
+  usageSummary {
+    members membersLimit videos videosLimit apiCallsThisMonth apiCallsLimit consultTokensMonth
+  }
+  teamMembers {
+    id role joinedAt
+    user { id email name }
+  }
+}
+
+query SaasModules {
+  saasModules {
+    code
+    name
+    description
+    enabled
+  }
+}
+
+mutation UpdateOrganization($input: UpdateOrganizationInput!) {
+  updateOrganization(input: $input) {
+    id name slug seatCount timezone
+    enabledModules { code enabled }
+  }
+}
+
+mutation SetSaasModuleEnabled($code: SaasModuleCode!, $enabled: Boolean!) {
+  setSaasModuleEnabled(code: $code, enabled: $enabled) {
+    code
+    name
+    description
+    enabled
+  }
+}
