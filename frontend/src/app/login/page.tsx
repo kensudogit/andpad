@@ -95,7 +95,7 @@ export default function LoginPage() {
                   </>
                 ) : (
                   <>
-                    <p>Railway（dental_video サービス → Variables）:</p>
+                    <p>Railway（andpad サービス → Variables）:</p>
                     <ol style={{ margin: '0.5rem 0 0 1rem', padding: 0 }}>
                       <li>
                         <strong>+ New Variable</strong> → Name: <code>DATABASE_URL</code> →{' '}
