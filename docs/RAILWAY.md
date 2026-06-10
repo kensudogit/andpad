@@ -82,7 +82,7 @@ Dashboard で **Config file path** = `/railway.toml`、**Root Directory** = 空 
 |----------|------|
 | `railway.toml` | ルートの Railway 設定（git デプロイ用） |
 | `Dockerfile.unified` | Go 1.25 + Next.js 統合イメージ |
-| `scripts/start-unified.sh` | API → Web の起動順序 |
+| `scripts/start-unified.sh` | Web 先行起動 + API バックグラウンド |
 | `.env.railway.example` | 変数のメモ |
 | `frontend/railway.toml` | Web のみの 2 サービス構成用（通常は未使用） |
 | `backend/railway.toml` | API のみの 2 サービス構成用（通常は未使用） |
@@ -96,7 +96,7 @@ Dashboard で **Config file path** = `/railway.toml`、**Root Directory** = 空 
 | `JWT_SECRET looks like an API key` | Anthropic/OpenAI キーを JWT_SECRET に設定 | JWT_SECRET をランダム文字列に変更。API キーは `OPENAI_API_KEY` へ |
 | `Cannot reach API HTTP 503` | API 起動失敗（DB 未設定） | Deploy ログで `[unified] ERROR: DATABASE_URL` を確認 |
 | ビルド失敗 | Root Directory が `frontend` や `backend` になっている | **空**に戻し `/railway.toml` を使用 |
-| ビルド成功だがデプロイが 5 分以上「Deploying」 | ヘルスチェック失敗（Go API 起動エラー） | Deploy ログで `[unified] ERROR` と API ログを確認 |
+| ビルド成功だがデプロイが 5 分以上「Deploying」 | Next.js が PORT で待ち受けていない（旧版は Go API 待ちで Web 未起動） | 最新 `start-unified.sh` で Redeploy。`/health` が通っても `/status` で PostgreSQL 未接続なら `DATABASE_URL` を Reference 設定 |
 | `incompatible database` / `organizations table missing` | 別プロジェクトで使っていた Postgres を接続している | **新しい Postgres プラグイン**を追加し `DATABASE_URL` を差し替え（または public テーブルを全削除） |
 
 PowerShell で JWT_SECRET 生成例:
