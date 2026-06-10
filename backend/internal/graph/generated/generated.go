@@ -75,6 +75,10 @@ type ComplexityRoot struct {
 	AndpadAnalyticsDashboard struct {
 		ActiveProjects     func(childComplexity int) int
 		BillingTotal       func(childComplexity int) int
+		BudgetTotal        func(childComplexity int) int
+		BudgetVariancePct  func(childComplexity int) int
+		CostByMonth        func(childComplexity int) int
+		CostTotal          func(childComplexity int) int
 		GeneratedAt        func(childComplexity int) int
 		Kpis               func(childComplexity int) int
 		ModuleUsage        func(childComplexity int) int
@@ -111,6 +115,16 @@ type ComplexityRoot struct {
 		UserName func(childComplexity int) int
 	}
 
+	BillingReconciliationItem struct {
+		BillingAmount   func(childComplexity int) int
+		BillingDate     func(childComplexity int) int
+		BillingRecordID func(childComplexity int) int
+		CostAmount      func(childComplexity int) int
+		Status          func(childComplexity int) int
+		Title           func(childComplexity int) int
+		VarianceAmount  func(childComplexity int) int
+	}
+
 	BimModel struct {
 		CreatedAt   func(childComplexity int) int
 		FileSizeMb  func(childComplexity int) int
@@ -129,6 +143,56 @@ type ComplexityRoot struct {
 		ID        func(childComplexity int) int
 		LearnerID func(childComplexity int) int
 		VideoID   func(childComplexity int) int
+	}
+
+	BudgetCategorySummary struct {
+		ActualAmount   func(childComplexity int) int
+		BudgetAmount   func(childComplexity int) int
+		CategoryCode   func(childComplexity int) int
+		CategoryName   func(childComplexity int) int
+		VarianceAmount func(childComplexity int) int
+	}
+
+	BudgetDashboard struct {
+		BillingBalance      func(childComplexity int) int
+		BillingTotal        func(childComplexity int) int
+		CategorySummary     func(childComplexity int) int
+		CompletionPct       func(childComplexity int) int
+		ContractAmount      func(childComplexity int) int
+		EstimateBudgetTotal func(childComplexity int) int
+		GeneratedAt         func(childComplexity int) int
+		GrossMarginPct      func(childComplexity int) int
+		InquiryProfitTotal  func(childComplexity int) int
+		LineItems           func(childComplexity int) int
+		MonthlyCosts        func(childComplexity int) int
+		ProjectID           func(childComplexity int) int
+		ProjectName         func(childComplexity int) int
+		RecentCosts         func(childComplexity int) int
+		Reconciliation      func(childComplexity int) int
+		TotalActual         func(childComplexity int) int
+		TotalBudget         func(childComplexity int) int
+		TotalCommitted      func(childComplexity int) int
+		TotalEstimate       func(childComplexity int) int
+		TotalForecast       func(childComplexity int) int
+		VarianceAmount      func(childComplexity int) int
+		VariancePct         func(childComplexity int) int
+	}
+
+	BudgetLineItem struct {
+		ActualAmount    func(childComplexity int) int
+		BudgetAmount    func(childComplexity int) int
+		BudgetID        func(childComplexity int) int
+		CategoryCode    func(childComplexity int) int
+		CategoryName    func(childComplexity int) int
+		CommittedAmount func(childComplexity int) int
+		CreatedAt       func(childComplexity int) int
+		Description     func(childComplexity int) int
+		EstimateAmount  func(childComplexity int) int
+		ID              func(childComplexity int) int
+		SortOrder       func(childComplexity int) int
+		VarianceAmount  func(childComplexity int) int
+		VariancePct     func(childComplexity int) int
+		WbsCode         func(childComplexity int) int
 	}
 
 	CategoryMetric struct {
@@ -193,6 +257,22 @@ type ComplexityRoot struct {
 		CreatedAt func(childComplexity int) int
 		ID        func(childComplexity int) int
 		Name      func(childComplexity int) int
+	}
+
+	CostEntry struct {
+		Amount       func(childComplexity int) int
+		CreatedAt    func(childComplexity int) int
+		Description  func(childComplexity int) int
+		EntryDate    func(childComplexity int) int
+		EntryType    func(childComplexity int) int
+		ID           func(childComplexity int) int
+		InvoiceNo    func(childComplexity int) int
+		LineItemID   func(childComplexity int) int
+		LineItemName func(childComplexity int) int
+		ProjectID    func(childComplexity int) int
+		ProjectName  func(childComplexity int) int
+		RecordedBy   func(childComplexity int) int
+		VendorName   func(childComplexity int) int
 	}
 
 	CrmContact struct {
@@ -291,19 +371,29 @@ type ComplexityRoot struct {
 		RecordCount func(childComplexity int) int
 	}
 
+	MonthlyCostMetric struct {
+		Amount func(childComplexity int) int
+		Month  func(childComplexity int) int
+	}
+
 	Mutation struct {
 		ApproveLeaveRequest       func(childComplexity int, id string) int
+		ApproveProjectBudget      func(childComplexity int, id string) int
 		ClockIn                   func(childComplexity int, note *string) int
 		ClockOut                  func(childComplexity int) int
 		CreateAPIIntegration      func(childComplexity int, input CreateAPIIntegrationInput) int
 		CreateBimModel            func(childComplexity int, input CreateBimModelInput) int
+		CreateBudgetLineItem      func(childComplexity int, input CreateBudgetLineItemInput) int
 		CreateConstructionProject func(childComplexity int, input CreateConstructionProjectInput) int
 		CreateContract            func(childComplexity int, input CreateContractInput) int
 		CreateContractTemplate    func(childComplexity int, name string, body string) int
+		CreateCostEntry           func(childComplexity int, input CreateCostEntryInput) int
+		CreateCostFromBilling     func(childComplexity int, billingRecordID string, projectID string) int
 		CreateCrmContact          func(childComplexity int, input CreateCrmContactInput) int
 		CreateCrmInteraction      func(childComplexity int, contactID string, kind string, summary string) int
 		CreateDxInitiative        func(childComplexity int, input CreateDxInitiativeInput) int
 		CreateLeaveRequest        func(childComplexity int, input CreateLeaveRequestInput) int
+		CreateProjectBudget       func(childComplexity int, input CreateProjectBudgetInput) int
 		CreateProjectModuleRecord func(childComplexity int, input CreateProjectModuleRecordInput) int
 		CreateRagDocument         func(childComplexity int, input CreateRagDocumentInput) int
 		CreateVideoNote           func(childComplexity int, input CreateVideoNoteInput) int
@@ -341,6 +431,35 @@ type ComplexityRoot struct {
 		TotalPages func(childComplexity int) int
 	}
 
+	ProjectBudget struct {
+		ApprovedAt     func(childComplexity int) int
+		BudgetType     func(childComplexity int) int
+		ContractAmount func(childComplexity int) int
+		CreatedAt      func(childComplexity int) int
+		ID             func(childComplexity int) int
+		Name           func(childComplexity int) int
+		Notes          func(childComplexity int) int
+		ProjectID      func(childComplexity int) int
+		ProjectName    func(childComplexity int) int
+		Status         func(childComplexity int) int
+		TotalActual    func(childComplexity int) int
+		TotalBudget    func(childComplexity int) int
+		TotalCommitted func(childComplexity int) int
+		TotalEstimate  func(childComplexity int) int
+		VersionNo      func(childComplexity int) int
+	}
+
+	ProjectBudgetSummary struct {
+		BillingTotal   func(childComplexity int) int
+		ContractAmount func(childComplexity int) int
+		ProjectID      func(childComplexity int) int
+		ProjectName    func(childComplexity int) int
+		Status         func(childComplexity int) int
+		TotalActual    func(childComplexity int) int
+		TotalBudget    func(childComplexity int) int
+		VariancePct    func(childComplexity int) int
+	}
+
 	ProjectModuleRecord struct {
 		Amount      func(childComplexity int) int
 		CreatedAt   func(childComplexity int) int
@@ -361,46 +480,51 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-		APIIntegrations      func(childComplexity int) int
-		AnalyticsBoard       func(childComplexity int, periodDays *int) int
-		AndpadAnalytics      func(childComplexity int, periodDays *int) int
-		AttendanceRecords    func(childComplexity int) int
-		BimModel             func(childComplexity int, id string) int
-		BimModels            func(childComplexity int, projectID *string) int
-		ConstructionProjects func(childComplexity int) int
-		ConsultThread        func(childComplexity int, id string) int
-		ConsultThreads       func(childComplexity int) int
-		ContractTemplates    func(childComplexity int) int
-		Contracts            func(childComplexity int) int
-		CrmContacts          func(childComplexity int) int
-		CrmInteractions      func(childComplexity int, contactID string) int
-		CurrentSession       func(childComplexity int) int
-		Dashboard            func(childComplexity int) int
-		DxInitiatives        func(childComplexity int) int
-		FeaturedVideos       func(childComplexity int) int
-		Health               func(childComplexity int) int
-		Instructor           func(childComplexity int, id string) int
-		Instructors          func(childComplexity int) int
-		LearningPath         func(childComplexity int, id string) int
-		LearningPaths        func(childComplexity int, category *models.VideoCategory, skillLevel *models.SkillLevel) int
-		LeaveRequests        func(childComplexity int) int
-		MyBookmarks          func(childComplexity int, learnerID string) int
-		MyCertificates       func(childComplexity int, learnerID string) int
-		MyProgress           func(childComplexity int, learnerID string) int
-		MyQuizAttempts       func(childComplexity int, learnerID string) int
-		Organization         func(childComplexity int) int
-		ProjectModuleRecords func(childComplexity int, moduleCode SaasModuleCode, projectID *string) int
-		Quiz                 func(childComplexity int, id string) int
-		Quizzes              func(childComplexity int, videoID *string) int
-		RagAnswer            func(childComplexity int, query string) int
-		RagDocuments         func(childComplexity int) int
-		RagSearch            func(childComplexity int, query string, limit *int) int
-		SaasModules          func(childComplexity int) int
-		TeamMembers          func(childComplexity int) int
-		UsageSummary         func(childComplexity int) int
-		Video                func(childComplexity int, id string) int
-		VideoNotes           func(childComplexity int, videoID string, learnerID string) int
-		Videos               func(childComplexity int, category *models.VideoCategory, skillLevel *models.SkillLevel, search *string, page *int, pageSize *int) int
+		APIIntegrations        func(childComplexity int) int
+		AnalyticsBoard         func(childComplexity int, periodDays *int) int
+		AndpadAnalytics        func(childComplexity int, periodDays *int) int
+		AttendanceRecords      func(childComplexity int) int
+		BimModel               func(childComplexity int, id string) int
+		BimModels              func(childComplexity int, projectID *string) int
+		BudgetDashboard        func(childComplexity int, projectID string) int
+		BudgetLineItems        func(childComplexity int, budgetID string) int
+		ConstructionProjects   func(childComplexity int) int
+		ConsultThread          func(childComplexity int, id string) int
+		ConsultThreads         func(childComplexity int) int
+		ContractTemplates      func(childComplexity int) int
+		Contracts              func(childComplexity int) int
+		CostEntries            func(childComplexity int, projectID string, lineItemID *string) int
+		CrmContacts            func(childComplexity int) int
+		CrmInteractions        func(childComplexity int, contactID string) int
+		CurrentSession         func(childComplexity int) int
+		Dashboard              func(childComplexity int) int
+		DxInitiatives          func(childComplexity int) int
+		FeaturedVideos         func(childComplexity int) int
+		Health                 func(childComplexity int) int
+		Instructor             func(childComplexity int, id string) int
+		Instructors            func(childComplexity int) int
+		LearningPath           func(childComplexity int, id string) int
+		LearningPaths          func(childComplexity int, category *models.VideoCategory, skillLevel *models.SkillLevel) int
+		LeaveRequests          func(childComplexity int) int
+		MyBookmarks            func(childComplexity int, learnerID string) int
+		MyCertificates         func(childComplexity int, learnerID string) int
+		MyProgress             func(childComplexity int, learnerID string) int
+		MyQuizAttempts         func(childComplexity int, learnerID string) int
+		Organization           func(childComplexity int) int
+		ProjectBudgetSummaries func(childComplexity int) int
+		ProjectBudgets         func(childComplexity int, projectID *string, budgetType *BudgetType) int
+		ProjectModuleRecords   func(childComplexity int, moduleCode SaasModuleCode, projectID *string) int
+		Quiz                   func(childComplexity int, id string) int
+		Quizzes                func(childComplexity int, videoID *string) int
+		RagAnswer              func(childComplexity int, query string) int
+		RagDocuments           func(childComplexity int) int
+		RagSearch              func(childComplexity int, query string, limit *int) int
+		SaasModules            func(childComplexity int) int
+		TeamMembers            func(childComplexity int) int
+		UsageSummary           func(childComplexity int) int
+		Video                  func(childComplexity int, id string) int
+		VideoNotes             func(childComplexity int, videoID string, learnerID string) int
+		Videos                 func(childComplexity int, category *models.VideoCategory, skillLevel *models.SkillLevel, search *string, page *int, pageSize *int) int
 	}
 
 	Quiz struct {
@@ -573,6 +697,11 @@ type MutationResolver interface {
 	CreateAPIIntegration(ctx context.Context, input CreateAPIIntegrationInput) (*APIIntegration, error)
 	SyncAPIIntegration(ctx context.Context, id string) (*APIIntegration, error)
 	CreateBimModel(ctx context.Context, input CreateBimModelInput) (*BimModel, error)
+	CreateProjectBudget(ctx context.Context, input CreateProjectBudgetInput) (*ProjectBudget, error)
+	CreateBudgetLineItem(ctx context.Context, input CreateBudgetLineItemInput) (*BudgetLineItem, error)
+	CreateCostEntry(ctx context.Context, input CreateCostEntryInput) (*CostEntry, error)
+	ApproveProjectBudget(ctx context.Context, id string) (*ProjectBudget, error)
+	CreateCostFromBilling(ctx context.Context, billingRecordID string, projectID string) (*CostEntry, error)
 }
 type QueryResolver interface {
 	Health(ctx context.Context) (*Health, error)
@@ -615,6 +744,11 @@ type QueryResolver interface {
 	APIIntegrations(ctx context.Context) ([]*APIIntegration, error)
 	BimModels(ctx context.Context, projectID *string) ([]*BimModel, error)
 	BimModel(ctx context.Context, id string) (*BimModel, error)
+	ProjectBudgets(ctx context.Context, projectID *string, budgetType *BudgetType) ([]*ProjectBudget, error)
+	BudgetLineItems(ctx context.Context, budgetID string) ([]*BudgetLineItem, error)
+	CostEntries(ctx context.Context, projectID string, lineItemID *string) ([]*CostEntry, error)
+	BudgetDashboard(ctx context.Context, projectID string) (*BudgetDashboard, error)
+	ProjectBudgetSummaries(ctx context.Context) ([]*ProjectBudgetSummary, error)
 }
 type SubscriptionResolver interface {
 	DashboardUpdated(ctx context.Context) (<-chan *DashboardStats, error)
@@ -759,6 +893,34 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.AndpadAnalyticsDashboard.BillingTotal(childComplexity), true
+
+	case "AndpadAnalyticsDashboard.budgetTotal":
+		if e.complexity.AndpadAnalyticsDashboard.BudgetTotal == nil {
+			break
+		}
+
+		return e.complexity.AndpadAnalyticsDashboard.BudgetTotal(childComplexity), true
+
+	case "AndpadAnalyticsDashboard.budgetVariancePct":
+		if e.complexity.AndpadAnalyticsDashboard.BudgetVariancePct == nil {
+			break
+		}
+
+		return e.complexity.AndpadAnalyticsDashboard.BudgetVariancePct(childComplexity), true
+
+	case "AndpadAnalyticsDashboard.costByMonth":
+		if e.complexity.AndpadAnalyticsDashboard.CostByMonth == nil {
+			break
+		}
+
+		return e.complexity.AndpadAnalyticsDashboard.CostByMonth(childComplexity), true
+
+	case "AndpadAnalyticsDashboard.costTotal":
+		if e.complexity.AndpadAnalyticsDashboard.CostTotal == nil {
+			break
+		}
+
+		return e.complexity.AndpadAnalyticsDashboard.CostTotal(childComplexity), true
 
 	case "AndpadAnalyticsDashboard.generatedAt":
 		if e.complexity.AndpadAnalyticsDashboard.GeneratedAt == nil {
@@ -935,6 +1097,55 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.AttendanceRecord.UserName(childComplexity), true
 
+	case "BillingReconciliationItem.billingAmount":
+		if e.complexity.BillingReconciliationItem.BillingAmount == nil {
+			break
+		}
+
+		return e.complexity.BillingReconciliationItem.BillingAmount(childComplexity), true
+
+	case "BillingReconciliationItem.billingDate":
+		if e.complexity.BillingReconciliationItem.BillingDate == nil {
+			break
+		}
+
+		return e.complexity.BillingReconciliationItem.BillingDate(childComplexity), true
+
+	case "BillingReconciliationItem.billingRecordId":
+		if e.complexity.BillingReconciliationItem.BillingRecordID == nil {
+			break
+		}
+
+		return e.complexity.BillingReconciliationItem.BillingRecordID(childComplexity), true
+
+	case "BillingReconciliationItem.costAmount":
+		if e.complexity.BillingReconciliationItem.CostAmount == nil {
+			break
+		}
+
+		return e.complexity.BillingReconciliationItem.CostAmount(childComplexity), true
+
+	case "BillingReconciliationItem.status":
+		if e.complexity.BillingReconciliationItem.Status == nil {
+			break
+		}
+
+		return e.complexity.BillingReconciliationItem.Status(childComplexity), true
+
+	case "BillingReconciliationItem.title":
+		if e.complexity.BillingReconciliationItem.Title == nil {
+			break
+		}
+
+		return e.complexity.BillingReconciliationItem.Title(childComplexity), true
+
+	case "BillingReconciliationItem.varianceAmount":
+		if e.complexity.BillingReconciliationItem.VarianceAmount == nil {
+			break
+		}
+
+		return e.complexity.BillingReconciliationItem.VarianceAmount(childComplexity), true
+
 	case "BimModel.createdAt":
 		if e.complexity.BimModel.CreatedAt == nil {
 			break
@@ -1032,6 +1243,293 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Bookmark.VideoID(childComplexity), true
+
+	case "BudgetCategorySummary.actualAmount":
+		if e.complexity.BudgetCategorySummary.ActualAmount == nil {
+			break
+		}
+
+		return e.complexity.BudgetCategorySummary.ActualAmount(childComplexity), true
+
+	case "BudgetCategorySummary.budgetAmount":
+		if e.complexity.BudgetCategorySummary.BudgetAmount == nil {
+			break
+		}
+
+		return e.complexity.BudgetCategorySummary.BudgetAmount(childComplexity), true
+
+	case "BudgetCategorySummary.categoryCode":
+		if e.complexity.BudgetCategorySummary.CategoryCode == nil {
+			break
+		}
+
+		return e.complexity.BudgetCategorySummary.CategoryCode(childComplexity), true
+
+	case "BudgetCategorySummary.categoryName":
+		if e.complexity.BudgetCategorySummary.CategoryName == nil {
+			break
+		}
+
+		return e.complexity.BudgetCategorySummary.CategoryName(childComplexity), true
+
+	case "BudgetCategorySummary.varianceAmount":
+		if e.complexity.BudgetCategorySummary.VarianceAmount == nil {
+			break
+		}
+
+		return e.complexity.BudgetCategorySummary.VarianceAmount(childComplexity), true
+
+	case "BudgetDashboard.billingBalance":
+		if e.complexity.BudgetDashboard.BillingBalance == nil {
+			break
+		}
+
+		return e.complexity.BudgetDashboard.BillingBalance(childComplexity), true
+
+	case "BudgetDashboard.billingTotal":
+		if e.complexity.BudgetDashboard.BillingTotal == nil {
+			break
+		}
+
+		return e.complexity.BudgetDashboard.BillingTotal(childComplexity), true
+
+	case "BudgetDashboard.categorySummary":
+		if e.complexity.BudgetDashboard.CategorySummary == nil {
+			break
+		}
+
+		return e.complexity.BudgetDashboard.CategorySummary(childComplexity), true
+
+	case "BudgetDashboard.completionPct":
+		if e.complexity.BudgetDashboard.CompletionPct == nil {
+			break
+		}
+
+		return e.complexity.BudgetDashboard.CompletionPct(childComplexity), true
+
+	case "BudgetDashboard.contractAmount":
+		if e.complexity.BudgetDashboard.ContractAmount == nil {
+			break
+		}
+
+		return e.complexity.BudgetDashboard.ContractAmount(childComplexity), true
+
+	case "BudgetDashboard.estimateBudgetTotal":
+		if e.complexity.BudgetDashboard.EstimateBudgetTotal == nil {
+			break
+		}
+
+		return e.complexity.BudgetDashboard.EstimateBudgetTotal(childComplexity), true
+
+	case "BudgetDashboard.generatedAt":
+		if e.complexity.BudgetDashboard.GeneratedAt == nil {
+			break
+		}
+
+		return e.complexity.BudgetDashboard.GeneratedAt(childComplexity), true
+
+	case "BudgetDashboard.grossMarginPct":
+		if e.complexity.BudgetDashboard.GrossMarginPct == nil {
+			break
+		}
+
+		return e.complexity.BudgetDashboard.GrossMarginPct(childComplexity), true
+
+	case "BudgetDashboard.inquiryProfitTotal":
+		if e.complexity.BudgetDashboard.InquiryProfitTotal == nil {
+			break
+		}
+
+		return e.complexity.BudgetDashboard.InquiryProfitTotal(childComplexity), true
+
+	case "BudgetDashboard.lineItems":
+		if e.complexity.BudgetDashboard.LineItems == nil {
+			break
+		}
+
+		return e.complexity.BudgetDashboard.LineItems(childComplexity), true
+
+	case "BudgetDashboard.monthlyCosts":
+		if e.complexity.BudgetDashboard.MonthlyCosts == nil {
+			break
+		}
+
+		return e.complexity.BudgetDashboard.MonthlyCosts(childComplexity), true
+
+	case "BudgetDashboard.projectId":
+		if e.complexity.BudgetDashboard.ProjectID == nil {
+			break
+		}
+
+		return e.complexity.BudgetDashboard.ProjectID(childComplexity), true
+
+	case "BudgetDashboard.projectName":
+		if e.complexity.BudgetDashboard.ProjectName == nil {
+			break
+		}
+
+		return e.complexity.BudgetDashboard.ProjectName(childComplexity), true
+
+	case "BudgetDashboard.recentCosts":
+		if e.complexity.BudgetDashboard.RecentCosts == nil {
+			break
+		}
+
+		return e.complexity.BudgetDashboard.RecentCosts(childComplexity), true
+
+	case "BudgetDashboard.reconciliation":
+		if e.complexity.BudgetDashboard.Reconciliation == nil {
+			break
+		}
+
+		return e.complexity.BudgetDashboard.Reconciliation(childComplexity), true
+
+	case "BudgetDashboard.totalActual":
+		if e.complexity.BudgetDashboard.TotalActual == nil {
+			break
+		}
+
+		return e.complexity.BudgetDashboard.TotalActual(childComplexity), true
+
+	case "BudgetDashboard.totalBudget":
+		if e.complexity.BudgetDashboard.TotalBudget == nil {
+			break
+		}
+
+		return e.complexity.BudgetDashboard.TotalBudget(childComplexity), true
+
+	case "BudgetDashboard.totalCommitted":
+		if e.complexity.BudgetDashboard.TotalCommitted == nil {
+			break
+		}
+
+		return e.complexity.BudgetDashboard.TotalCommitted(childComplexity), true
+
+	case "BudgetDashboard.totalEstimate":
+		if e.complexity.BudgetDashboard.TotalEstimate == nil {
+			break
+		}
+
+		return e.complexity.BudgetDashboard.TotalEstimate(childComplexity), true
+
+	case "BudgetDashboard.totalForecast":
+		if e.complexity.BudgetDashboard.TotalForecast == nil {
+			break
+		}
+
+		return e.complexity.BudgetDashboard.TotalForecast(childComplexity), true
+
+	case "BudgetDashboard.varianceAmount":
+		if e.complexity.BudgetDashboard.VarianceAmount == nil {
+			break
+		}
+
+		return e.complexity.BudgetDashboard.VarianceAmount(childComplexity), true
+
+	case "BudgetDashboard.variancePct":
+		if e.complexity.BudgetDashboard.VariancePct == nil {
+			break
+		}
+
+		return e.complexity.BudgetDashboard.VariancePct(childComplexity), true
+
+	case "BudgetLineItem.actualAmount":
+		if e.complexity.BudgetLineItem.ActualAmount == nil {
+			break
+		}
+
+		return e.complexity.BudgetLineItem.ActualAmount(childComplexity), true
+
+	case "BudgetLineItem.budgetAmount":
+		if e.complexity.BudgetLineItem.BudgetAmount == nil {
+			break
+		}
+
+		return e.complexity.BudgetLineItem.BudgetAmount(childComplexity), true
+
+	case "BudgetLineItem.budgetId":
+		if e.complexity.BudgetLineItem.BudgetID == nil {
+			break
+		}
+
+		return e.complexity.BudgetLineItem.BudgetID(childComplexity), true
+
+	case "BudgetLineItem.categoryCode":
+		if e.complexity.BudgetLineItem.CategoryCode == nil {
+			break
+		}
+
+		return e.complexity.BudgetLineItem.CategoryCode(childComplexity), true
+
+	case "BudgetLineItem.categoryName":
+		if e.complexity.BudgetLineItem.CategoryName == nil {
+			break
+		}
+
+		return e.complexity.BudgetLineItem.CategoryName(childComplexity), true
+
+	case "BudgetLineItem.committedAmount":
+		if e.complexity.BudgetLineItem.CommittedAmount == nil {
+			break
+		}
+
+		return e.complexity.BudgetLineItem.CommittedAmount(childComplexity), true
+
+	case "BudgetLineItem.createdAt":
+		if e.complexity.BudgetLineItem.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.BudgetLineItem.CreatedAt(childComplexity), true
+
+	case "BudgetLineItem.description":
+		if e.complexity.BudgetLineItem.Description == nil {
+			break
+		}
+
+		return e.complexity.BudgetLineItem.Description(childComplexity), true
+
+	case "BudgetLineItem.estimateAmount":
+		if e.complexity.BudgetLineItem.EstimateAmount == nil {
+			break
+		}
+
+		return e.complexity.BudgetLineItem.EstimateAmount(childComplexity), true
+
+	case "BudgetLineItem.id":
+		if e.complexity.BudgetLineItem.ID == nil {
+			break
+		}
+
+		return e.complexity.BudgetLineItem.ID(childComplexity), true
+
+	case "BudgetLineItem.sortOrder":
+		if e.complexity.BudgetLineItem.SortOrder == nil {
+			break
+		}
+
+		return e.complexity.BudgetLineItem.SortOrder(childComplexity), true
+
+	case "BudgetLineItem.varianceAmount":
+		if e.complexity.BudgetLineItem.VarianceAmount == nil {
+			break
+		}
+
+		return e.complexity.BudgetLineItem.VarianceAmount(childComplexity), true
+
+	case "BudgetLineItem.variancePct":
+		if e.complexity.BudgetLineItem.VariancePct == nil {
+			break
+		}
+
+		return e.complexity.BudgetLineItem.VariancePct(childComplexity), true
+
+	case "BudgetLineItem.wbsCode":
+		if e.complexity.BudgetLineItem.WbsCode == nil {
+			break
+		}
+
+		return e.complexity.BudgetLineItem.WbsCode(childComplexity), true
 
 	case "CategoryMetric.category":
 		if e.complexity.CategoryMetric.Category == nil {
@@ -1312,6 +1810,97 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.ContractTemplate.Name(childComplexity), true
+
+	case "CostEntry.amount":
+		if e.complexity.CostEntry.Amount == nil {
+			break
+		}
+
+		return e.complexity.CostEntry.Amount(childComplexity), true
+
+	case "CostEntry.createdAt":
+		if e.complexity.CostEntry.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.CostEntry.CreatedAt(childComplexity), true
+
+	case "CostEntry.description":
+		if e.complexity.CostEntry.Description == nil {
+			break
+		}
+
+		return e.complexity.CostEntry.Description(childComplexity), true
+
+	case "CostEntry.entryDate":
+		if e.complexity.CostEntry.EntryDate == nil {
+			break
+		}
+
+		return e.complexity.CostEntry.EntryDate(childComplexity), true
+
+	case "CostEntry.entryType":
+		if e.complexity.CostEntry.EntryType == nil {
+			break
+		}
+
+		return e.complexity.CostEntry.EntryType(childComplexity), true
+
+	case "CostEntry.id":
+		if e.complexity.CostEntry.ID == nil {
+			break
+		}
+
+		return e.complexity.CostEntry.ID(childComplexity), true
+
+	case "CostEntry.invoiceNo":
+		if e.complexity.CostEntry.InvoiceNo == nil {
+			break
+		}
+
+		return e.complexity.CostEntry.InvoiceNo(childComplexity), true
+
+	case "CostEntry.lineItemId":
+		if e.complexity.CostEntry.LineItemID == nil {
+			break
+		}
+
+		return e.complexity.CostEntry.LineItemID(childComplexity), true
+
+	case "CostEntry.lineItemName":
+		if e.complexity.CostEntry.LineItemName == nil {
+			break
+		}
+
+		return e.complexity.CostEntry.LineItemName(childComplexity), true
+
+	case "CostEntry.projectId":
+		if e.complexity.CostEntry.ProjectID == nil {
+			break
+		}
+
+		return e.complexity.CostEntry.ProjectID(childComplexity), true
+
+	case "CostEntry.projectName":
+		if e.complexity.CostEntry.ProjectName == nil {
+			break
+		}
+
+		return e.complexity.CostEntry.ProjectName(childComplexity), true
+
+	case "CostEntry.recordedBy":
+		if e.complexity.CostEntry.RecordedBy == nil {
+			break
+		}
+
+		return e.complexity.CostEntry.RecordedBy(childComplexity), true
+
+	case "CostEntry.vendorName":
+		if e.complexity.CostEntry.VendorName == nil {
+			break
+		}
+
+		return e.complexity.CostEntry.VendorName(childComplexity), true
 
 	case "CrmContact.company":
 		if e.complexity.CrmContact.Company == nil {
@@ -1775,6 +2364,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.ModuleUsageMetric.RecordCount(childComplexity), true
 
+	case "MonthlyCostMetric.amount":
+		if e.complexity.MonthlyCostMetric.Amount == nil {
+			break
+		}
+
+		return e.complexity.MonthlyCostMetric.Amount(childComplexity), true
+
+	case "MonthlyCostMetric.month":
+		if e.complexity.MonthlyCostMetric.Month == nil {
+			break
+		}
+
+		return e.complexity.MonthlyCostMetric.Month(childComplexity), true
+
 	case "Mutation.approveLeaveRequest":
 		if e.complexity.Mutation.ApproveLeaveRequest == nil {
 			break
@@ -1786,6 +2389,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.ApproveLeaveRequest(childComplexity, args["id"].(string)), true
+
+	case "Mutation.approveProjectBudget":
+		if e.complexity.Mutation.ApproveProjectBudget == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_approveProjectBudget_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.ApproveProjectBudget(childComplexity, args["id"].(string)), true
 
 	case "Mutation.clockIn":
 		if e.complexity.Mutation.ClockIn == nil {
@@ -1830,6 +2445,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.CreateBimModel(childComplexity, args["input"].(CreateBimModelInput)), true
 
+	case "Mutation.createBudgetLineItem":
+		if e.complexity.Mutation.CreateBudgetLineItem == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createBudgetLineItem_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateBudgetLineItem(childComplexity, args["input"].(CreateBudgetLineItemInput)), true
+
 	case "Mutation.createConstructionProject":
 		if e.complexity.Mutation.CreateConstructionProject == nil {
 			break
@@ -1865,6 +2492,30 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.CreateContractTemplate(childComplexity, args["name"].(string), args["body"].(string)), true
+
+	case "Mutation.createCostEntry":
+		if e.complexity.Mutation.CreateCostEntry == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createCostEntry_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateCostEntry(childComplexity, args["input"].(CreateCostEntryInput)), true
+
+	case "Mutation.createCostFromBilling":
+		if e.complexity.Mutation.CreateCostFromBilling == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createCostFromBilling_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateCostFromBilling(childComplexity, args["billingRecordId"].(string), args["projectId"].(string)), true
 
 	case "Mutation.createCrmContact":
 		if e.complexity.Mutation.CreateCrmContact == nil {
@@ -1913,6 +2564,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.CreateLeaveRequest(childComplexity, args["input"].(CreateLeaveRequestInput)), true
+
+	case "Mutation.createProjectBudget":
+		if e.complexity.Mutation.CreateProjectBudget == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createProjectBudget_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateProjectBudget(childComplexity, args["input"].(CreateProjectBudgetInput)), true
 
 	case "Mutation.createProjectModuleRecord":
 		if e.complexity.Mutation.CreateProjectModuleRecord == nil {
@@ -2192,6 +2855,167 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.PageInfo.TotalPages(childComplexity), true
 
+	case "ProjectBudget.approvedAt":
+		if e.complexity.ProjectBudget.ApprovedAt == nil {
+			break
+		}
+
+		return e.complexity.ProjectBudget.ApprovedAt(childComplexity), true
+
+	case "ProjectBudget.budgetType":
+		if e.complexity.ProjectBudget.BudgetType == nil {
+			break
+		}
+
+		return e.complexity.ProjectBudget.BudgetType(childComplexity), true
+
+	case "ProjectBudget.contractAmount":
+		if e.complexity.ProjectBudget.ContractAmount == nil {
+			break
+		}
+
+		return e.complexity.ProjectBudget.ContractAmount(childComplexity), true
+
+	case "ProjectBudget.createdAt":
+		if e.complexity.ProjectBudget.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.ProjectBudget.CreatedAt(childComplexity), true
+
+	case "ProjectBudget.id":
+		if e.complexity.ProjectBudget.ID == nil {
+			break
+		}
+
+		return e.complexity.ProjectBudget.ID(childComplexity), true
+
+	case "ProjectBudget.name":
+		if e.complexity.ProjectBudget.Name == nil {
+			break
+		}
+
+		return e.complexity.ProjectBudget.Name(childComplexity), true
+
+	case "ProjectBudget.notes":
+		if e.complexity.ProjectBudget.Notes == nil {
+			break
+		}
+
+		return e.complexity.ProjectBudget.Notes(childComplexity), true
+
+	case "ProjectBudget.projectId":
+		if e.complexity.ProjectBudget.ProjectID == nil {
+			break
+		}
+
+		return e.complexity.ProjectBudget.ProjectID(childComplexity), true
+
+	case "ProjectBudget.projectName":
+		if e.complexity.ProjectBudget.ProjectName == nil {
+			break
+		}
+
+		return e.complexity.ProjectBudget.ProjectName(childComplexity), true
+
+	case "ProjectBudget.status":
+		if e.complexity.ProjectBudget.Status == nil {
+			break
+		}
+
+		return e.complexity.ProjectBudget.Status(childComplexity), true
+
+	case "ProjectBudget.totalActual":
+		if e.complexity.ProjectBudget.TotalActual == nil {
+			break
+		}
+
+		return e.complexity.ProjectBudget.TotalActual(childComplexity), true
+
+	case "ProjectBudget.totalBudget":
+		if e.complexity.ProjectBudget.TotalBudget == nil {
+			break
+		}
+
+		return e.complexity.ProjectBudget.TotalBudget(childComplexity), true
+
+	case "ProjectBudget.totalCommitted":
+		if e.complexity.ProjectBudget.TotalCommitted == nil {
+			break
+		}
+
+		return e.complexity.ProjectBudget.TotalCommitted(childComplexity), true
+
+	case "ProjectBudget.totalEstimate":
+		if e.complexity.ProjectBudget.TotalEstimate == nil {
+			break
+		}
+
+		return e.complexity.ProjectBudget.TotalEstimate(childComplexity), true
+
+	case "ProjectBudget.versionNo":
+		if e.complexity.ProjectBudget.VersionNo == nil {
+			break
+		}
+
+		return e.complexity.ProjectBudget.VersionNo(childComplexity), true
+
+	case "ProjectBudgetSummary.billingTotal":
+		if e.complexity.ProjectBudgetSummary.BillingTotal == nil {
+			break
+		}
+
+		return e.complexity.ProjectBudgetSummary.BillingTotal(childComplexity), true
+
+	case "ProjectBudgetSummary.contractAmount":
+		if e.complexity.ProjectBudgetSummary.ContractAmount == nil {
+			break
+		}
+
+		return e.complexity.ProjectBudgetSummary.ContractAmount(childComplexity), true
+
+	case "ProjectBudgetSummary.projectId":
+		if e.complexity.ProjectBudgetSummary.ProjectID == nil {
+			break
+		}
+
+		return e.complexity.ProjectBudgetSummary.ProjectID(childComplexity), true
+
+	case "ProjectBudgetSummary.projectName":
+		if e.complexity.ProjectBudgetSummary.ProjectName == nil {
+			break
+		}
+
+		return e.complexity.ProjectBudgetSummary.ProjectName(childComplexity), true
+
+	case "ProjectBudgetSummary.status":
+		if e.complexity.ProjectBudgetSummary.Status == nil {
+			break
+		}
+
+		return e.complexity.ProjectBudgetSummary.Status(childComplexity), true
+
+	case "ProjectBudgetSummary.totalActual":
+		if e.complexity.ProjectBudgetSummary.TotalActual == nil {
+			break
+		}
+
+		return e.complexity.ProjectBudgetSummary.TotalActual(childComplexity), true
+
+	case "ProjectBudgetSummary.totalBudget":
+		if e.complexity.ProjectBudgetSummary.TotalBudget == nil {
+			break
+		}
+
+		return e.complexity.ProjectBudgetSummary.TotalBudget(childComplexity), true
+
+	case "ProjectBudgetSummary.variancePct":
+		if e.complexity.ProjectBudgetSummary.VariancePct == nil {
+			break
+		}
+
+		return e.complexity.ProjectBudgetSummary.VariancePct(childComplexity), true
+
 	case "ProjectModuleRecord.amount":
 		if e.complexity.ProjectModuleRecord.Amount == nil {
 			break
@@ -2345,6 +3169,30 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.BimModels(childComplexity, args["projectId"].(*string)), true
 
+	case "Query.budgetDashboard":
+		if e.complexity.Query.BudgetDashboard == nil {
+			break
+		}
+
+		args, err := ec.field_Query_budgetDashboard_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.BudgetDashboard(childComplexity, args["projectId"].(string)), true
+
+	case "Query.budgetLineItems":
+		if e.complexity.Query.BudgetLineItems == nil {
+			break
+		}
+
+		args, err := ec.field_Query_budgetLineItems_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.BudgetLineItems(childComplexity, args["budgetId"].(string)), true
+
 	case "Query.constructionProjects":
 		if e.complexity.Query.ConstructionProjects == nil {
 			break
@@ -2384,6 +3232,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Contracts(childComplexity), true
+
+	case "Query.costEntries":
+		if e.complexity.Query.CostEntries == nil {
+			break
+		}
+
+		args, err := ec.field_Query_costEntries_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.CostEntries(childComplexity, args["projectId"].(string), args["lineItemId"].(*string)), true
 
 	case "Query.crmContacts":
 		if e.complexity.Query.CrmContacts == nil {
@@ -2543,6 +3403,25 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Organization(childComplexity), true
+
+	case "Query.projectBudgetSummaries":
+		if e.complexity.Query.ProjectBudgetSummaries == nil {
+			break
+		}
+
+		return e.complexity.Query.ProjectBudgetSummaries(childComplexity), true
+
+	case "Query.projectBudgets":
+		if e.complexity.Query.ProjectBudgets == nil {
+			break
+		}
+
+		args, err := ec.field_Query_projectBudgets_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.ProjectBudgets(childComplexity, args["projectId"].(*string), args["budgetType"].(*BudgetType)), true
 
 	case "Query.projectModuleRecords":
 		if e.complexity.Query.ProjectModuleRecords == nil {
@@ -3297,11 +4176,14 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
 		ec.unmarshalInputCreateApiIntegrationInput,
 		ec.unmarshalInputCreateBimModelInput,
+		ec.unmarshalInputCreateBudgetLineItemInput,
 		ec.unmarshalInputCreateConstructionProjectInput,
 		ec.unmarshalInputCreateContractInput,
+		ec.unmarshalInputCreateCostEntryInput,
 		ec.unmarshalInputCreateCrmContactInput,
 		ec.unmarshalInputCreateDxInitiativeInput,
 		ec.unmarshalInputCreateLeaveRequestInput,
+		ec.unmarshalInputCreateProjectBudgetInput,
 		ec.unmarshalInputCreateProjectModuleRecordInput,
 		ec.unmarshalInputCreateRagDocumentInput,
 		ec.unmarshalInputCreateVideoNoteInput,
@@ -3772,6 +4654,11 @@ type Query {
   apiIntegrations: [ApiIntegration!]!
   bimModels(projectId: ID): [BimModel!]!
   bimModel(id: ID!): BimModel
+  projectBudgets(projectId: ID, budgetType: BudgetType): [ProjectBudget!]!
+  budgetLineItems(budgetId: ID!): [BudgetLineItem!]!
+  costEntries(projectId: ID!, lineItemId: ID): [CostEntry!]!
+  budgetDashboard(projectId: ID!): BudgetDashboard!
+  projectBudgetSummaries: [ProjectBudgetSummary!]!
 }
 
 type Mutation {
@@ -3802,6 +4689,11 @@ type Mutation {
   createApiIntegration(input: CreateApiIntegrationInput!): ApiIntegration!
   syncApiIntegration(id: ID!): ApiIntegration!
   createBimModel(input: CreateBimModelInput!): BimModel!
+  createProjectBudget(input: CreateProjectBudgetInput!): ProjectBudget!
+  createBudgetLineItem(input: CreateBudgetLineItemInput!): BudgetLineItem!
+  createCostEntry(input: CreateCostEntryInput!): CostEntry!
+  approveProjectBudget(id: ID!): ProjectBudget!
+  createCostFromBilling(billingRecordId: ID!, projectId: ID!): CostEntry!
 }
 
 type Subscription {
@@ -3839,6 +4731,7 @@ enum SaasModuleCode {
   ANALYTICS
   API_INTEGRATION
   BIM
+  BUDGET_MGMT
 }
 
 type SaasModule {
@@ -4079,6 +4972,10 @@ type AndpadAnalyticsDashboard {
   activeProjects: Int!
   recordsByWeek: [Float!]!
   projectHealthScore: Float!
+  budgetTotal: Float!
+  costTotal: Float!
+  budgetVariancePct: Float!
+  costByMonth: [MonthlyCostMetric!]!
   generatedAt: String!
 }
 
@@ -4121,6 +5018,172 @@ input CreateBimModelInput {
   fileSizeMb: Float
   uploadedBy: String
 }
+
+# --- Budget / cost management ---
+enum BudgetType {
+  ESTIMATE
+  EXECUTION_BUDGET
+  FORECAST
+}
+
+enum BudgetStatus {
+  DRAFT
+  APPROVED
+  LOCKED
+}
+
+enum CostEntryType {
+  MATERIAL
+  LABOR
+  SUBCONTRACT
+  EQUIPMENT
+  OVERHEAD
+  OTHER
+}
+
+type ProjectBudget {
+  id: ID!
+  projectId: ID!
+  projectName: String!
+  name: String!
+  budgetType: BudgetType!
+  status: BudgetStatus!
+  versionNo: Int!
+  contractAmount: Float!
+  totalEstimate: Float!
+  totalBudget: Float!
+  totalCommitted: Float!
+  totalActual: Float!
+  notes: String!
+  approvedAt: String
+  createdAt: String!
+}
+
+type BudgetLineItem {
+  id: ID!
+  budgetId: ID!
+  categoryCode: String!
+  categoryName: String!
+  wbsCode: String!
+  description: String!
+  estimateAmount: Float!
+  budgetAmount: Float!
+  committedAmount: Float!
+  actualAmount: Float!
+  varianceAmount: Float!
+  variancePct: Float!
+  sortOrder: Int!
+  createdAt: String!
+}
+
+type CostEntry {
+  id: ID!
+  projectId: ID!
+  projectName: String!
+  lineItemId: String!
+  lineItemName: String!
+  entryType: CostEntryType!
+  vendorName: String!
+  description: String!
+  amount: Float!
+  entryDate: String!
+  invoiceNo: String!
+  recordedBy: String!
+  createdAt: String!
+}
+
+type BudgetCategorySummary {
+  categoryCode: String!
+  categoryName: String!
+  budgetAmount: Float!
+  actualAmount: Float!
+  varianceAmount: Float!
+}
+
+type MonthlyCostMetric {
+  month: String!
+  amount: Float!
+}
+
+type BillingReconciliationItem {
+  billingRecordId: ID!
+  title: String!
+  billingAmount: Float!
+  costAmount: Float!
+  varianceAmount: Float!
+  status: String!
+  billingDate: String
+}
+
+type ProjectBudgetSummary {
+  projectId: ID!
+  projectName: String!
+  status: ConstructionProjectStatus!
+  contractAmount: Float!
+  totalBudget: Float!
+  totalActual: Float!
+  billingTotal: Float!
+  variancePct: Float!
+}
+
+type BudgetDashboard {
+  projectId: ID!
+  projectName: String!
+  contractAmount: Float!
+  totalEstimate: Float!
+  totalBudget: Float!
+  totalCommitted: Float!
+  totalActual: Float!
+  totalForecast: Float!
+  varianceAmount: Float!
+  variancePct: Float!
+  completionPct: Float!
+  estimateBudgetTotal: Float!
+  grossMarginPct: Float!
+  inquiryProfitTotal: Float!
+  billingTotal: Float!
+  billingBalance: Float!
+  monthlyCosts: [MonthlyCostMetric!]!
+  reconciliation: [BillingReconciliationItem!]!
+  lineItems: [BudgetLineItem!]!
+  recentCosts: [CostEntry!]!
+  categorySummary: [BudgetCategorySummary!]!
+  generatedAt: String!
+}
+
+input CreateProjectBudgetInput {
+  projectId: ID!
+  name: String!
+  budgetType: BudgetType
+  status: BudgetStatus
+  versionNo: Int
+  contractAmount: Float
+  notes: String
+}
+
+input CreateBudgetLineItemInput {
+  budgetId: ID!
+  categoryCode: String!
+  categoryName: String!
+  wbsCode: String
+  description: String
+  estimateAmount: Float
+  budgetAmount: Float
+  committedAmount: Float
+  sortOrder: Int
+}
+
+input CreateCostEntryInput {
+  projectId: ID!
+  lineItemId: ID
+  entryType: CostEntryType
+  vendorName: String
+  description: String!
+  amount: Float!
+  entryDate: String
+  invoiceNo: String
+  recordedBy: String
+}
 `, BuiltIn: false},
 }
 var parsedSchema = gqlparser.MustLoadSchema(sources...)
@@ -4140,6 +5203,34 @@ func (ec *executionContext) field_Mutation_approveLeaveRequest_args(ctx context.
 	return args, nil
 }
 func (ec *executionContext) field_Mutation_approveLeaveRequest_argsID(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (string, error) {
+	if _, ok := rawArgs["id"]; !ok {
+		var zeroVal string
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+	if tmp, ok := rawArgs["id"]; ok {
+		return ec.unmarshalNID2string(ctx, tmp)
+	}
+
+	var zeroVal string
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_approveProjectBudget_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Mutation_approveProjectBudget_argsID(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["id"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_approveProjectBudget_argsID(
 	ctx context.Context,
 	rawArgs map[string]any,
 ) (string, error) {
@@ -4238,6 +5329,34 @@ func (ec *executionContext) field_Mutation_createBimModel_argsInput(
 	}
 
 	var zeroVal CreateBimModelInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_createBudgetLineItem_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Mutation_createBudgetLineItem_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_createBudgetLineItem_argsInput(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (CreateBudgetLineItemInput, error) {
+	if _, ok := rawArgs["input"]; !ok {
+		var zeroVal CreateBudgetLineItemInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalNCreateBudgetLineItemInput2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐCreateBudgetLineItemInput(ctx, tmp)
+	}
+
+	var zeroVal CreateBudgetLineItemInput
 	return zeroVal, nil
 }
 
@@ -4345,6 +5464,85 @@ func (ec *executionContext) field_Mutation_createContract_argsInput(
 	}
 
 	var zeroVal CreateContractInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_createCostEntry_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Mutation_createCostEntry_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_createCostEntry_argsInput(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (CreateCostEntryInput, error) {
+	if _, ok := rawArgs["input"]; !ok {
+		var zeroVal CreateCostEntryInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalNCreateCostEntryInput2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐCreateCostEntryInput(ctx, tmp)
+	}
+
+	var zeroVal CreateCostEntryInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_createCostFromBilling_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Mutation_createCostFromBilling_argsBillingRecordID(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["billingRecordId"] = arg0
+	arg1, err := ec.field_Mutation_createCostFromBilling_argsProjectID(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["projectId"] = arg1
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_createCostFromBilling_argsBillingRecordID(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (string, error) {
+	if _, ok := rawArgs["billingRecordId"]; !ok {
+		var zeroVal string
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("billingRecordId"))
+	if tmp, ok := rawArgs["billingRecordId"]; ok {
+		return ec.unmarshalNID2string(ctx, tmp)
+	}
+
+	var zeroVal string
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_createCostFromBilling_argsProjectID(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (string, error) {
+	if _, ok := rawArgs["projectId"]; !ok {
+		var zeroVal string
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("projectId"))
+	if tmp, ok := rawArgs["projectId"]; ok {
+		return ec.unmarshalNID2string(ctx, tmp)
+	}
+
+	var zeroVal string
 	return zeroVal, nil
 }
 
@@ -4503,6 +5701,34 @@ func (ec *executionContext) field_Mutation_createLeaveRequest_argsInput(
 	}
 
 	var zeroVal CreateLeaveRequestInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_createProjectBudget_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Mutation_createProjectBudget_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_createProjectBudget_argsInput(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (CreateProjectBudgetInput, error) {
+	if _, ok := rawArgs["input"]; !ok {
+		var zeroVal CreateProjectBudgetInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalNCreateProjectBudgetInput2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐCreateProjectBudgetInput(ctx, tmp)
+	}
+
+	var zeroVal CreateProjectBudgetInput
 	return zeroVal, nil
 }
 
@@ -5158,6 +6384,62 @@ func (ec *executionContext) field_Query_bimModels_argsProjectID(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) field_Query_budgetDashboard_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Query_budgetDashboard_argsProjectID(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["projectId"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Query_budgetDashboard_argsProjectID(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (string, error) {
+	if _, ok := rawArgs["projectId"]; !ok {
+		var zeroVal string
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("projectId"))
+	if tmp, ok := rawArgs["projectId"]; ok {
+		return ec.unmarshalNID2string(ctx, tmp)
+	}
+
+	var zeroVal string
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_budgetLineItems_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Query_budgetLineItems_argsBudgetID(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["budgetId"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Query_budgetLineItems_argsBudgetID(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (string, error) {
+	if _, ok := rawArgs["budgetId"]; !ok {
+		var zeroVal string
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("budgetId"))
+	if tmp, ok := rawArgs["budgetId"]; ok {
+		return ec.unmarshalNID2string(ctx, tmp)
+	}
+
+	var zeroVal string
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Query_consultThread_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
 	var err error
 	args := map[string]any{}
@@ -5183,6 +6465,57 @@ func (ec *executionContext) field_Query_consultThread_argsID(
 	}
 
 	var zeroVal string
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_costEntries_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Query_costEntries_argsProjectID(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["projectId"] = arg0
+	arg1, err := ec.field_Query_costEntries_argsLineItemID(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["lineItemId"] = arg1
+	return args, nil
+}
+func (ec *executionContext) field_Query_costEntries_argsProjectID(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (string, error) {
+	if _, ok := rawArgs["projectId"]; !ok {
+		var zeroVal string
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("projectId"))
+	if tmp, ok := rawArgs["projectId"]; ok {
+		return ec.unmarshalNID2string(ctx, tmp)
+	}
+
+	var zeroVal string
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_costEntries_argsLineItemID(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (*string, error) {
+	if _, ok := rawArgs["lineItemId"]; !ok {
+		var zeroVal *string
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("lineItemId"))
+	if tmp, ok := rawArgs["lineItemId"]; ok {
+		return ec.unmarshalOID2ᚖstring(ctx, tmp)
+	}
+
+	var zeroVal *string
 	return zeroVal, nil
 }
 
@@ -5430,6 +6763,57 @@ func (ec *executionContext) field_Query_myQuizAttempts_argsLearnerID(
 	}
 
 	var zeroVal string
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_projectBudgets_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Query_projectBudgets_argsProjectID(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["projectId"] = arg0
+	arg1, err := ec.field_Query_projectBudgets_argsBudgetType(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["budgetType"] = arg1
+	return args, nil
+}
+func (ec *executionContext) field_Query_projectBudgets_argsProjectID(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (*string, error) {
+	if _, ok := rawArgs["projectId"]; !ok {
+		var zeroVal *string
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("projectId"))
+	if tmp, ok := rawArgs["projectId"]; ok {
+		return ec.unmarshalOID2ᚖstring(ctx, tmp)
+	}
+
+	var zeroVal *string
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_projectBudgets_argsBudgetType(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (*BudgetType, error) {
+	if _, ok := rawArgs["budgetType"]; !ok {
+		var zeroVal *BudgetType
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("budgetType"))
+	if tmp, ok := rawArgs["budgetType"]; ok {
+		return ec.unmarshalOBudgetType2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetType(ctx, tmp)
+	}
+
+	var zeroVal *BudgetType
 	return zeroVal, nil
 }
 
@@ -7050,6 +8434,188 @@ func (ec *executionContext) fieldContext_AndpadAnalyticsDashboard_projectHealthS
 	return fc, nil
 }
 
+func (ec *executionContext) _AndpadAnalyticsDashboard_budgetTotal(ctx context.Context, field graphql.CollectedField, obj *AndpadAnalyticsDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_AndpadAnalyticsDashboard_budgetTotal(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BudgetTotal, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_AndpadAnalyticsDashboard_budgetTotal(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "AndpadAnalyticsDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _AndpadAnalyticsDashboard_costTotal(ctx context.Context, field graphql.CollectedField, obj *AndpadAnalyticsDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_AndpadAnalyticsDashboard_costTotal(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CostTotal, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_AndpadAnalyticsDashboard_costTotal(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "AndpadAnalyticsDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _AndpadAnalyticsDashboard_budgetVariancePct(ctx context.Context, field graphql.CollectedField, obj *AndpadAnalyticsDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_AndpadAnalyticsDashboard_budgetVariancePct(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BudgetVariancePct, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_AndpadAnalyticsDashboard_budgetVariancePct(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "AndpadAnalyticsDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _AndpadAnalyticsDashboard_costByMonth(ctx context.Context, field graphql.CollectedField, obj *AndpadAnalyticsDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_AndpadAnalyticsDashboard_costByMonth(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CostByMonth, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*MonthlyCostMetric)
+	fc.Result = res
+	return ec.marshalNMonthlyCostMetric2ᚕᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐMonthlyCostMetricᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_AndpadAnalyticsDashboard_costByMonth(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "AndpadAnalyticsDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "month":
+				return ec.fieldContext_MonthlyCostMetric_month(ctx, field)
+			case "amount":
+				return ec.fieldContext_MonthlyCostMetric_amount(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type MonthlyCostMetric", field.Name)
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _AndpadAnalyticsDashboard_generatedAt(ctx context.Context, field graphql.CollectedField, obj *AndpadAnalyticsDashboard) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AndpadAnalyticsDashboard_generatedAt(ctx, field)
 	if err != nil {
@@ -7874,6 +9440,311 @@ func (ec *executionContext) fieldContext_AttendanceRecord_note(_ context.Context
 	return fc, nil
 }
 
+func (ec *executionContext) _BillingReconciliationItem_billingRecordId(ctx context.Context, field graphql.CollectedField, obj *BillingReconciliationItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BillingReconciliationItem_billingRecordId(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BillingRecordID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BillingReconciliationItem_billingRecordId(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BillingReconciliationItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BillingReconciliationItem_title(ctx context.Context, field graphql.CollectedField, obj *BillingReconciliationItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BillingReconciliationItem_title(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Title, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BillingReconciliationItem_title(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BillingReconciliationItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BillingReconciliationItem_billingAmount(ctx context.Context, field graphql.CollectedField, obj *BillingReconciliationItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BillingReconciliationItem_billingAmount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BillingAmount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BillingReconciliationItem_billingAmount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BillingReconciliationItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BillingReconciliationItem_costAmount(ctx context.Context, field graphql.CollectedField, obj *BillingReconciliationItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BillingReconciliationItem_costAmount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CostAmount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BillingReconciliationItem_costAmount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BillingReconciliationItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BillingReconciliationItem_varianceAmount(ctx context.Context, field graphql.CollectedField, obj *BillingReconciliationItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BillingReconciliationItem_varianceAmount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.VarianceAmount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BillingReconciliationItem_varianceAmount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BillingReconciliationItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BillingReconciliationItem_status(ctx context.Context, field graphql.CollectedField, obj *BillingReconciliationItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BillingReconciliationItem_status(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Status, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BillingReconciliationItem_status(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BillingReconciliationItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BillingReconciliationItem_billingDate(ctx context.Context, field graphql.CollectedField, obj *BillingReconciliationItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BillingReconciliationItem_billingDate(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BillingDate, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BillingReconciliationItem_billingDate(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BillingReconciliationItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _BimModel_id(ctx context.Context, field graphql.CollectedField, obj *BimModel) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_BimModel_id(ctx, field)
 	if err != nil {
@@ -8477,6 +10348,1902 @@ func (ec *executionContext) _Bookmark_createdAt(ctx context.Context, field graph
 func (ec *executionContext) fieldContext_Bookmark_createdAt(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Bookmark",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetCategorySummary_categoryCode(ctx context.Context, field graphql.CollectedField, obj *BudgetCategorySummary) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetCategorySummary_categoryCode(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CategoryCode, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetCategorySummary_categoryCode(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetCategorySummary",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetCategorySummary_categoryName(ctx context.Context, field graphql.CollectedField, obj *BudgetCategorySummary) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetCategorySummary_categoryName(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CategoryName, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetCategorySummary_categoryName(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetCategorySummary",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetCategorySummary_budgetAmount(ctx context.Context, field graphql.CollectedField, obj *BudgetCategorySummary) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetCategorySummary_budgetAmount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BudgetAmount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetCategorySummary_budgetAmount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetCategorySummary",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetCategorySummary_actualAmount(ctx context.Context, field graphql.CollectedField, obj *BudgetCategorySummary) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetCategorySummary_actualAmount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ActualAmount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetCategorySummary_actualAmount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetCategorySummary",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetCategorySummary_varianceAmount(ctx context.Context, field graphql.CollectedField, obj *BudgetCategorySummary) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetCategorySummary_varianceAmount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.VarianceAmount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetCategorySummary_varianceAmount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetCategorySummary",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetDashboard_projectId(ctx context.Context, field graphql.CollectedField, obj *BudgetDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetDashboard_projectId(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ProjectID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetDashboard_projectId(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetDashboard_projectName(ctx context.Context, field graphql.CollectedField, obj *BudgetDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetDashboard_projectName(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ProjectName, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetDashboard_projectName(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetDashboard_contractAmount(ctx context.Context, field graphql.CollectedField, obj *BudgetDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetDashboard_contractAmount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ContractAmount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetDashboard_contractAmount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetDashboard_totalEstimate(ctx context.Context, field graphql.CollectedField, obj *BudgetDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetDashboard_totalEstimate(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TotalEstimate, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetDashboard_totalEstimate(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetDashboard_totalBudget(ctx context.Context, field graphql.CollectedField, obj *BudgetDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetDashboard_totalBudget(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TotalBudget, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetDashboard_totalBudget(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetDashboard_totalCommitted(ctx context.Context, field graphql.CollectedField, obj *BudgetDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetDashboard_totalCommitted(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TotalCommitted, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetDashboard_totalCommitted(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetDashboard_totalActual(ctx context.Context, field graphql.CollectedField, obj *BudgetDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetDashboard_totalActual(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TotalActual, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetDashboard_totalActual(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetDashboard_totalForecast(ctx context.Context, field graphql.CollectedField, obj *BudgetDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetDashboard_totalForecast(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TotalForecast, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetDashboard_totalForecast(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetDashboard_varianceAmount(ctx context.Context, field graphql.CollectedField, obj *BudgetDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetDashboard_varianceAmount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.VarianceAmount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetDashboard_varianceAmount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetDashboard_variancePct(ctx context.Context, field graphql.CollectedField, obj *BudgetDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetDashboard_variancePct(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.VariancePct, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetDashboard_variancePct(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetDashboard_completionPct(ctx context.Context, field graphql.CollectedField, obj *BudgetDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetDashboard_completionPct(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CompletionPct, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetDashboard_completionPct(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetDashboard_estimateBudgetTotal(ctx context.Context, field graphql.CollectedField, obj *BudgetDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetDashboard_estimateBudgetTotal(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.EstimateBudgetTotal, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetDashboard_estimateBudgetTotal(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetDashboard_grossMarginPct(ctx context.Context, field graphql.CollectedField, obj *BudgetDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetDashboard_grossMarginPct(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.GrossMarginPct, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetDashboard_grossMarginPct(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetDashboard_inquiryProfitTotal(ctx context.Context, field graphql.CollectedField, obj *BudgetDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetDashboard_inquiryProfitTotal(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.InquiryProfitTotal, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetDashboard_inquiryProfitTotal(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetDashboard_billingTotal(ctx context.Context, field graphql.CollectedField, obj *BudgetDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetDashboard_billingTotal(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BillingTotal, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetDashboard_billingTotal(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetDashboard_billingBalance(ctx context.Context, field graphql.CollectedField, obj *BudgetDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetDashboard_billingBalance(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BillingBalance, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetDashboard_billingBalance(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetDashboard_monthlyCosts(ctx context.Context, field graphql.CollectedField, obj *BudgetDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetDashboard_monthlyCosts(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MonthlyCosts, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*MonthlyCostMetric)
+	fc.Result = res
+	return ec.marshalNMonthlyCostMetric2ᚕᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐMonthlyCostMetricᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetDashboard_monthlyCosts(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "month":
+				return ec.fieldContext_MonthlyCostMetric_month(ctx, field)
+			case "amount":
+				return ec.fieldContext_MonthlyCostMetric_amount(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type MonthlyCostMetric", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetDashboard_reconciliation(ctx context.Context, field graphql.CollectedField, obj *BudgetDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetDashboard_reconciliation(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Reconciliation, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*BillingReconciliationItem)
+	fc.Result = res
+	return ec.marshalNBillingReconciliationItem2ᚕᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBillingReconciliationItemᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetDashboard_reconciliation(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "billingRecordId":
+				return ec.fieldContext_BillingReconciliationItem_billingRecordId(ctx, field)
+			case "title":
+				return ec.fieldContext_BillingReconciliationItem_title(ctx, field)
+			case "billingAmount":
+				return ec.fieldContext_BillingReconciliationItem_billingAmount(ctx, field)
+			case "costAmount":
+				return ec.fieldContext_BillingReconciliationItem_costAmount(ctx, field)
+			case "varianceAmount":
+				return ec.fieldContext_BillingReconciliationItem_varianceAmount(ctx, field)
+			case "status":
+				return ec.fieldContext_BillingReconciliationItem_status(ctx, field)
+			case "billingDate":
+				return ec.fieldContext_BillingReconciliationItem_billingDate(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type BillingReconciliationItem", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetDashboard_lineItems(ctx context.Context, field graphql.CollectedField, obj *BudgetDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetDashboard_lineItems(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.LineItems, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*BudgetLineItem)
+	fc.Result = res
+	return ec.marshalNBudgetLineItem2ᚕᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetLineItemᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetDashboard_lineItems(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_BudgetLineItem_id(ctx, field)
+			case "budgetId":
+				return ec.fieldContext_BudgetLineItem_budgetId(ctx, field)
+			case "categoryCode":
+				return ec.fieldContext_BudgetLineItem_categoryCode(ctx, field)
+			case "categoryName":
+				return ec.fieldContext_BudgetLineItem_categoryName(ctx, field)
+			case "wbsCode":
+				return ec.fieldContext_BudgetLineItem_wbsCode(ctx, field)
+			case "description":
+				return ec.fieldContext_BudgetLineItem_description(ctx, field)
+			case "estimateAmount":
+				return ec.fieldContext_BudgetLineItem_estimateAmount(ctx, field)
+			case "budgetAmount":
+				return ec.fieldContext_BudgetLineItem_budgetAmount(ctx, field)
+			case "committedAmount":
+				return ec.fieldContext_BudgetLineItem_committedAmount(ctx, field)
+			case "actualAmount":
+				return ec.fieldContext_BudgetLineItem_actualAmount(ctx, field)
+			case "varianceAmount":
+				return ec.fieldContext_BudgetLineItem_varianceAmount(ctx, field)
+			case "variancePct":
+				return ec.fieldContext_BudgetLineItem_variancePct(ctx, field)
+			case "sortOrder":
+				return ec.fieldContext_BudgetLineItem_sortOrder(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_BudgetLineItem_createdAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type BudgetLineItem", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetDashboard_recentCosts(ctx context.Context, field graphql.CollectedField, obj *BudgetDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetDashboard_recentCosts(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.RecentCosts, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*CostEntry)
+	fc.Result = res
+	return ec.marshalNCostEntry2ᚕᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐCostEntryᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetDashboard_recentCosts(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_CostEntry_id(ctx, field)
+			case "projectId":
+				return ec.fieldContext_CostEntry_projectId(ctx, field)
+			case "projectName":
+				return ec.fieldContext_CostEntry_projectName(ctx, field)
+			case "lineItemId":
+				return ec.fieldContext_CostEntry_lineItemId(ctx, field)
+			case "lineItemName":
+				return ec.fieldContext_CostEntry_lineItemName(ctx, field)
+			case "entryType":
+				return ec.fieldContext_CostEntry_entryType(ctx, field)
+			case "vendorName":
+				return ec.fieldContext_CostEntry_vendorName(ctx, field)
+			case "description":
+				return ec.fieldContext_CostEntry_description(ctx, field)
+			case "amount":
+				return ec.fieldContext_CostEntry_amount(ctx, field)
+			case "entryDate":
+				return ec.fieldContext_CostEntry_entryDate(ctx, field)
+			case "invoiceNo":
+				return ec.fieldContext_CostEntry_invoiceNo(ctx, field)
+			case "recordedBy":
+				return ec.fieldContext_CostEntry_recordedBy(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_CostEntry_createdAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type CostEntry", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetDashboard_categorySummary(ctx context.Context, field graphql.CollectedField, obj *BudgetDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetDashboard_categorySummary(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CategorySummary, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*BudgetCategorySummary)
+	fc.Result = res
+	return ec.marshalNBudgetCategorySummary2ᚕᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetCategorySummaryᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetDashboard_categorySummary(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "categoryCode":
+				return ec.fieldContext_BudgetCategorySummary_categoryCode(ctx, field)
+			case "categoryName":
+				return ec.fieldContext_BudgetCategorySummary_categoryName(ctx, field)
+			case "budgetAmount":
+				return ec.fieldContext_BudgetCategorySummary_budgetAmount(ctx, field)
+			case "actualAmount":
+				return ec.fieldContext_BudgetCategorySummary_actualAmount(ctx, field)
+			case "varianceAmount":
+				return ec.fieldContext_BudgetCategorySummary_varianceAmount(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type BudgetCategorySummary", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetDashboard_generatedAt(ctx context.Context, field graphql.CollectedField, obj *BudgetDashboard) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetDashboard_generatedAt(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.GeneratedAt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetDashboard_generatedAt(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetDashboard",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetLineItem_id(ctx context.Context, field graphql.CollectedField, obj *BudgetLineItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetLineItem_id(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetLineItem_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetLineItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetLineItem_budgetId(ctx context.Context, field graphql.CollectedField, obj *BudgetLineItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetLineItem_budgetId(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BudgetID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetLineItem_budgetId(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetLineItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetLineItem_categoryCode(ctx context.Context, field graphql.CollectedField, obj *BudgetLineItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetLineItem_categoryCode(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CategoryCode, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetLineItem_categoryCode(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetLineItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetLineItem_categoryName(ctx context.Context, field graphql.CollectedField, obj *BudgetLineItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetLineItem_categoryName(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CategoryName, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetLineItem_categoryName(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetLineItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetLineItem_wbsCode(ctx context.Context, field graphql.CollectedField, obj *BudgetLineItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetLineItem_wbsCode(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.WbsCode, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetLineItem_wbsCode(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetLineItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetLineItem_description(ctx context.Context, field graphql.CollectedField, obj *BudgetLineItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetLineItem_description(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Description, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetLineItem_description(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetLineItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetLineItem_estimateAmount(ctx context.Context, field graphql.CollectedField, obj *BudgetLineItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetLineItem_estimateAmount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.EstimateAmount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetLineItem_estimateAmount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetLineItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetLineItem_budgetAmount(ctx context.Context, field graphql.CollectedField, obj *BudgetLineItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetLineItem_budgetAmount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BudgetAmount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetLineItem_budgetAmount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetLineItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetLineItem_committedAmount(ctx context.Context, field graphql.CollectedField, obj *BudgetLineItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetLineItem_committedAmount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CommittedAmount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetLineItem_committedAmount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetLineItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetLineItem_actualAmount(ctx context.Context, field graphql.CollectedField, obj *BudgetLineItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetLineItem_actualAmount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ActualAmount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetLineItem_actualAmount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetLineItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetLineItem_varianceAmount(ctx context.Context, field graphql.CollectedField, obj *BudgetLineItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetLineItem_varianceAmount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.VarianceAmount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetLineItem_varianceAmount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetLineItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetLineItem_variancePct(ctx context.Context, field graphql.CollectedField, obj *BudgetLineItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetLineItem_variancePct(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.VariancePct, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetLineItem_variancePct(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetLineItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetLineItem_sortOrder(ctx context.Context, field graphql.CollectedField, obj *BudgetLineItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetLineItem_sortOrder(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.SortOrder, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetLineItem_sortOrder(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetLineItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BudgetLineItem_createdAt(ctx context.Context, field graphql.CollectedField, obj *BudgetLineItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BudgetLineItem_createdAt(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedAt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BudgetLineItem_createdAt(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BudgetLineItem",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
@@ -10255,6 +14022,578 @@ func (ec *executionContext) _ContractTemplate_createdAt(ctx context.Context, fie
 func (ec *executionContext) fieldContext_ContractTemplate_createdAt(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "ContractTemplate",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CostEntry_id(ctx context.Context, field graphql.CollectedField, obj *CostEntry) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CostEntry_id(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CostEntry_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CostEntry",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CostEntry_projectId(ctx context.Context, field graphql.CollectedField, obj *CostEntry) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CostEntry_projectId(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ProjectID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CostEntry_projectId(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CostEntry",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CostEntry_projectName(ctx context.Context, field graphql.CollectedField, obj *CostEntry) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CostEntry_projectName(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ProjectName, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CostEntry_projectName(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CostEntry",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CostEntry_lineItemId(ctx context.Context, field graphql.CollectedField, obj *CostEntry) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CostEntry_lineItemId(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.LineItemID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CostEntry_lineItemId(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CostEntry",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CostEntry_lineItemName(ctx context.Context, field graphql.CollectedField, obj *CostEntry) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CostEntry_lineItemName(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.LineItemName, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CostEntry_lineItemName(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CostEntry",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CostEntry_entryType(ctx context.Context, field graphql.CollectedField, obj *CostEntry) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CostEntry_entryType(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.EntryType, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(CostEntryType)
+	fc.Result = res
+	return ec.marshalNCostEntryType2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐCostEntryType(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CostEntry_entryType(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CostEntry",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type CostEntryType does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CostEntry_vendorName(ctx context.Context, field graphql.CollectedField, obj *CostEntry) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CostEntry_vendorName(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.VendorName, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CostEntry_vendorName(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CostEntry",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CostEntry_description(ctx context.Context, field graphql.CollectedField, obj *CostEntry) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CostEntry_description(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Description, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CostEntry_description(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CostEntry",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CostEntry_amount(ctx context.Context, field graphql.CollectedField, obj *CostEntry) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CostEntry_amount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Amount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CostEntry_amount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CostEntry",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CostEntry_entryDate(ctx context.Context, field graphql.CollectedField, obj *CostEntry) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CostEntry_entryDate(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.EntryDate, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CostEntry_entryDate(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CostEntry",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CostEntry_invoiceNo(ctx context.Context, field graphql.CollectedField, obj *CostEntry) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CostEntry_invoiceNo(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.InvoiceNo, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CostEntry_invoiceNo(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CostEntry",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CostEntry_recordedBy(ctx context.Context, field graphql.CollectedField, obj *CostEntry) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CostEntry_recordedBy(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.RecordedBy, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CostEntry_recordedBy(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CostEntry",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CostEntry_createdAt(ctx context.Context, field graphql.CollectedField, obj *CostEntry) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CostEntry_createdAt(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedAt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CostEntry_createdAt(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CostEntry",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
@@ -13157,6 +17496,94 @@ func (ec *executionContext) fieldContext_ModuleUsageMetric_recordCount(_ context
 	return fc, nil
 }
 
+func (ec *executionContext) _MonthlyCostMetric_month(ctx context.Context, field graphql.CollectedField, obj *MonthlyCostMetric) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_MonthlyCostMetric_month(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Month, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_MonthlyCostMetric_month(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "MonthlyCostMetric",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _MonthlyCostMetric_amount(ctx context.Context, field graphql.CollectedField, obj *MonthlyCostMetric) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_MonthlyCostMetric_amount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Amount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_MonthlyCostMetric_amount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "MonthlyCostMetric",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Mutation_updateOrganization(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Mutation_updateOrganization(ctx, field)
 	if err != nil {
@@ -15064,6 +19491,431 @@ func (ec *executionContext) fieldContext_Mutation_createBimModel(ctx context.Con
 	return fc, nil
 }
 
+func (ec *executionContext) _Mutation_createProjectBudget(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_createProjectBudget(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateProjectBudget(rctx, fc.Args["input"].(CreateProjectBudgetInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*ProjectBudget)
+	fc.Result = res
+	return ec.marshalNProjectBudget2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐProjectBudget(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_createProjectBudget(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_ProjectBudget_id(ctx, field)
+			case "projectId":
+				return ec.fieldContext_ProjectBudget_projectId(ctx, field)
+			case "projectName":
+				return ec.fieldContext_ProjectBudget_projectName(ctx, field)
+			case "name":
+				return ec.fieldContext_ProjectBudget_name(ctx, field)
+			case "budgetType":
+				return ec.fieldContext_ProjectBudget_budgetType(ctx, field)
+			case "status":
+				return ec.fieldContext_ProjectBudget_status(ctx, field)
+			case "versionNo":
+				return ec.fieldContext_ProjectBudget_versionNo(ctx, field)
+			case "contractAmount":
+				return ec.fieldContext_ProjectBudget_contractAmount(ctx, field)
+			case "totalEstimate":
+				return ec.fieldContext_ProjectBudget_totalEstimate(ctx, field)
+			case "totalBudget":
+				return ec.fieldContext_ProjectBudget_totalBudget(ctx, field)
+			case "totalCommitted":
+				return ec.fieldContext_ProjectBudget_totalCommitted(ctx, field)
+			case "totalActual":
+				return ec.fieldContext_ProjectBudget_totalActual(ctx, field)
+			case "notes":
+				return ec.fieldContext_ProjectBudget_notes(ctx, field)
+			case "approvedAt":
+				return ec.fieldContext_ProjectBudget_approvedAt(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_ProjectBudget_createdAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type ProjectBudget", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_createProjectBudget_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_createBudgetLineItem(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_createBudgetLineItem(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateBudgetLineItem(rctx, fc.Args["input"].(CreateBudgetLineItemInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*BudgetLineItem)
+	fc.Result = res
+	return ec.marshalNBudgetLineItem2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetLineItem(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_createBudgetLineItem(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_BudgetLineItem_id(ctx, field)
+			case "budgetId":
+				return ec.fieldContext_BudgetLineItem_budgetId(ctx, field)
+			case "categoryCode":
+				return ec.fieldContext_BudgetLineItem_categoryCode(ctx, field)
+			case "categoryName":
+				return ec.fieldContext_BudgetLineItem_categoryName(ctx, field)
+			case "wbsCode":
+				return ec.fieldContext_BudgetLineItem_wbsCode(ctx, field)
+			case "description":
+				return ec.fieldContext_BudgetLineItem_description(ctx, field)
+			case "estimateAmount":
+				return ec.fieldContext_BudgetLineItem_estimateAmount(ctx, field)
+			case "budgetAmount":
+				return ec.fieldContext_BudgetLineItem_budgetAmount(ctx, field)
+			case "committedAmount":
+				return ec.fieldContext_BudgetLineItem_committedAmount(ctx, field)
+			case "actualAmount":
+				return ec.fieldContext_BudgetLineItem_actualAmount(ctx, field)
+			case "varianceAmount":
+				return ec.fieldContext_BudgetLineItem_varianceAmount(ctx, field)
+			case "variancePct":
+				return ec.fieldContext_BudgetLineItem_variancePct(ctx, field)
+			case "sortOrder":
+				return ec.fieldContext_BudgetLineItem_sortOrder(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_BudgetLineItem_createdAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type BudgetLineItem", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_createBudgetLineItem_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_createCostEntry(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_createCostEntry(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateCostEntry(rctx, fc.Args["input"].(CreateCostEntryInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*CostEntry)
+	fc.Result = res
+	return ec.marshalNCostEntry2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐCostEntry(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_createCostEntry(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_CostEntry_id(ctx, field)
+			case "projectId":
+				return ec.fieldContext_CostEntry_projectId(ctx, field)
+			case "projectName":
+				return ec.fieldContext_CostEntry_projectName(ctx, field)
+			case "lineItemId":
+				return ec.fieldContext_CostEntry_lineItemId(ctx, field)
+			case "lineItemName":
+				return ec.fieldContext_CostEntry_lineItemName(ctx, field)
+			case "entryType":
+				return ec.fieldContext_CostEntry_entryType(ctx, field)
+			case "vendorName":
+				return ec.fieldContext_CostEntry_vendorName(ctx, field)
+			case "description":
+				return ec.fieldContext_CostEntry_description(ctx, field)
+			case "amount":
+				return ec.fieldContext_CostEntry_amount(ctx, field)
+			case "entryDate":
+				return ec.fieldContext_CostEntry_entryDate(ctx, field)
+			case "invoiceNo":
+				return ec.fieldContext_CostEntry_invoiceNo(ctx, field)
+			case "recordedBy":
+				return ec.fieldContext_CostEntry_recordedBy(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_CostEntry_createdAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type CostEntry", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_createCostEntry_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_approveProjectBudget(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_approveProjectBudget(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().ApproveProjectBudget(rctx, fc.Args["id"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*ProjectBudget)
+	fc.Result = res
+	return ec.marshalNProjectBudget2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐProjectBudget(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_approveProjectBudget(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_ProjectBudget_id(ctx, field)
+			case "projectId":
+				return ec.fieldContext_ProjectBudget_projectId(ctx, field)
+			case "projectName":
+				return ec.fieldContext_ProjectBudget_projectName(ctx, field)
+			case "name":
+				return ec.fieldContext_ProjectBudget_name(ctx, field)
+			case "budgetType":
+				return ec.fieldContext_ProjectBudget_budgetType(ctx, field)
+			case "status":
+				return ec.fieldContext_ProjectBudget_status(ctx, field)
+			case "versionNo":
+				return ec.fieldContext_ProjectBudget_versionNo(ctx, field)
+			case "contractAmount":
+				return ec.fieldContext_ProjectBudget_contractAmount(ctx, field)
+			case "totalEstimate":
+				return ec.fieldContext_ProjectBudget_totalEstimate(ctx, field)
+			case "totalBudget":
+				return ec.fieldContext_ProjectBudget_totalBudget(ctx, field)
+			case "totalCommitted":
+				return ec.fieldContext_ProjectBudget_totalCommitted(ctx, field)
+			case "totalActual":
+				return ec.fieldContext_ProjectBudget_totalActual(ctx, field)
+			case "notes":
+				return ec.fieldContext_ProjectBudget_notes(ctx, field)
+			case "approvedAt":
+				return ec.fieldContext_ProjectBudget_approvedAt(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_ProjectBudget_createdAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type ProjectBudget", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_approveProjectBudget_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_createCostFromBilling(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_createCostFromBilling(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateCostFromBilling(rctx, fc.Args["billingRecordId"].(string), fc.Args["projectId"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*CostEntry)
+	fc.Result = res
+	return ec.marshalNCostEntry2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐCostEntry(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_createCostFromBilling(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_CostEntry_id(ctx, field)
+			case "projectId":
+				return ec.fieldContext_CostEntry_projectId(ctx, field)
+			case "projectName":
+				return ec.fieldContext_CostEntry_projectName(ctx, field)
+			case "lineItemId":
+				return ec.fieldContext_CostEntry_lineItemId(ctx, field)
+			case "lineItemName":
+				return ec.fieldContext_CostEntry_lineItemName(ctx, field)
+			case "entryType":
+				return ec.fieldContext_CostEntry_entryType(ctx, field)
+			case "vendorName":
+				return ec.fieldContext_CostEntry_vendorName(ctx, field)
+			case "description":
+				return ec.fieldContext_CostEntry_description(ctx, field)
+			case "amount":
+				return ec.fieldContext_CostEntry_amount(ctx, field)
+			case "entryDate":
+				return ec.fieldContext_CostEntry_entryDate(ctx, field)
+			case "invoiceNo":
+				return ec.fieldContext_CostEntry_invoiceNo(ctx, field)
+			case "recordedBy":
+				return ec.fieldContext_CostEntry_recordedBy(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_CostEntry_createdAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type CostEntry", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_createCostFromBilling_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Organization_id(ctx context.Context, field graphql.CollectedField, obj *Organization) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Organization_id(ctx, field)
 	if err != nil {
@@ -15685,6 +20537,1015 @@ func (ec *executionContext) fieldContext_PageInfo_totalPages(_ context.Context, 
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectBudget_id(ctx context.Context, field graphql.CollectedField, obj *ProjectBudget) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectBudget_id(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectBudget_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectBudget",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectBudget_projectId(ctx context.Context, field graphql.CollectedField, obj *ProjectBudget) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectBudget_projectId(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ProjectID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectBudget_projectId(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectBudget",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectBudget_projectName(ctx context.Context, field graphql.CollectedField, obj *ProjectBudget) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectBudget_projectName(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ProjectName, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectBudget_projectName(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectBudget",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectBudget_name(ctx context.Context, field graphql.CollectedField, obj *ProjectBudget) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectBudget_name(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectBudget_name(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectBudget",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectBudget_budgetType(ctx context.Context, field graphql.CollectedField, obj *ProjectBudget) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectBudget_budgetType(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BudgetType, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(BudgetType)
+	fc.Result = res
+	return ec.marshalNBudgetType2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetType(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectBudget_budgetType(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectBudget",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type BudgetType does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectBudget_status(ctx context.Context, field graphql.CollectedField, obj *ProjectBudget) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectBudget_status(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Status, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(BudgetStatus)
+	fc.Result = res
+	return ec.marshalNBudgetStatus2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetStatus(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectBudget_status(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectBudget",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type BudgetStatus does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectBudget_versionNo(ctx context.Context, field graphql.CollectedField, obj *ProjectBudget) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectBudget_versionNo(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.VersionNo, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectBudget_versionNo(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectBudget",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectBudget_contractAmount(ctx context.Context, field graphql.CollectedField, obj *ProjectBudget) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectBudget_contractAmount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ContractAmount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectBudget_contractAmount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectBudget",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectBudget_totalEstimate(ctx context.Context, field graphql.CollectedField, obj *ProjectBudget) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectBudget_totalEstimate(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TotalEstimate, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectBudget_totalEstimate(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectBudget",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectBudget_totalBudget(ctx context.Context, field graphql.CollectedField, obj *ProjectBudget) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectBudget_totalBudget(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TotalBudget, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectBudget_totalBudget(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectBudget",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectBudget_totalCommitted(ctx context.Context, field graphql.CollectedField, obj *ProjectBudget) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectBudget_totalCommitted(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TotalCommitted, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectBudget_totalCommitted(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectBudget",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectBudget_totalActual(ctx context.Context, field graphql.CollectedField, obj *ProjectBudget) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectBudget_totalActual(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TotalActual, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectBudget_totalActual(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectBudget",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectBudget_notes(ctx context.Context, field graphql.CollectedField, obj *ProjectBudget) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectBudget_notes(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Notes, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectBudget_notes(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectBudget",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectBudget_approvedAt(ctx context.Context, field graphql.CollectedField, obj *ProjectBudget) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectBudget_approvedAt(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ApprovedAt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectBudget_approvedAt(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectBudget",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectBudget_createdAt(ctx context.Context, field graphql.CollectedField, obj *ProjectBudget) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectBudget_createdAt(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedAt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectBudget_createdAt(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectBudget",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectBudgetSummary_projectId(ctx context.Context, field graphql.CollectedField, obj *ProjectBudgetSummary) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectBudgetSummary_projectId(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ProjectID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectBudgetSummary_projectId(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectBudgetSummary",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectBudgetSummary_projectName(ctx context.Context, field graphql.CollectedField, obj *ProjectBudgetSummary) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectBudgetSummary_projectName(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ProjectName, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectBudgetSummary_projectName(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectBudgetSummary",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectBudgetSummary_status(ctx context.Context, field graphql.CollectedField, obj *ProjectBudgetSummary) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectBudgetSummary_status(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Status, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(ConstructionProjectStatus)
+	fc.Result = res
+	return ec.marshalNConstructionProjectStatus2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐConstructionProjectStatus(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectBudgetSummary_status(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectBudgetSummary",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ConstructionProjectStatus does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectBudgetSummary_contractAmount(ctx context.Context, field graphql.CollectedField, obj *ProjectBudgetSummary) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectBudgetSummary_contractAmount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ContractAmount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectBudgetSummary_contractAmount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectBudgetSummary",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectBudgetSummary_totalBudget(ctx context.Context, field graphql.CollectedField, obj *ProjectBudgetSummary) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectBudgetSummary_totalBudget(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TotalBudget, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectBudgetSummary_totalBudget(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectBudgetSummary",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectBudgetSummary_totalActual(ctx context.Context, field graphql.CollectedField, obj *ProjectBudgetSummary) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectBudgetSummary_totalActual(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TotalActual, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectBudgetSummary_totalActual(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectBudgetSummary",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectBudgetSummary_billingTotal(ctx context.Context, field graphql.CollectedField, obj *ProjectBudgetSummary) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectBudgetSummary_billingTotal(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BillingTotal, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectBudgetSummary_billingTotal(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectBudgetSummary",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectBudgetSummary_variancePct(ctx context.Context, field graphql.CollectedField, obj *ProjectBudgetSummary) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectBudgetSummary_variancePct(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.VariancePct, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectBudgetSummary_variancePct(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectBudgetSummary",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
 		},
 	}
 	return fc, nil
@@ -18615,6 +24476,14 @@ func (ec *executionContext) fieldContext_Query_andpadAnalytics(ctx context.Conte
 				return ec.fieldContext_AndpadAnalyticsDashboard_recordsByWeek(ctx, field)
 			case "projectHealthScore":
 				return ec.fieldContext_AndpadAnalyticsDashboard_projectHealthScore(ctx, field)
+			case "budgetTotal":
+				return ec.fieldContext_AndpadAnalyticsDashboard_budgetTotal(ctx, field)
+			case "costTotal":
+				return ec.fieldContext_AndpadAnalyticsDashboard_costTotal(ctx, field)
+			case "budgetVariancePct":
+				return ec.fieldContext_AndpadAnalyticsDashboard_budgetVariancePct(ctx, field)
+			case "costByMonth":
+				return ec.fieldContext_AndpadAnalyticsDashboard_costByMonth(ctx, field)
 			case "generatedAt":
 				return ec.fieldContext_AndpadAnalyticsDashboard_generatedAt(ctx, field)
 			}
@@ -18844,6 +24713,424 @@ func (ec *executionContext) fieldContext_Query_bimModel(ctx context.Context, fie
 	if fc.Args, err = ec.field_Query_bimModel_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_projectBudgets(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_projectBudgets(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().ProjectBudgets(rctx, fc.Args["projectId"].(*string), fc.Args["budgetType"].(*BudgetType))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*ProjectBudget)
+	fc.Result = res
+	return ec.marshalNProjectBudget2ᚕᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐProjectBudgetᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_projectBudgets(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_ProjectBudget_id(ctx, field)
+			case "projectId":
+				return ec.fieldContext_ProjectBudget_projectId(ctx, field)
+			case "projectName":
+				return ec.fieldContext_ProjectBudget_projectName(ctx, field)
+			case "name":
+				return ec.fieldContext_ProjectBudget_name(ctx, field)
+			case "budgetType":
+				return ec.fieldContext_ProjectBudget_budgetType(ctx, field)
+			case "status":
+				return ec.fieldContext_ProjectBudget_status(ctx, field)
+			case "versionNo":
+				return ec.fieldContext_ProjectBudget_versionNo(ctx, field)
+			case "contractAmount":
+				return ec.fieldContext_ProjectBudget_contractAmount(ctx, field)
+			case "totalEstimate":
+				return ec.fieldContext_ProjectBudget_totalEstimate(ctx, field)
+			case "totalBudget":
+				return ec.fieldContext_ProjectBudget_totalBudget(ctx, field)
+			case "totalCommitted":
+				return ec.fieldContext_ProjectBudget_totalCommitted(ctx, field)
+			case "totalActual":
+				return ec.fieldContext_ProjectBudget_totalActual(ctx, field)
+			case "notes":
+				return ec.fieldContext_ProjectBudget_notes(ctx, field)
+			case "approvedAt":
+				return ec.fieldContext_ProjectBudget_approvedAt(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_ProjectBudget_createdAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type ProjectBudget", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_projectBudgets_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_budgetLineItems(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_budgetLineItems(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().BudgetLineItems(rctx, fc.Args["budgetId"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*BudgetLineItem)
+	fc.Result = res
+	return ec.marshalNBudgetLineItem2ᚕᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetLineItemᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_budgetLineItems(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_BudgetLineItem_id(ctx, field)
+			case "budgetId":
+				return ec.fieldContext_BudgetLineItem_budgetId(ctx, field)
+			case "categoryCode":
+				return ec.fieldContext_BudgetLineItem_categoryCode(ctx, field)
+			case "categoryName":
+				return ec.fieldContext_BudgetLineItem_categoryName(ctx, field)
+			case "wbsCode":
+				return ec.fieldContext_BudgetLineItem_wbsCode(ctx, field)
+			case "description":
+				return ec.fieldContext_BudgetLineItem_description(ctx, field)
+			case "estimateAmount":
+				return ec.fieldContext_BudgetLineItem_estimateAmount(ctx, field)
+			case "budgetAmount":
+				return ec.fieldContext_BudgetLineItem_budgetAmount(ctx, field)
+			case "committedAmount":
+				return ec.fieldContext_BudgetLineItem_committedAmount(ctx, field)
+			case "actualAmount":
+				return ec.fieldContext_BudgetLineItem_actualAmount(ctx, field)
+			case "varianceAmount":
+				return ec.fieldContext_BudgetLineItem_varianceAmount(ctx, field)
+			case "variancePct":
+				return ec.fieldContext_BudgetLineItem_variancePct(ctx, field)
+			case "sortOrder":
+				return ec.fieldContext_BudgetLineItem_sortOrder(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_BudgetLineItem_createdAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type BudgetLineItem", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_budgetLineItems_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_costEntries(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_costEntries(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().CostEntries(rctx, fc.Args["projectId"].(string), fc.Args["lineItemId"].(*string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*CostEntry)
+	fc.Result = res
+	return ec.marshalNCostEntry2ᚕᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐCostEntryᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_costEntries(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_CostEntry_id(ctx, field)
+			case "projectId":
+				return ec.fieldContext_CostEntry_projectId(ctx, field)
+			case "projectName":
+				return ec.fieldContext_CostEntry_projectName(ctx, field)
+			case "lineItemId":
+				return ec.fieldContext_CostEntry_lineItemId(ctx, field)
+			case "lineItemName":
+				return ec.fieldContext_CostEntry_lineItemName(ctx, field)
+			case "entryType":
+				return ec.fieldContext_CostEntry_entryType(ctx, field)
+			case "vendorName":
+				return ec.fieldContext_CostEntry_vendorName(ctx, field)
+			case "description":
+				return ec.fieldContext_CostEntry_description(ctx, field)
+			case "amount":
+				return ec.fieldContext_CostEntry_amount(ctx, field)
+			case "entryDate":
+				return ec.fieldContext_CostEntry_entryDate(ctx, field)
+			case "invoiceNo":
+				return ec.fieldContext_CostEntry_invoiceNo(ctx, field)
+			case "recordedBy":
+				return ec.fieldContext_CostEntry_recordedBy(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_CostEntry_createdAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type CostEntry", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_costEntries_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_budgetDashboard(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_budgetDashboard(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().BudgetDashboard(rctx, fc.Args["projectId"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*BudgetDashboard)
+	fc.Result = res
+	return ec.marshalNBudgetDashboard2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetDashboard(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_budgetDashboard(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "projectId":
+				return ec.fieldContext_BudgetDashboard_projectId(ctx, field)
+			case "projectName":
+				return ec.fieldContext_BudgetDashboard_projectName(ctx, field)
+			case "contractAmount":
+				return ec.fieldContext_BudgetDashboard_contractAmount(ctx, field)
+			case "totalEstimate":
+				return ec.fieldContext_BudgetDashboard_totalEstimate(ctx, field)
+			case "totalBudget":
+				return ec.fieldContext_BudgetDashboard_totalBudget(ctx, field)
+			case "totalCommitted":
+				return ec.fieldContext_BudgetDashboard_totalCommitted(ctx, field)
+			case "totalActual":
+				return ec.fieldContext_BudgetDashboard_totalActual(ctx, field)
+			case "totalForecast":
+				return ec.fieldContext_BudgetDashboard_totalForecast(ctx, field)
+			case "varianceAmount":
+				return ec.fieldContext_BudgetDashboard_varianceAmount(ctx, field)
+			case "variancePct":
+				return ec.fieldContext_BudgetDashboard_variancePct(ctx, field)
+			case "completionPct":
+				return ec.fieldContext_BudgetDashboard_completionPct(ctx, field)
+			case "estimateBudgetTotal":
+				return ec.fieldContext_BudgetDashboard_estimateBudgetTotal(ctx, field)
+			case "grossMarginPct":
+				return ec.fieldContext_BudgetDashboard_grossMarginPct(ctx, field)
+			case "inquiryProfitTotal":
+				return ec.fieldContext_BudgetDashboard_inquiryProfitTotal(ctx, field)
+			case "billingTotal":
+				return ec.fieldContext_BudgetDashboard_billingTotal(ctx, field)
+			case "billingBalance":
+				return ec.fieldContext_BudgetDashboard_billingBalance(ctx, field)
+			case "monthlyCosts":
+				return ec.fieldContext_BudgetDashboard_monthlyCosts(ctx, field)
+			case "reconciliation":
+				return ec.fieldContext_BudgetDashboard_reconciliation(ctx, field)
+			case "lineItems":
+				return ec.fieldContext_BudgetDashboard_lineItems(ctx, field)
+			case "recentCosts":
+				return ec.fieldContext_BudgetDashboard_recentCosts(ctx, field)
+			case "categorySummary":
+				return ec.fieldContext_BudgetDashboard_categorySummary(ctx, field)
+			case "generatedAt":
+				return ec.fieldContext_BudgetDashboard_generatedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type BudgetDashboard", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_budgetDashboard_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_projectBudgetSummaries(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_projectBudgetSummaries(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().ProjectBudgetSummaries(rctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*ProjectBudgetSummary)
+	fc.Result = res
+	return ec.marshalNProjectBudgetSummary2ᚕᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐProjectBudgetSummaryᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_projectBudgetSummaries(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "projectId":
+				return ec.fieldContext_ProjectBudgetSummary_projectId(ctx, field)
+			case "projectName":
+				return ec.fieldContext_ProjectBudgetSummary_projectName(ctx, field)
+			case "status":
+				return ec.fieldContext_ProjectBudgetSummary_status(ctx, field)
+			case "contractAmount":
+				return ec.fieldContext_ProjectBudgetSummary_contractAmount(ctx, field)
+			case "totalBudget":
+				return ec.fieldContext_ProjectBudgetSummary_totalBudget(ctx, field)
+			case "totalActual":
+				return ec.fieldContext_ProjectBudgetSummary_totalActual(ctx, field)
+			case "billingTotal":
+				return ec.fieldContext_ProjectBudgetSummary_billingTotal(ctx, field)
+			case "variancePct":
+				return ec.fieldContext_ProjectBudgetSummary_variancePct(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type ProjectBudgetSummary", field.Name)
+		},
 	}
 	return fc, nil
 }
@@ -25077,6 +31364,89 @@ func (ec *executionContext) unmarshalInputCreateBimModelInput(ctx context.Contex
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputCreateBudgetLineItemInput(ctx context.Context, obj any) (CreateBudgetLineItemInput, error) {
+	var it CreateBudgetLineItemInput
+	asMap := map[string]any{}
+	for k, v := range obj.(map[string]any) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"budgetId", "categoryCode", "categoryName", "wbsCode", "description", "estimateAmount", "budgetAmount", "committedAmount", "sortOrder"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "budgetId":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("budgetId"))
+			data, err := ec.unmarshalNID2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BudgetID = data
+		case "categoryCode":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categoryCode"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CategoryCode = data
+		case "categoryName":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categoryName"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CategoryName = data
+		case "wbsCode":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("wbsCode"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.WbsCode = data
+		case "description":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Description = data
+		case "estimateAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("estimateAmount"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.EstimateAmount = data
+		case "budgetAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("budgetAmount"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BudgetAmount = data
+		case "committedAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("committedAmount"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CommittedAmount = data
+		case "sortOrder":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sortOrder"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.SortOrder = data
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputCreateConstructionProjectInput(ctx context.Context, obj any) (CreateConstructionProjectInput, error) {
 	var it CreateConstructionProjectInput
 	asMap := map[string]any{}
@@ -25188,6 +31558,89 @@ func (ec *executionContext) unmarshalInputCreateContractInput(ctx context.Contex
 				return it, err
 			}
 			it.Body = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputCreateCostEntryInput(ctx context.Context, obj any) (CreateCostEntryInput, error) {
+	var it CreateCostEntryInput
+	asMap := map[string]any{}
+	for k, v := range obj.(map[string]any) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"projectId", "lineItemId", "entryType", "vendorName", "description", "amount", "entryDate", "invoiceNo", "recordedBy"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "projectId":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("projectId"))
+			data, err := ec.unmarshalNID2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProjectID = data
+		case "lineItemId":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lineItemId"))
+			data, err := ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.LineItemID = data
+		case "entryType":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("entryType"))
+			data, err := ec.unmarshalOCostEntryType2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐCostEntryType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.EntryType = data
+		case "vendorName":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vendorName"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.VendorName = data
+		case "description":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Description = data
+		case "amount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("amount"))
+			data, err := ec.unmarshalNFloat2float64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Amount = data
+		case "entryDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("entryDate"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.EntryDate = data
+		case "invoiceNo":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("invoiceNo"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.InvoiceNo = data
+		case "recordedBy":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("recordedBy"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RecordedBy = data
 		}
 	}
 
@@ -25353,6 +31806,75 @@ func (ec *executionContext) unmarshalInputCreateLeaveRequestInput(ctx context.Co
 				return it, err
 			}
 			it.Reason = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputCreateProjectBudgetInput(ctx context.Context, obj any) (CreateProjectBudgetInput, error) {
+	var it CreateProjectBudgetInput
+	asMap := map[string]any{}
+	for k, v := range obj.(map[string]any) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"projectId", "name", "budgetType", "status", "versionNo", "contractAmount", "notes"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "projectId":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("projectId"))
+			data, err := ec.unmarshalNID2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProjectID = data
+		case "name":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Name = data
+		case "budgetType":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("budgetType"))
+			data, err := ec.unmarshalOBudgetType2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BudgetType = data
+		case "status":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
+			data, err := ec.unmarshalOBudgetStatus2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetStatus(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Status = data
+		case "versionNo":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("versionNo"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.VersionNo = data
+		case "contractAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractAmount"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractAmount = data
+		case "notes":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("notes"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Notes = data
 		}
 	}
 
@@ -25891,6 +32413,26 @@ func (ec *executionContext) _AndpadAnalyticsDashboard(ctx context.Context, sel a
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
+		case "budgetTotal":
+			out.Values[i] = ec._AndpadAnalyticsDashboard_budgetTotal(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "costTotal":
+			out.Values[i] = ec._AndpadAnalyticsDashboard_costTotal(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "budgetVariancePct":
+			out.Values[i] = ec._AndpadAnalyticsDashboard_budgetVariancePct(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "costByMonth":
+			out.Values[i] = ec._AndpadAnalyticsDashboard_costByMonth(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
 		case "generatedAt":
 			out.Values[i] = ec._AndpadAnalyticsDashboard_generatedAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -26099,6 +32641,72 @@ func (ec *executionContext) _AttendanceRecord(ctx context.Context, sel ast.Selec
 	return out
 }
 
+var billingReconciliationItemImplementors = []string{"BillingReconciliationItem"}
+
+func (ec *executionContext) _BillingReconciliationItem(ctx context.Context, sel ast.SelectionSet, obj *BillingReconciliationItem) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, billingReconciliationItemImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("BillingReconciliationItem")
+		case "billingRecordId":
+			out.Values[i] = ec._BillingReconciliationItem_billingRecordId(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "title":
+			out.Values[i] = ec._BillingReconciliationItem_title(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "billingAmount":
+			out.Values[i] = ec._BillingReconciliationItem_billingAmount(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "costAmount":
+			out.Values[i] = ec._BillingReconciliationItem_costAmount(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "varianceAmount":
+			out.Values[i] = ec._BillingReconciliationItem_varianceAmount(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "status":
+			out.Values[i] = ec._BillingReconciliationItem_status(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "billingDate":
+			out.Values[i] = ec._BillingReconciliationItem_billingDate(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
 var bimModelImplementors = []string{"BimModel"}
 
 func (ec *executionContext) _BimModel(ctx context.Context, sel ast.SelectionSet, obj *BimModel) graphql.Marshaler {
@@ -26208,6 +32816,313 @@ func (ec *executionContext) _Bookmark(ctx context.Context, sel ast.SelectionSet,
 			}
 		case "createdAt":
 			out.Values[i] = ec._Bookmark_createdAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var budgetCategorySummaryImplementors = []string{"BudgetCategorySummary"}
+
+func (ec *executionContext) _BudgetCategorySummary(ctx context.Context, sel ast.SelectionSet, obj *BudgetCategorySummary) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, budgetCategorySummaryImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("BudgetCategorySummary")
+		case "categoryCode":
+			out.Values[i] = ec._BudgetCategorySummary_categoryCode(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "categoryName":
+			out.Values[i] = ec._BudgetCategorySummary_categoryName(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "budgetAmount":
+			out.Values[i] = ec._BudgetCategorySummary_budgetAmount(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "actualAmount":
+			out.Values[i] = ec._BudgetCategorySummary_actualAmount(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "varianceAmount":
+			out.Values[i] = ec._BudgetCategorySummary_varianceAmount(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var budgetDashboardImplementors = []string{"BudgetDashboard"}
+
+func (ec *executionContext) _BudgetDashboard(ctx context.Context, sel ast.SelectionSet, obj *BudgetDashboard) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, budgetDashboardImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("BudgetDashboard")
+		case "projectId":
+			out.Values[i] = ec._BudgetDashboard_projectId(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "projectName":
+			out.Values[i] = ec._BudgetDashboard_projectName(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "contractAmount":
+			out.Values[i] = ec._BudgetDashboard_contractAmount(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "totalEstimate":
+			out.Values[i] = ec._BudgetDashboard_totalEstimate(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "totalBudget":
+			out.Values[i] = ec._BudgetDashboard_totalBudget(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "totalCommitted":
+			out.Values[i] = ec._BudgetDashboard_totalCommitted(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "totalActual":
+			out.Values[i] = ec._BudgetDashboard_totalActual(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "totalForecast":
+			out.Values[i] = ec._BudgetDashboard_totalForecast(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "varianceAmount":
+			out.Values[i] = ec._BudgetDashboard_varianceAmount(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "variancePct":
+			out.Values[i] = ec._BudgetDashboard_variancePct(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "completionPct":
+			out.Values[i] = ec._BudgetDashboard_completionPct(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "estimateBudgetTotal":
+			out.Values[i] = ec._BudgetDashboard_estimateBudgetTotal(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "grossMarginPct":
+			out.Values[i] = ec._BudgetDashboard_grossMarginPct(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "inquiryProfitTotal":
+			out.Values[i] = ec._BudgetDashboard_inquiryProfitTotal(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "billingTotal":
+			out.Values[i] = ec._BudgetDashboard_billingTotal(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "billingBalance":
+			out.Values[i] = ec._BudgetDashboard_billingBalance(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "monthlyCosts":
+			out.Values[i] = ec._BudgetDashboard_monthlyCosts(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "reconciliation":
+			out.Values[i] = ec._BudgetDashboard_reconciliation(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "lineItems":
+			out.Values[i] = ec._BudgetDashboard_lineItems(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "recentCosts":
+			out.Values[i] = ec._BudgetDashboard_recentCosts(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "categorySummary":
+			out.Values[i] = ec._BudgetDashboard_categorySummary(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "generatedAt":
+			out.Values[i] = ec._BudgetDashboard_generatedAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var budgetLineItemImplementors = []string{"BudgetLineItem"}
+
+func (ec *executionContext) _BudgetLineItem(ctx context.Context, sel ast.SelectionSet, obj *BudgetLineItem) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, budgetLineItemImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("BudgetLineItem")
+		case "id":
+			out.Values[i] = ec._BudgetLineItem_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "budgetId":
+			out.Values[i] = ec._BudgetLineItem_budgetId(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "categoryCode":
+			out.Values[i] = ec._BudgetLineItem_categoryCode(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "categoryName":
+			out.Values[i] = ec._BudgetLineItem_categoryName(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "wbsCode":
+			out.Values[i] = ec._BudgetLineItem_wbsCode(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "description":
+			out.Values[i] = ec._BudgetLineItem_description(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "estimateAmount":
+			out.Values[i] = ec._BudgetLineItem_estimateAmount(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "budgetAmount":
+			out.Values[i] = ec._BudgetLineItem_budgetAmount(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "committedAmount":
+			out.Values[i] = ec._BudgetLineItem_committedAmount(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "actualAmount":
+			out.Values[i] = ec._BudgetLineItem_actualAmount(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "varianceAmount":
+			out.Values[i] = ec._BudgetLineItem_varianceAmount(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "variancePct":
+			out.Values[i] = ec._BudgetLineItem_variancePct(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "sortOrder":
+			out.Values[i] = ec._BudgetLineItem_sortOrder(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "createdAt":
+			out.Values[i] = ec._BudgetLineItem_createdAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -26668,6 +33583,105 @@ func (ec *executionContext) _ContractTemplate(ctx context.Context, sel ast.Selec
 			}
 		case "createdAt":
 			out.Values[i] = ec._ContractTemplate_createdAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var costEntryImplementors = []string{"CostEntry"}
+
+func (ec *executionContext) _CostEntry(ctx context.Context, sel ast.SelectionSet, obj *CostEntry) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, costEntryImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("CostEntry")
+		case "id":
+			out.Values[i] = ec._CostEntry_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "projectId":
+			out.Values[i] = ec._CostEntry_projectId(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "projectName":
+			out.Values[i] = ec._CostEntry_projectName(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "lineItemId":
+			out.Values[i] = ec._CostEntry_lineItemId(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "lineItemName":
+			out.Values[i] = ec._CostEntry_lineItemName(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "entryType":
+			out.Values[i] = ec._CostEntry_entryType(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "vendorName":
+			out.Values[i] = ec._CostEntry_vendorName(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "description":
+			out.Values[i] = ec._CostEntry_description(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "amount":
+			out.Values[i] = ec._CostEntry_amount(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "entryDate":
+			out.Values[i] = ec._CostEntry_entryDate(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "invoiceNo":
+			out.Values[i] = ec._CostEntry_invoiceNo(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "recordedBy":
+			out.Values[i] = ec._CostEntry_recordedBy(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "createdAt":
+			out.Values[i] = ec._CostEntry_createdAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -27352,6 +34366,50 @@ func (ec *executionContext) _ModuleUsageMetric(ctx context.Context, sel ast.Sele
 	return out
 }
 
+var monthlyCostMetricImplementors = []string{"MonthlyCostMetric"}
+
+func (ec *executionContext) _MonthlyCostMetric(ctx context.Context, sel ast.SelectionSet, obj *MonthlyCostMetric) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, monthlyCostMetricImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("MonthlyCostMetric")
+		case "month":
+			out.Values[i] = ec._MonthlyCostMetric_month(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "amount":
+			out.Values[i] = ec._MonthlyCostMetric_amount(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
 var mutationImplementors = []string{"Mutation"}
 
 func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet) graphql.Marshaler {
@@ -27557,6 +34615,41 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
+		case "createProjectBudget":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_createProjectBudget(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "createBudgetLineItem":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_createBudgetLineItem(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "createCostEntry":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_createCostEntry(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "approveProjectBudget":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_approveProjectBudget(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "createCostFromBilling":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_createCostFromBilling(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -27692,6 +34785,186 @@ func (ec *executionContext) _PageInfo(ctx context.Context, sel ast.SelectionSet,
 			}
 		case "totalPages":
 			out.Values[i] = ec._PageInfo_totalPages(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var projectBudgetImplementors = []string{"ProjectBudget"}
+
+func (ec *executionContext) _ProjectBudget(ctx context.Context, sel ast.SelectionSet, obj *ProjectBudget) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, projectBudgetImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("ProjectBudget")
+		case "id":
+			out.Values[i] = ec._ProjectBudget_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "projectId":
+			out.Values[i] = ec._ProjectBudget_projectId(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "projectName":
+			out.Values[i] = ec._ProjectBudget_projectName(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "name":
+			out.Values[i] = ec._ProjectBudget_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "budgetType":
+			out.Values[i] = ec._ProjectBudget_budgetType(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "status":
+			out.Values[i] = ec._ProjectBudget_status(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "versionNo":
+			out.Values[i] = ec._ProjectBudget_versionNo(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "contractAmount":
+			out.Values[i] = ec._ProjectBudget_contractAmount(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "totalEstimate":
+			out.Values[i] = ec._ProjectBudget_totalEstimate(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "totalBudget":
+			out.Values[i] = ec._ProjectBudget_totalBudget(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "totalCommitted":
+			out.Values[i] = ec._ProjectBudget_totalCommitted(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "totalActual":
+			out.Values[i] = ec._ProjectBudget_totalActual(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "notes":
+			out.Values[i] = ec._ProjectBudget_notes(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "approvedAt":
+			out.Values[i] = ec._ProjectBudget_approvedAt(ctx, field, obj)
+		case "createdAt":
+			out.Values[i] = ec._ProjectBudget_createdAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var projectBudgetSummaryImplementors = []string{"ProjectBudgetSummary"}
+
+func (ec *executionContext) _ProjectBudgetSummary(ctx context.Context, sel ast.SelectionSet, obj *ProjectBudgetSummary) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, projectBudgetSummaryImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("ProjectBudgetSummary")
+		case "projectId":
+			out.Values[i] = ec._ProjectBudgetSummary_projectId(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "projectName":
+			out.Values[i] = ec._ProjectBudgetSummary_projectName(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "status":
+			out.Values[i] = ec._ProjectBudgetSummary_status(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "contractAmount":
+			out.Values[i] = ec._ProjectBudgetSummary_contractAmount(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "totalBudget":
+			out.Values[i] = ec._ProjectBudgetSummary_totalBudget(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "totalActual":
+			out.Values[i] = ec._ProjectBudgetSummary_totalActual(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "billingTotal":
+			out.Values[i] = ec._ProjectBudgetSummary_billingTotal(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "variancePct":
+			out.Values[i] = ec._ProjectBudgetSummary_variancePct(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -28714,6 +35987,116 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_bimModel(ctx, field)
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "projectBudgets":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_projectBudgets(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "budgetLineItems":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_budgetLineItems(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "costEntries":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_costEntries(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "budgetDashboard":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_budgetDashboard(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "projectBudgetSummaries":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_projectBudgetSummaries(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
 				return res
 			}
 
@@ -30368,6 +37751,60 @@ func (ec *executionContext) marshalNAttendanceRecord2ᚖgithubᚗcomᚋpluszero�
 	return ec._AttendanceRecord(ctx, sel, v)
 }
 
+func (ec *executionContext) marshalNBillingReconciliationItem2ᚕᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBillingReconciliationItemᚄ(ctx context.Context, sel ast.SelectionSet, v []*BillingReconciliationItem) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNBillingReconciliationItem2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBillingReconciliationItem(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
+func (ec *executionContext) marshalNBillingReconciliationItem2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBillingReconciliationItem(ctx context.Context, sel ast.SelectionSet, v *BillingReconciliationItem) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._BillingReconciliationItem(ctx, sel, v)
+}
+
 func (ec *executionContext) marshalNBimModel2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBimModel(ctx context.Context, sel ast.SelectionSet, v BimModel) graphql.Marshaler {
 	return ec._BimModel(ctx, sel, &v)
 }
@@ -30493,6 +37930,152 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 		}
 	}
 	return res
+}
+
+func (ec *executionContext) marshalNBudgetCategorySummary2ᚕᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetCategorySummaryᚄ(ctx context.Context, sel ast.SelectionSet, v []*BudgetCategorySummary) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNBudgetCategorySummary2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetCategorySummary(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
+func (ec *executionContext) marshalNBudgetCategorySummary2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetCategorySummary(ctx context.Context, sel ast.SelectionSet, v *BudgetCategorySummary) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._BudgetCategorySummary(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNBudgetDashboard2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetDashboard(ctx context.Context, sel ast.SelectionSet, v BudgetDashboard) graphql.Marshaler {
+	return ec._BudgetDashboard(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNBudgetDashboard2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetDashboard(ctx context.Context, sel ast.SelectionSet, v *BudgetDashboard) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._BudgetDashboard(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNBudgetLineItem2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetLineItem(ctx context.Context, sel ast.SelectionSet, v BudgetLineItem) graphql.Marshaler {
+	return ec._BudgetLineItem(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNBudgetLineItem2ᚕᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetLineItemᚄ(ctx context.Context, sel ast.SelectionSet, v []*BudgetLineItem) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNBudgetLineItem2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetLineItem(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
+func (ec *executionContext) marshalNBudgetLineItem2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetLineItem(ctx context.Context, sel ast.SelectionSet, v *BudgetLineItem) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._BudgetLineItem(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNBudgetStatus2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetStatus(ctx context.Context, v any) (BudgetStatus, error) {
+	var res BudgetStatus
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNBudgetStatus2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetStatus(ctx context.Context, sel ast.SelectionSet, v BudgetStatus) graphql.Marshaler {
+	return v
+}
+
+func (ec *executionContext) unmarshalNBudgetType2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetType(ctx context.Context, v any) (BudgetType, error) {
+	var res BudgetType
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNBudgetType2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetType(ctx context.Context, sel ast.SelectionSet, v BudgetType) graphql.Marshaler {
+	return v
 }
 
 func (ec *executionContext) marshalNCategoryMetric2ᚕᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐCategoryMetricᚄ(ctx context.Context, sel ast.SelectionSet, v []*CategoryMetric) graphql.Marshaler {
@@ -30909,6 +38492,74 @@ func (ec *executionContext) marshalNContractTemplate2ᚖgithubᚗcomᚋpluszero�
 	return ec._ContractTemplate(ctx, sel, v)
 }
 
+func (ec *executionContext) marshalNCostEntry2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐCostEntry(ctx context.Context, sel ast.SelectionSet, v CostEntry) graphql.Marshaler {
+	return ec._CostEntry(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNCostEntry2ᚕᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐCostEntryᚄ(ctx context.Context, sel ast.SelectionSet, v []*CostEntry) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNCostEntry2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐCostEntry(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
+func (ec *executionContext) marshalNCostEntry2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐCostEntry(ctx context.Context, sel ast.SelectionSet, v *CostEntry) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._CostEntry(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNCostEntryType2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐCostEntryType(ctx context.Context, v any) (CostEntryType, error) {
+	var res CostEntryType
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNCostEntryType2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐCostEntryType(ctx context.Context, sel ast.SelectionSet, v CostEntryType) graphql.Marshaler {
+	return v
+}
+
 func (ec *executionContext) unmarshalNCreateApiIntegrationInput2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐCreateAPIIntegrationInput(ctx context.Context, v any) (CreateAPIIntegrationInput, error) {
 	res, err := ec.unmarshalInputCreateApiIntegrationInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -30919,6 +38570,11 @@ func (ec *executionContext) unmarshalNCreateBimModelInput2githubᚗcomᚋpluszer
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
+func (ec *executionContext) unmarshalNCreateBudgetLineItemInput2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐCreateBudgetLineItemInput(ctx context.Context, v any) (CreateBudgetLineItemInput, error) {
+	res, err := ec.unmarshalInputCreateBudgetLineItemInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) unmarshalNCreateConstructionProjectInput2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐCreateConstructionProjectInput(ctx context.Context, v any) (CreateConstructionProjectInput, error) {
 	res, err := ec.unmarshalInputCreateConstructionProjectInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -30926,6 +38582,11 @@ func (ec *executionContext) unmarshalNCreateConstructionProjectInput2githubᚗco
 
 func (ec *executionContext) unmarshalNCreateContractInput2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐCreateContractInput(ctx context.Context, v any) (CreateContractInput, error) {
 	res, err := ec.unmarshalInputCreateContractInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNCreateCostEntryInput2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐCreateCostEntryInput(ctx context.Context, v any) (CreateCostEntryInput, error) {
+	res, err := ec.unmarshalInputCreateCostEntryInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
@@ -30941,6 +38602,11 @@ func (ec *executionContext) unmarshalNCreateDxInitiativeInput2githubᚗcomᚋplu
 
 func (ec *executionContext) unmarshalNCreateLeaveRequestInput2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐCreateLeaveRequestInput(ctx context.Context, v any) (CreateLeaveRequestInput, error) {
 	res, err := ec.unmarshalInputCreateLeaveRequestInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNCreateProjectBudgetInput2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐCreateProjectBudgetInput(ctx context.Context, v any) (CreateProjectBudgetInput, error) {
+	res, err := ec.unmarshalInputCreateProjectBudgetInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
@@ -31566,6 +39232,60 @@ func (ec *executionContext) marshalNModuleUsageMetric2ᚖgithubᚗcomᚋpluszero
 	return ec._ModuleUsageMetric(ctx, sel, v)
 }
 
+func (ec *executionContext) marshalNMonthlyCostMetric2ᚕᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐMonthlyCostMetricᚄ(ctx context.Context, sel ast.SelectionSet, v []*MonthlyCostMetric) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNMonthlyCostMetric2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐMonthlyCostMetric(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
+func (ec *executionContext) marshalNMonthlyCostMetric2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐMonthlyCostMetric(ctx context.Context, sel ast.SelectionSet, v *MonthlyCostMetric) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._MonthlyCostMetric(ctx, sel, v)
+}
+
 func (ec *executionContext) marshalNOrganization2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐOrganization(ctx context.Context, sel ast.SelectionSet, v Organization) graphql.Marshaler {
 	return ec._Organization(ctx, sel, &v)
 }
@@ -31598,6 +39318,118 @@ func (ec *executionContext) unmarshalNPlanTier2githubᚗcomᚋpluszeroᚋdental�
 
 func (ec *executionContext) marshalNPlanTier2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐPlanTier(ctx context.Context, sel ast.SelectionSet, v PlanTier) graphql.Marshaler {
 	return v
+}
+
+func (ec *executionContext) marshalNProjectBudget2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐProjectBudget(ctx context.Context, sel ast.SelectionSet, v ProjectBudget) graphql.Marshaler {
+	return ec._ProjectBudget(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNProjectBudget2ᚕᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐProjectBudgetᚄ(ctx context.Context, sel ast.SelectionSet, v []*ProjectBudget) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNProjectBudget2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐProjectBudget(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
+func (ec *executionContext) marshalNProjectBudget2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐProjectBudget(ctx context.Context, sel ast.SelectionSet, v *ProjectBudget) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._ProjectBudget(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNProjectBudgetSummary2ᚕᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐProjectBudgetSummaryᚄ(ctx context.Context, sel ast.SelectionSet, v []*ProjectBudgetSummary) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNProjectBudgetSummary2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐProjectBudgetSummary(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
+func (ec *executionContext) marshalNProjectBudgetSummary2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐProjectBudgetSummary(ctx context.Context, sel ast.SelectionSet, v *ProjectBudgetSummary) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._ProjectBudgetSummary(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalNProjectModuleRecord2githubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐProjectModuleRecord(ctx context.Context, sel ast.SelectionSet, v ProjectModuleRecord) graphql.Marshaler {
@@ -32843,6 +40675,38 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return res
 }
 
+func (ec *executionContext) unmarshalOBudgetStatus2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetStatus(ctx context.Context, v any) (*BudgetStatus, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var res = new(BudgetStatus)
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalOBudgetStatus2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetStatus(ctx context.Context, sel ast.SelectionSet, v *BudgetStatus) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return v
+}
+
+func (ec *executionContext) unmarshalOBudgetType2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetType(ctx context.Context, v any) (*BudgetType, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var res = new(BudgetType)
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalOBudgetType2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐBudgetType(ctx context.Context, sel ast.SelectionSet, v *BudgetType) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return v
+}
+
 func (ec *executionContext) unmarshalOConstructionProjectStatus2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐConstructionProjectStatus(ctx context.Context, v any) (*ConstructionProjectStatus, error) {
 	if v == nil {
 		return nil, nil
@@ -32864,6 +40728,22 @@ func (ec *executionContext) marshalOConsultThread2ᚖgithubᚗcomᚋpluszeroᚋd
 		return graphql.Null
 	}
 	return ec._ConsultThread(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalOCostEntryType2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐCostEntryType(ctx context.Context, v any) (*CostEntryType, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var res = new(CostEntryType)
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalOCostEntryType2ᚖgithubᚗcomᚋpluszeroᚋdentalᚑvideoᚑapiᚋinternalᚋgraphᚋgeneratedᚐCostEntryType(ctx context.Context, sel ast.SelectionSet, v *CostEntryType) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return v
 }
 
 func (ec *executionContext) unmarshalOFloat2ᚖfloat64(ctx context.Context, v any) (*float64, error) {

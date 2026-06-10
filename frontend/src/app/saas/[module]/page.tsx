@@ -1,6 +1,7 @@
 import { AnalyticsModuleClient } from '@/components/AnalyticsModuleClient'
 import { ApiIntegrationClient } from '@/components/ApiIntegrationClient'
 import { BimModuleClient } from '@/components/BimModuleClient'
+import { BudgetModuleClient } from '@/components/BudgetModuleClient'
 import { ConstructionModuleClient } from '@/components/ConstructionModuleClient'
 import {
   constructionModuleSlugs,
@@ -26,6 +27,7 @@ export default async function SaasModulePage({
   if (slug === 'analytics') return <AnalyticsModuleClient />
   if (slug === 'api-integration') return <ApiIntegrationClient />
   if (slug === 'bim') return <BimModuleClient />
+  if (slug === 'budget') return <BudgetModuleClient />
   if (specializedModuleSlugs.has(slug)) notFound()
 
   return <ConstructionModuleClient module={slug} />

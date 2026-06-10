@@ -29,6 +29,10 @@ type AndpadAnalyticsDashboard struct {
 	ActiveProjects     int
 	RecordsByWeek      []float64
 	ProjectHealthScore float64
+	BudgetTotal        float64
+	CostTotal          float64
+	BudgetVariancePct  float64
+	CostByMonth        []MonthlyCostMetric
 	GeneratedAt        time.Time
 }
 

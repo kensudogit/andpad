@@ -40,8 +40,8 @@ const architectureFeatured: FeaturedBlock = {
 
 const saasFeatured: FeaturedBlock = {
   badge: 'SaaS',
-  title: '建設プロジェクト管理 18モジュール',
-  body: '/saas で施工管理・電子納品・BIM・Analytics・API連携など18機能を ON/OFF。案件単位で記録を一元管理します。',
+  title: '建設プロジェクト管理 19モジュール',
+  body: '/saas で施工管理・予算原価管理・電子納品・BIM・Analytics など19機能を ON/OFF。案件単位で記録を一元管理します。',
   variant: 'saas',
   items: [
     '施工管理 · 図面 · 電子納品 · BM · Analytics · API連携 · BIM',

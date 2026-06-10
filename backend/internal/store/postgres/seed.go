@@ -432,5 +432,133 @@ func ensureConstructionDemoData(ctx context.Context, db *DB) error {
 		"\u672c\u9928\u69cb\u9020BIM\u30e2\u30c7\u30eb v2",
 		"https://modelviewer.dev/shared-assets/models/Astronaut.glb",
 		"\u5c71\u7530 \u592a\u90ce")
+	if err != nil {
+		return err
+	}
+
+	return ensureBudgetDemoData(ctx, db)
+}
+
+func ensureBudgetDemoData(ctx context.Context, db *DB) error {
+	const orgID = "org_demo"
+	_, err := db.Pool.Exec(ctx, `
+		INSERT INTO project_budgets (id, org_id, project_id, name, budget_type, status, version_no, contract_amount, notes, approved_at)
+		VALUES
+			($1, $2, $3, $4, 'EXECUTION_BUDGET', 'APPROVED', 3, 4850000000, $5, NOW()),
+			($6, $2, $3, $7, 'ESTIMATE', 'LOCKED', 1, 5200000000, $8, NOW())
+		ON CONFLICT (id) DO NOTHING`,
+		"bud-demo-1", orgID, "prj-demo-1",
+		"\u5b9f\u884c\u4e88\u7b97 v3", "\u672c\u5de5\u4e8b\u78ba\u5b9a\u5f8c\u306e\u6700\u7d42\u4e88\u7b97",
+		"bud-demo-2", "\u5f53\u521d\u898b\u7a4d v1", "\u5165\u672d\u6642\u70b9\u306e\u898b\u7a4d")
+	if err != nil {
+		return err
+	}
+
+	_, err = db.Pool.Exec(ctx, `
+		INSERT INTO budget_line_items (id, org_id, budget_id, category_code, category_name, wbs_code, description,
+			estimate_amount, budget_amount, committed_amount, actual_amount, sort_order)
+		VALUES
+			('bli-demo-1', $1, 'bud-demo-1', 'DIRECT', $2, 'WBS-01', $3, 1850000000, 1820000000, 1650000000, 980000000, 1),
+			('bli-demo-2', $1, 'bud-demo-1', 'SUBCONTRACT', $4, 'WBS-02', $5, 980000000, 960000000, 890000000, 520000000, 2),
+			('bli-demo-3', $1, 'bud-demo-1', 'MATERIAL', $6, 'WBS-03', $7, 720000000, 710000000, 680000000, 410000000, 3),
+			('bli-demo-4', $1, 'bud-demo-1', 'LABOR', $8, 'WBS-04', $9, 380000000, 370000000, 350000000, 185000000, 4),
+			('bli-demo-5', $1, 'bud-demo-1', 'TEMPORARY', $10, 'WBS-05', $11, 120000000, 115000000, 110000000, 35000000, 5),
+			('bli-demo-6', $1, 'bud-demo-1', 'OVERHEAD', $12, 'WBS-06', $13, 95000000, 90000000, 75000000, 12000000, 6),
+			('bli-demo-7', $1, 'bud-demo-1', 'GENERAL', $14, 'WBS-07', $15, 575000000, 615000000, 165000000, 3000000, 7)
+		ON CONFLICT (id) DO NOTHING`,
+		orgID,
+		"\u76f4\u63a5\u5de5\u4e8b\u8cbb", "\u4f53\u6839\u5de5\u4e8b\uff08RC\u9020\uff09",
+		"\u5916\u6ce8\u8cbb", "\u96fb\u6c17\u30fb\u7a7a\u8abf\u8a2d\u5099",
+		"\u6750\u6599\u8cbb", "\u9244\u9aa8\u30fb\u30b3\u30f3\u30af\u30ea\u30fc\u30c8",
+		"\u52b4\u52d9\u8cbb", "\u73fe\u5834\u7763\u7766\u30fb\u4f5c\u696d\u54e1",
+		"\u5047\u8a2d\u8cbb", "\u5047\u8a2d\u8db3\u5834\u30fb\u5047\u8a2d\u96fb\u6c17",
+		"\u7d4c\u8cbb", "\u73fe\u5834\u7d4c\u8cbb\u30fb\u6d88\u8017\u54c1",
+		"\u4e00\u822c\u7ba1\u7406\u8cbb", "\u672c\u793e\u914d\u8ce6\u30fb\u9593\u63a5\u8cbb")
+	if err != nil {
+		return err
+	}
+
+	_, err = db.Pool.Exec(ctx, `
+		INSERT INTO cost_entries (id, org_id, project_id, line_item_id, entry_type, vendor_name, description, amount, entry_date, invoice_no, recorded_by)
+		VALUES
+			('cost-demo-1', $1, 'prj-demo-1', 'bli-demo-1', 'SUBCONTRACT', $2, $3, 28500000, CURRENT_DATE - 3, 'INV-2026-0412', $4),
+			('cost-demo-2', $1, 'prj-demo-1', 'bli-demo-3', 'MATERIAL', $5, $6, 42800000, CURRENT_DATE - 7, 'INV-2026-0398', $7),
+			('cost-demo-3', $1, 'prj-demo-1', 'bli-demo-2', 'SUBCONTRACT', $8, $9, 15200000, CURRENT_DATE - 10, 'INV-2026-0371', $4)
+		ON CONFLICT (id) DO NOTHING`,
+		orgID,
+		"\u682a\u5f0f\u4f1a\u793e\u3007\u3007\u5efa\u8a2d", "3\u968e\u30b9\u30e9\u30d6\u30b3\u30f3\u30af\u30ea\u30fc\u30c8\u6253\u8a2d", "\u5c71\u7530 \u592a\u90ce",
+		"\u65e5\u672c\u88fd\u9244\u682a\u5f0f\u4f1a\u793e", "H\u5f62\u92fc 4\u968e\u5206\u7d0d\u5165", "\u4f50\u85e4 \u82b1\u5b50",
+		"\u25b3\u25b3\u96fb\u6c17\u5de5\u696d", "\u914d\u7ba1\u5de5\u4e8b \u7b2c2\u5de5\u533a")
+	if err != nil {
+		return err
+	}
+
+	_, err = db.Pool.Exec(ctx, `
+		INSERT INTO project_budgets (id, org_id, project_id, name, budget_type, status, version_no, contract_amount, notes)
+		VALUES ('bud-demo-3', $1, 'prj-demo-1', $2, 'EXECUTION_BUDGET', 'DRAFT', 4, 4850000000, $3)
+		ON CONFLICT (id) DO NOTHING`,
+		orgID, "\u5b9f\u884c\u4e88\u7b97 v4\uff08\u6539\u5b9a\u6848\uff09", "\u8a2d\u8a08\u5909\u66f4\u5bfe\u5fdc\u306e\u6539\u5b9a\u6848")
+	if err != nil {
+		return err
+	}
+
+	_, err = db.Pool.Exec(ctx, `
+		INSERT INTO budget_line_items (id, org_id, budget_id, category_code, category_name, wbs_code, description,
+			estimate_amount, budget_amount, committed_amount, actual_amount, sort_order)
+		VALUES
+			('bli-est-1', $1, 'bud-demo-2', 'DIRECT', $2, 'WBS-01', $3, 1900000000, 1900000000, 0, 0, 1),
+			('bli-est-2', $1, 'bud-demo-2', 'SUBCONTRACT', $4, 'WBS-02', $5, 1020000000, 1020000000, 0, 0, 2),
+			('bli-est-3', $1, 'bud-demo-2', 'MATERIAL', $6, 'WBS-03', $7, 750000000, 750000000, 0, 0, 3),
+			('bli-est-4', $1, 'bud-demo-2', 'GENERAL', $8, 'WBS-07', $9, 580000000, 580000000, 0, 0, 4)
+		ON CONFLICT (id) DO NOTHING`,
+		orgID,
+		"\u76f4\u63a5\u5de5\u4e8b\u8cbb", "\u4f53\u6839\u5de5\u4e8b\uff08RC\u9020\uff09",
+		"\u5916\u6ce8\u8cbb", "\u96fb\u6c17\u30fb\u7a7a\u8abf\u8a2d\u5099",
+		"\u6750\u6599\u8cbb", "\u9244\u9aa8\u30fb\u30b3\u30f3\u30af\u30ea\u30fc\u30c8",
+		"\u4e00\u822c\u7ba1\u7406\u8cbb", "\u672c\u793e\u914d\u8ce6\u30fb\u9593\u63a5\u8cbb")
+	if err != nil {
+		return err
+	}
+
+	_, err = db.Pool.Exec(ctx, `
+		INSERT INTO project_module_records (id, org_id, project_id, module_code, title, status, detail, amount, person_name, record_date)
+		VALUES
+			('rec-inq-1', $1, 'prj-demo-1', 'INQUIRY_PROFIT', $2, 'WON', $3, 170000000, $4, CURRENT_DATE),
+			('rec-inq-2', $1, 'prj-demo-1', 'INQUIRY_PROFIT', $5, 'SUBMITTED', $6, 85000000, $4, CURRENT_DATE - 14)
+		ON CONFLICT (id) DO NOTHING`,
+		orgID,
+		"\u672c\u5de5\u4e8b\u78ba\u5b9a\u898b\u7a4d", "\u8acb\u8ca0\u91d1\u984d48.5\u5104\u5186\u306b\u5bfe\u3057\u5b9f\u884c\u4e88\u7b9746.8\u5104\u5186\u306e\u7c97\u5229\u78ba\u4fdd",
+		"\u5c71\u7530 \u592a\u90ce",
+		"\u8a2d\u8a08\u5909\u66f4\u898b\u7a4d\uff08\u7b2c2\u56de\uff09", "\u9676\u6750\u9676\u74f7\u4ea4\u63db\u5de5\u4e8b\u5206\u306e\u88dc\u6b63\u898b\u7a4d")
+	if err != nil {
+		return err
+	}
+
+	_, err = db.Pool.Exec(ctx, `
+		INSERT INTO project_module_records (id, org_id, project_id, module_code, title, status, detail, amount, person_name, record_date)
+		VALUES
+			('rec-bill-1', $1, 'prj-demo-1', 'BILLING', $2, 'PAID', $3, 485000000, $4, CURRENT_DATE - 60),
+			('rec-bill-2', $1, 'prj-demo-1', 'BILLING', $5, 'INVOICED', $6, 495000000, $4, CURRENT_DATE - 30)
+		ON CONFLICT (id) DO NOTHING`,
+		orgID,
+		"\u7b2c1\u56de\u90e8\u8acb\u6c42", "\u5b8c\u4e86\u51fa\u6765\u9ad8\u8acb\u6c42\u30fb\u5165\u91d1\u6e08",
+		"\u5c71\u7530 \u592a\u90ce",
+		"\u7b2c2\u56de\u90e8\u8acb\u6c42", "\u9032\u6357\u51fa\u6765\u9ad8\u8acb\u6c42\u767a\u884c\u6e08")
+	if err != nil {
+		return err
+	}
+
+	_, err = db.Pool.Exec(ctx, `
+		INSERT INTO cost_entries (id, org_id, project_id, line_item_id, entry_type, vendor_name, description, amount, entry_date, invoice_no, recorded_by)
+		VALUES
+			('cost-demo-4', $1, 'prj-demo-1', 'bli-demo-1', 'SUBCONTRACT', $2, $3, 320000000, date_trunc('month', CURRENT_DATE) - interval '5 months' + interval '15 days', 'INV-2025-1201', $4),
+			('cost-demo-5', $1, 'prj-demo-1', 'bli-demo-3', 'MATERIAL', $5, $6, 410000000, date_trunc('month', CURRENT_DATE) - interval '4 months' + interval '10 days', 'INV-2026-0105', $7),
+			('cost-demo-6', $1, 'prj-demo-1', 'bli-demo-2', 'SUBCONTRACT', $8, $9, 385000000, date_trunc('month', CURRENT_DATE) - interval '3 months' + interval '20 days', 'INV-2026-0208', $4)
+		ON CONFLICT (id) DO NOTHING`,
+		orgID,
+		"\u682a\u5f0f\u4f1a\u793e\u3007\u3007\u5efa\u8a2d", "\u4f53\u6839\u5de5\u4e8b\u9032\u6357\u5206",
+		"\u5c71\u7530 \u592a\u90ce",
+		"\u65e5\u672c\u88fd\u9244\u682a\u5f0f\u4f1a\u793e", "\u9244\u6750\u96c6\u7d04\u5206",
+		"\u25b3\u25b3\u96fb\u6c17\u5de5\u696d", "\u8a2d\u5099\u5de5\u4e8b\u9032\u6357\u5206")
 	return err
 }

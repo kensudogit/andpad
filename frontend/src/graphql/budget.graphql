@@ -1,0 +1,161 @@
+fragment BudgetLineItemFields on BudgetLineItem {
+  id
+  budgetId
+  categoryCode
+  categoryName
+  wbsCode
+  description
+  estimateAmount
+  budgetAmount
+  committedAmount
+  actualAmount
+  varianceAmount
+  variancePct
+  sortOrder
+  createdAt
+}
+
+fragment CostEntryFields on CostEntry {
+  id
+  projectId
+  projectName
+  lineItemId
+  lineItemName
+  entryType
+  vendorName
+  description
+  amount
+  entryDate
+  invoiceNo
+  recordedBy
+  createdAt
+}
+
+fragment BudgetCategorySummaryFields on BudgetCategorySummary {
+  categoryCode
+  categoryName
+  budgetAmount
+  actualAmount
+  varianceAmount
+}
+
+fragment BudgetDashboardFields on BudgetDashboard {
+  projectId
+  projectName
+  contractAmount
+  totalEstimate
+  totalBudget
+  totalCommitted
+  totalActual
+  totalForecast
+  varianceAmount
+  variancePct
+  completionPct
+  estimateBudgetTotal
+  grossMarginPct
+  inquiryProfitTotal
+  billingTotal
+  billingBalance
+  monthlyCosts {
+    month
+    amount
+  }
+  reconciliation {
+    billingRecordId
+    title
+    billingAmount
+    costAmount
+    varianceAmount
+    status
+    billingDate
+  }
+  lineItems {
+    ...BudgetLineItemFields
+  }
+  recentCosts {
+    ...CostEntryFields
+  }
+  categorySummary {
+    ...BudgetCategorySummaryFields
+  }
+  generatedAt
+}
+
+fragment ProjectBudgetFields on ProjectBudget {
+  id
+  projectId
+  projectName
+  name
+  budgetType
+  status
+  versionNo
+  contractAmount
+  totalEstimate
+  totalBudget
+  totalCommitted
+  totalActual
+  notes
+  approvedAt
+  createdAt
+}
+
+query ProjectBudgetSummaries {
+  projectBudgetSummaries {
+    projectId
+    projectName
+    status
+    contractAmount
+    totalBudget
+    totalActual
+    billingTotal
+    variancePct
+  }
+}
+
+query BudgetDashboard($projectId: ID!) {
+  budgetDashboard(projectId: $projectId) {
+    ...BudgetDashboardFields
+  }
+}
+
+query ProjectBudgets($projectId: ID, $budgetType: BudgetType) {
+  projectBudgets(projectId: $projectId, budgetType: $budgetType) {
+    ...ProjectBudgetFields
+  }
+}
+
+query CostEntries($projectId: ID!, $lineItemId: ID) {
+  costEntries(projectId: $projectId, lineItemId: $lineItemId) {
+    ...CostEntryFields
+  }
+}
+
+mutation CreateCostEntry($input: CreateCostEntryInput!) {
+  createCostEntry(input: $input) {
+    ...CostEntryFields
+  }
+}
+
+mutation CreateBudgetLineItem($input: CreateBudgetLineItemInput!) {
+  createBudgetLineItem(input: $input) {
+    ...BudgetLineItemFields
+  }
+}
+
+mutation CreateCostFromBilling($billingRecordId: ID!, $projectId: ID!) {
+  createCostFromBilling(billingRecordId: $billingRecordId, projectId: $projectId) {
+    ...CostEntryFields
+  }
+}
+
+mutation ApproveProjectBudget($id: ID!) {
+  approveProjectBudget(id: $id) {
+    ...ProjectBudgetFields
+  }
+}
+
+mutation CreateProjectBudget($input: CreateProjectBudgetInput!) {
+  createProjectBudget(input: $input) {
+    ...ProjectBudgetFields
+  }
+}

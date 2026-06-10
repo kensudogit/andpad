@@ -111,11 +111,33 @@ func (db *DB) AndpadAnalytics(ctx context.Context, orgID string, periodDays int)
 	}
 
 	trend := 5.2
+	var budgetSum, actualSum, periodCost *float64
+	_ = db.Pool.QueryRow(ctx, `
+		SELECT COALESCE(SUM(budget_amount), 0), COALESCE(SUM(actual_amount), 0)
+		FROM budget_line_items WHERE org_id=$1`, orgID).Scan(&budgetSum, &actualSum)
+	if budgetSum != nil {
+		out.BudgetTotal = *budgetSum
+	}
+	if budgetSum != nil && actualSum != nil && *budgetSum > 0 {
+		out.BudgetVariancePct = (*budgetSum - *actualSum) / *budgetSum * 100
+	}
+	_ = db.Pool.QueryRow(ctx, `
+		SELECT COALESCE(SUM(amount), 0) FROM cost_entries
+		WHERE org_id=$1 AND entry_date >= $2`, orgID, since).Scan(&periodCost)
+	if periodCost != nil {
+		out.CostTotal = *periodCost
+	}
+	costByMonth, _ := db.orgMonthlyCostMetrics(ctx, orgID, 6)
+	out.CostByMonth = costByMonth
+
 	out.Kpis = []models.AndpadAnalyticsKpi{
 		{Label: "進行中案件", Value: float64(active), Unit: "件", TrendPct: &trend},
 		{Label: "登録案件", Value: float64(totalProjects), Unit: "件"},
 		{Label: "期間内記録", Value: float64(totalRecords), Unit: "件"},
 		{Label: "請求合計", Value: out.BillingTotal, Unit: "円"},
+		{Label: "実行予算合計", Value: out.BudgetTotal, Unit: "円"},
+		{Label: "期間内原価", Value: out.CostTotal, Unit: "円"},
+		{Label: "予算差異率", Value: out.BudgetVariancePct, Unit: "%"},
 	}
 	return out, nil
 }

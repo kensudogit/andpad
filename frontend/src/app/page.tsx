@@ -20,7 +20,7 @@ export default function HomePage() {
         </Link>
         <Link href="/saas" className="stat-card stat-card--violet">
           <span className="stat-label">{ui.navSaas}</span>
-          <span className="stat-value">18 {ui.saasModulesTitle}</span>
+          <span className="stat-value">19 {ui.saasModulesTitle}</span>
         </Link>
         <Link href="/board" className="stat-card stat-card--emerald">
           <span className="stat-label">{ui.navBoard}</span>

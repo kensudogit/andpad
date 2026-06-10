@@ -29,7 +29,11 @@ func ToAndpadAnalyticsDashboard(d models.AndpadAnalyticsDashboard) *generated.An
 		PeriodDays: d.PeriodDays, Kpis: kpis, ProjectsByStatus: statuses,
 		ModuleUsage: usage, BillingTotal: d.BillingTotal,
 		ActiveProjects: d.ActiveProjects, RecordsByWeek: d.RecordsByWeek,
-		ProjectHealthScore: d.ProjectHealthScore, GeneratedAt: fmtTime(d.GeneratedAt),
+		ProjectHealthScore: d.ProjectHealthScore,
+		BudgetTotal: d.BudgetTotal, CostTotal: d.CostTotal,
+		BudgetVariancePct: d.BudgetVariancePct,
+		CostByMonth: ToMonthlyCostMetrics(d.CostByMonth),
+		GeneratedAt: fmtTime(d.GeneratedAt),
 	}
 }
 

@@ -23,6 +23,13 @@ fragment AndpadAnalyticsDashboardFields on AndpadAnalyticsDashboard {
   activeProjects
   recordsByWeek
   projectHealthScore
+  budgetTotal
+  costTotal
+  budgetVariancePct
+  costByMonth {
+    month
+    amount
+  }
   generatedAt
 }
 

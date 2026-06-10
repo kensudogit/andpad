@@ -36,6 +36,10 @@ export function AIBoardClient() {
     () => Math.max(1, ...(board?.recordsByWeek ?? [1])),
     [board?.recordsByWeek],
   )
+  const maxMonthlyCost = useMemo(
+    () => Math.max(1, ...(board?.costByMonth?.map((m) => m.amount) ?? [1])),
+    [board?.costByMonth],
+  )
 
   return (
     <div className="board-layout">
@@ -95,6 +99,27 @@ export function AIBoardClient() {
               ))}
             </div>
           </section>
+
+          {board.costByMonth.length > 0 ? (
+            <section className="panel">
+              <h3>{ui.boardCostByMonth}</h3>
+              <div className="bar-chart">
+                {board.costByMonth.map((m) => (
+                  <div key={m.month} className="bar-col">
+                    <div
+                      className="bar-fill"
+                      style={{
+                        height: `${Math.min(100, (m.amount / maxMonthlyCost) * 100)}%`,
+                        background: 'linear-gradient(180deg, #7c3aed, #a78bfa)',
+                      }}
+                    />
+                    <span>{m.month.slice(5)}月</span>
+                    <em>{m.amount >= 100_000_000 ? `${(m.amount / 100_000_000).toFixed(1)}億` : `${(m.amount / 10_000).toFixed(0)}万`}</em>
+                  </div>
+                ))}
+              </div>
+            </section>
+          ) : null}
 
           <section className="panel board-two-col">
             <div>

@@ -348,6 +348,11 @@ type Query {
   apiIntegrations: [ApiIntegration!]!
   bimModels(projectId: ID): [BimModel!]!
   bimModel(id: ID!): BimModel
+  projectBudgets(projectId: ID, budgetType: BudgetType): [ProjectBudget!]!
+  budgetLineItems(budgetId: ID!): [BudgetLineItem!]!
+  costEntries(projectId: ID!, lineItemId: ID): [CostEntry!]!
+  budgetDashboard(projectId: ID!): BudgetDashboard!
+  projectBudgetSummaries: [ProjectBudgetSummary!]!
 }
 
 type Mutation {
@@ -378,6 +383,11 @@ type Mutation {
   createApiIntegration(input: CreateApiIntegrationInput!): ApiIntegration!
   syncApiIntegration(id: ID!): ApiIntegration!
   createBimModel(input: CreateBimModelInput!): BimModel!
+  createProjectBudget(input: CreateProjectBudgetInput!): ProjectBudget!
+  createBudgetLineItem(input: CreateBudgetLineItemInput!): BudgetLineItem!
+  createCostEntry(input: CreateCostEntryInput!): CostEntry!
+  approveProjectBudget(id: ID!): ProjectBudget!
+  createCostFromBilling(billingRecordId: ID!, projectId: ID!): CostEntry!
 }
 
 type Subscription {
@@ -415,6 +425,7 @@ enum SaasModuleCode {
   ANALYTICS
   API_INTEGRATION
   BIM
+  BUDGET_MGMT
 }
 
 type SaasModule {
@@ -655,6 +666,10 @@ type AndpadAnalyticsDashboard {
   activeProjects: Int!
   recordsByWeek: [Float!]!
   projectHealthScore: Float!
+  budgetTotal: Float!
+  costTotal: Float!
+  budgetVariancePct: Float!
+  costByMonth: [MonthlyCostMetric!]!
   generatedAt: String!
 }
 
@@ -696,4 +711,170 @@ input CreateBimModelInput {
   viewerUrl: String
   fileSizeMb: Float
   uploadedBy: String
+}
+
+# --- Budget / cost management ---
+enum BudgetType {
+  ESTIMATE
+  EXECUTION_BUDGET
+  FORECAST
+}
+
+enum BudgetStatus {
+  DRAFT
+  APPROVED
+  LOCKED
+}
+
+enum CostEntryType {
+  MATERIAL
+  LABOR
+  SUBCONTRACT
+  EQUIPMENT
+  OVERHEAD
+  OTHER
+}
+
+type ProjectBudget {
+  id: ID!
+  projectId: ID!
+  projectName: String!
+  name: String!
+  budgetType: BudgetType!
+  status: BudgetStatus!
+  versionNo: Int!
+  contractAmount: Float!
+  totalEstimate: Float!
+  totalBudget: Float!
+  totalCommitted: Float!
+  totalActual: Float!
+  notes: String!
+  approvedAt: String
+  createdAt: String!
+}
+
+type BudgetLineItem {
+  id: ID!
+  budgetId: ID!
+  categoryCode: String!
+  categoryName: String!
+  wbsCode: String!
+  description: String!
+  estimateAmount: Float!
+  budgetAmount: Float!
+  committedAmount: Float!
+  actualAmount: Float!
+  varianceAmount: Float!
+  variancePct: Float!
+  sortOrder: Int!
+  createdAt: String!
+}
+
+type CostEntry {
+  id: ID!
+  projectId: ID!
+  projectName: String!
+  lineItemId: String!
+  lineItemName: String!
+  entryType: CostEntryType!
+  vendorName: String!
+  description: String!
+  amount: Float!
+  entryDate: String!
+  invoiceNo: String!
+  recordedBy: String!
+  createdAt: String!
+}
+
+type BudgetCategorySummary {
+  categoryCode: String!
+  categoryName: String!
+  budgetAmount: Float!
+  actualAmount: Float!
+  varianceAmount: Float!
+}
+
+type MonthlyCostMetric {
+  month: String!
+  amount: Float!
+}
+
+type BillingReconciliationItem {
+  billingRecordId: ID!
+  title: String!
+  billingAmount: Float!
+  costAmount: Float!
+  varianceAmount: Float!
+  status: String!
+  billingDate: String
+}
+
+type ProjectBudgetSummary {
+  projectId: ID!
+  projectName: String!
+  status: ConstructionProjectStatus!
+  contractAmount: Float!
+  totalBudget: Float!
+  totalActual: Float!
+  billingTotal: Float!
+  variancePct: Float!
+}
+
+type BudgetDashboard {
+  projectId: ID!
+  projectName: String!
+  contractAmount: Float!
+  totalEstimate: Float!
+  totalBudget: Float!
+  totalCommitted: Float!
+  totalActual: Float!
+  totalForecast: Float!
+  varianceAmount: Float!
+  variancePct: Float!
+  completionPct: Float!
+  estimateBudgetTotal: Float!
+  grossMarginPct: Float!
+  inquiryProfitTotal: Float!
+  billingTotal: Float!
+  billingBalance: Float!
+  monthlyCosts: [MonthlyCostMetric!]!
+  reconciliation: [BillingReconciliationItem!]!
+  lineItems: [BudgetLineItem!]!
+  recentCosts: [CostEntry!]!
+  categorySummary: [BudgetCategorySummary!]!
+  generatedAt: String!
+}
+
+input CreateProjectBudgetInput {
+  projectId: ID!
+  name: String!
+  budgetType: BudgetType
+  status: BudgetStatus
+  versionNo: Int
+  contractAmount: Float
+  notes: String
+}
+
+input CreateBudgetLineItemInput {
+  budgetId: ID!
+  categoryCode: String!
+  categoryName: String!
+  wbsCode: String
+  description: String
+  estimateAmount: Float
+  budgetAmount: Float
+  committedAmount: Float
+  sortOrder: Int
+}
+
+input CreateCostEntryInput {
+  projectId: ID!
+  lineItemId: ID
+  entryType: CostEntryType
+  vendorName: String
+  description: String!
+  amount: Float!
+  entryDate: String
+  invoiceNo: String
+  recordedBy: String
 }

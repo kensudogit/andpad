@@ -72,11 +72,11 @@ func (s *Service) GenerateAnalyticsInsight(ctx context.Context, periodDays int) 
 
 func fallbackConstructionInsight(d models.AndpadAnalyticsDashboard, at string) models.AnalyticsInsight {
 	return models.AnalyticsInsight{
-		Summary: fmt.Sprintf("過去%d日間: 進行中案件%d件、プロジェクト健全性スコア%.0f点。請求合計¥%.0f。",
-			d.PeriodDays, d.ActiveProjects, d.ProjectHealthScore, d.BillingTotal),
-		Strengths:       []string{"案件データが集約され、モジュール利用状況を可視化できます"},
-		Risks:           []string{"OPENAI_API_KEY 未設定時はルールベース分析のみ表示"},
-		Recommendations: []string{"保留案件の原因を週次で確認", "工程・安全モジュールの記録頻度を向上"},
+		Summary: fmt.Sprintf("過去%d日間: 進行中案件%d件、健全性%.0f点。請求¥%.0f、実行予算¥%.0f、期間原価¥%.0f、予算差異率%.1f%%。",
+			d.PeriodDays, d.ActiveProjects, d.ProjectHealthScore, d.BillingTotal, d.BudgetTotal, d.CostTotal, d.BudgetVariancePct),
+		Strengths:       []string{"予算・原価・請求データが案件横断で可視化されています"},
+		Risks:           []string{"原価進捗が予算に対して高い案件は完工予想の再算定が必要です"},
+		Recommendations: []string{"月次原価レポートで費目別差異を確認", "請求と原価のバランスを四半期ごとにレビュー"},
 		GeneratedAt:     at,
 	}
 }

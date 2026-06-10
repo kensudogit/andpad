@@ -313,6 +313,51 @@ func (r *mutationResolver) CreateBimModel(ctx context.Context, input generated.C
 	return gqlconv.ToBimModel(item), nil
 }
 
+// CreateProjectBudget is the resolver for the createProjectBudget field.
+func (r *mutationResolver) CreateProjectBudget(ctx context.Context, input generated.CreateProjectBudgetInput) (*generated.ProjectBudget, error) {
+	item, err := r.svc.CreateProjectBudget(ctx, gqlconv.ProjectBudgetFromInput(input))
+	if err != nil {
+		return nil, err
+	}
+	return gqlconv.ToProjectBudget(item), nil
+}
+
+// CreateBudgetLineItem is the resolver for the createBudgetLineItem field.
+func (r *mutationResolver) CreateBudgetLineItem(ctx context.Context, input generated.CreateBudgetLineItemInput) (*generated.BudgetLineItem, error) {
+	item, err := r.svc.CreateBudgetLineItem(ctx, gqlconv.BudgetLineItemFromInput(input))
+	if err != nil {
+		return nil, err
+	}
+	return gqlconv.ToBudgetLineItem(item), nil
+}
+
+// CreateCostEntry is the resolver for the createCostEntry field.
+func (r *mutationResolver) CreateCostEntry(ctx context.Context, input generated.CreateCostEntryInput) (*generated.CostEntry, error) {
+	item, err := r.svc.CreateCostEntry(ctx, gqlconv.CostEntryFromInput(input))
+	if err != nil {
+		return nil, err
+	}
+	return gqlconv.ToCostEntry(item), nil
+}
+
+// ApproveProjectBudget is the resolver for the approveProjectBudget field.
+func (r *mutationResolver) ApproveProjectBudget(ctx context.Context, id string) (*generated.ProjectBudget, error) {
+	item, err := r.svc.ApproveProjectBudget(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	return gqlconv.ToProjectBudget(item), nil
+}
+
+// CreateCostFromBilling is the resolver for the createCostFromBilling field.
+func (r *mutationResolver) CreateCostFromBilling(ctx context.Context, billingRecordID string, projectID string) (*generated.CostEntry, error) {
+	item, err := r.svc.CreateCostFromBilling(ctx, billingRecordID, projectID)
+	if err != nil {
+		return nil, err
+	}
+	return gqlconv.ToCostEntry(item), nil
+}
+
 // Health is the resolver for the health field.
 func (r *queryResolver) Health(ctx context.Context) (*generated.Health, error) {
 	return gqlconv.ToHealth(), nil
@@ -788,6 +833,63 @@ func (r *queryResolver) BimModel(ctx context.Context, id string) (*generated.Bim
 		return nil, nil
 	}
 	return gqlconv.ToBimModel(item), nil
+}
+
+// ProjectBudgets is the resolver for the projectBudgets field.
+func (r *queryResolver) ProjectBudgets(ctx context.Context, projectID *string, budgetType *generated.BudgetType) ([]*generated.ProjectBudget, error) {
+	pid := ""
+	if projectID != nil {
+		pid = *projectID
+	}
+	var bt models.BudgetType
+	if budgetType != nil {
+		bt = models.BudgetType(*budgetType)
+	}
+	list, err := r.svc.ListProjectBudgets(ctx, pid, bt)
+	if err != nil {
+		return nil, err
+	}
+	return gqlconv.ToProjectBudgets(list), nil
+}
+
+// BudgetLineItems is the resolver for the budgetLineItems field.
+func (r *queryResolver) BudgetLineItems(ctx context.Context, budgetID string) ([]*generated.BudgetLineItem, error) {
+	list, err := r.svc.ListBudgetLineItems(ctx, budgetID)
+	if err != nil {
+		return nil, err
+	}
+	return gqlconv.ToBudgetLineItems(list), nil
+}
+
+// CostEntries is the resolver for the costEntries field.
+func (r *queryResolver) CostEntries(ctx context.Context, projectID string, lineItemID *string) ([]*generated.CostEntry, error) {
+	lid := ""
+	if lineItemID != nil {
+		lid = *lineItemID
+	}
+	list, err := r.svc.ListCostEntries(ctx, projectID, lid)
+	if err != nil {
+		return nil, err
+	}
+	return gqlconv.ToCostEntries(list), nil
+}
+
+// BudgetDashboard is the resolver for the budgetDashboard field.
+func (r *queryResolver) BudgetDashboard(ctx context.Context, projectID string) (*generated.BudgetDashboard, error) {
+	dash, err := r.svc.BudgetDashboard(ctx, projectID)
+	if err != nil {
+		return nil, err
+	}
+	return gqlconv.ToBudgetDashboard(dash), nil
+}
+
+// ProjectBudgetSummaries is the resolver for the projectBudgetSummaries field.
+func (r *queryResolver) ProjectBudgetSummaries(ctx context.Context) ([]*generated.ProjectBudgetSummary, error) {
+	list, err := r.svc.ListProjectBudgetSummaries(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return gqlconv.ToProjectBudgetSummaries(list), nil
 }
 
 // DashboardUpdated is the resolver for the dashboardUpdated field.

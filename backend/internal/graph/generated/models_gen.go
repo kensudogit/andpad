@@ -43,6 +43,10 @@ type AndpadAnalyticsDashboard struct {
 	ActiveProjects     int                   `json:"activeProjects"`
 	RecordsByWeek      []float64             `json:"recordsByWeek"`
 	ProjectHealthScore float64               `json:"projectHealthScore"`
+	BudgetTotal        float64               `json:"budgetTotal"`
+	CostTotal          float64               `json:"costTotal"`
+	BudgetVariancePct  float64               `json:"budgetVariancePct"`
+	CostByMonth        []*MonthlyCostMetric  `json:"costByMonth"`
 	GeneratedAt        string                `json:"generatedAt"`
 }
 
@@ -73,6 +77,16 @@ type AttendanceRecord struct {
 	Note     string  `json:"note"`
 }
 
+type BillingReconciliationItem struct {
+	BillingRecordID string  `json:"billingRecordId"`
+	Title           string  `json:"title"`
+	BillingAmount   float64 `json:"billingAmount"`
+	CostAmount      float64 `json:"costAmount"`
+	VarianceAmount  float64 `json:"varianceAmount"`
+	Status          string  `json:"status"`
+	BillingDate     *string `json:"billingDate,omitempty"`
+}
+
 type BimModel struct {
 	ID          string   `json:"id"`
 	ProjectID   string   `json:"projectId"`
@@ -91,6 +105,56 @@ type Bookmark struct {
 	VideoID   string `json:"videoId"`
 	LearnerID string `json:"learnerId"`
 	CreatedAt string `json:"createdAt"`
+}
+
+type BudgetCategorySummary struct {
+	CategoryCode   string  `json:"categoryCode"`
+	CategoryName   string  `json:"categoryName"`
+	BudgetAmount   float64 `json:"budgetAmount"`
+	ActualAmount   float64 `json:"actualAmount"`
+	VarianceAmount float64 `json:"varianceAmount"`
+}
+
+type BudgetDashboard struct {
+	ProjectID           string                       `json:"projectId"`
+	ProjectName         string                       `json:"projectName"`
+	ContractAmount      float64                      `json:"contractAmount"`
+	TotalEstimate       float64                      `json:"totalEstimate"`
+	TotalBudget         float64                      `json:"totalBudget"`
+	TotalCommitted      float64                      `json:"totalCommitted"`
+	TotalActual         float64                      `json:"totalActual"`
+	TotalForecast       float64                      `json:"totalForecast"`
+	VarianceAmount      float64                      `json:"varianceAmount"`
+	VariancePct         float64                      `json:"variancePct"`
+	CompletionPct       float64                      `json:"completionPct"`
+	EstimateBudgetTotal float64                      `json:"estimateBudgetTotal"`
+	GrossMarginPct      float64                      `json:"grossMarginPct"`
+	InquiryProfitTotal  float64                      `json:"inquiryProfitTotal"`
+	BillingTotal        float64                      `json:"billingTotal"`
+	BillingBalance      float64                      `json:"billingBalance"`
+	MonthlyCosts        []*MonthlyCostMetric         `json:"monthlyCosts"`
+	Reconciliation      []*BillingReconciliationItem `json:"reconciliation"`
+	LineItems           []*BudgetLineItem            `json:"lineItems"`
+	RecentCosts         []*CostEntry                 `json:"recentCosts"`
+	CategorySummary     []*BudgetCategorySummary     `json:"categorySummary"`
+	GeneratedAt         string                       `json:"generatedAt"`
+}
+
+type BudgetLineItem struct {
+	ID              string  `json:"id"`
+	BudgetID        string  `json:"budgetId"`
+	CategoryCode    string  `json:"categoryCode"`
+	CategoryName    string  `json:"categoryName"`
+	WbsCode         string  `json:"wbsCode"`
+	Description     string  `json:"description"`
+	EstimateAmount  float64 `json:"estimateAmount"`
+	BudgetAmount    float64 `json:"budgetAmount"`
+	CommittedAmount float64 `json:"committedAmount"`
+	ActualAmount    float64 `json:"actualAmount"`
+	VarianceAmount  float64 `json:"varianceAmount"`
+	VariancePct     float64 `json:"variancePct"`
+	SortOrder       int     `json:"sortOrder"`
+	CreatedAt       string  `json:"createdAt"`
 }
 
 type CategoryMetric struct {
@@ -157,6 +221,22 @@ type ContractTemplate struct {
 	CreatedAt string `json:"createdAt"`
 }
 
+type CostEntry struct {
+	ID           string        `json:"id"`
+	ProjectID    string        `json:"projectId"`
+	ProjectName  string        `json:"projectName"`
+	LineItemID   string        `json:"lineItemId"`
+	LineItemName string        `json:"lineItemName"`
+	EntryType    CostEntryType `json:"entryType"`
+	VendorName   string        `json:"vendorName"`
+	Description  string        `json:"description"`
+	Amount       float64       `json:"amount"`
+	EntryDate    string        `json:"entryDate"`
+	InvoiceNo    string        `json:"invoiceNo"`
+	RecordedBy   string        `json:"recordedBy"`
+	CreatedAt    string        `json:"createdAt"`
+}
+
 type CreateAPIIntegrationInput struct {
 	Name        string  `json:"name"`
 	Provider    *string `json:"provider,omitempty"`
@@ -171,6 +251,18 @@ type CreateBimModelInput struct {
 	ViewerURL  *string  `json:"viewerUrl,omitempty"`
 	FileSizeMb *float64 `json:"fileSizeMb,omitempty"`
 	UploadedBy *string  `json:"uploadedBy,omitempty"`
+}
+
+type CreateBudgetLineItemInput struct {
+	BudgetID        string   `json:"budgetId"`
+	CategoryCode    string   `json:"categoryCode"`
+	CategoryName    string   `json:"categoryName"`
+	WbsCode         *string  `json:"wbsCode,omitempty"`
+	Description     *string  `json:"description,omitempty"`
+	EstimateAmount  *float64 `json:"estimateAmount,omitempty"`
+	BudgetAmount    *float64 `json:"budgetAmount,omitempty"`
+	CommittedAmount *float64 `json:"committedAmount,omitempty"`
+	SortOrder       *int     `json:"sortOrder,omitempty"`
 }
 
 type CreateConstructionProjectInput struct {
@@ -188,6 +280,18 @@ type CreateContractInput struct {
 	PartyName  string  `json:"partyName"`
 	PartyEmail *string `json:"partyEmail,omitempty"`
 	Body       *string `json:"body,omitempty"`
+}
+
+type CreateCostEntryInput struct {
+	ProjectID   string         `json:"projectId"`
+	LineItemID  *string        `json:"lineItemId,omitempty"`
+	EntryType   *CostEntryType `json:"entryType,omitempty"`
+	VendorName  *string        `json:"vendorName,omitempty"`
+	Description string         `json:"description"`
+	Amount      float64        `json:"amount"`
+	EntryDate   *string        `json:"entryDate,omitempty"`
+	InvoiceNo   *string        `json:"invoiceNo,omitempty"`
+	RecordedBy  *string        `json:"recordedBy,omitempty"`
 }
 
 type CreateCrmContactInput struct {
@@ -212,6 +316,16 @@ type CreateLeaveRequestInput struct {
 	StartDate string  `json:"startDate"`
 	EndDate   string  `json:"endDate"`
 	Reason    *string `json:"reason,omitempty"`
+}
+
+type CreateProjectBudgetInput struct {
+	ProjectID      string        `json:"projectId"`
+	Name           string        `json:"name"`
+	BudgetType     *BudgetType   `json:"budgetType,omitempty"`
+	Status         *BudgetStatus `json:"status,omitempty"`
+	VersionNo      *int          `json:"versionNo,omitempty"`
+	ContractAmount *float64      `json:"contractAmount,omitempty"`
+	Notes          *string       `json:"notes,omitempty"`
 }
 
 type CreateProjectModuleRecordInput struct {
@@ -334,6 +448,11 @@ type ModuleUsageMetric struct {
 	RecordCount int            `json:"recordCount"`
 }
 
+type MonthlyCostMetric struct {
+	Month  string  `json:"month"`
+	Amount float64 `json:"amount"`
+}
+
 type Mutation struct {
 }
 
@@ -355,6 +474,35 @@ type PageInfo struct {
 	Page       int `json:"page"`
 	PageSize   int `json:"pageSize"`
 	TotalPages int `json:"totalPages"`
+}
+
+type ProjectBudget struct {
+	ID             string       `json:"id"`
+	ProjectID      string       `json:"projectId"`
+	ProjectName    string       `json:"projectName"`
+	Name           string       `json:"name"`
+	BudgetType     BudgetType   `json:"budgetType"`
+	Status         BudgetStatus `json:"status"`
+	VersionNo      int          `json:"versionNo"`
+	ContractAmount float64      `json:"contractAmount"`
+	TotalEstimate  float64      `json:"totalEstimate"`
+	TotalBudget    float64      `json:"totalBudget"`
+	TotalCommitted float64      `json:"totalCommitted"`
+	TotalActual    float64      `json:"totalActual"`
+	Notes          string       `json:"notes"`
+	ApprovedAt     *string      `json:"approvedAt,omitempty"`
+	CreatedAt      string       `json:"createdAt"`
+}
+
+type ProjectBudgetSummary struct {
+	ProjectID      string                    `json:"projectId"`
+	ProjectName    string                    `json:"projectName"`
+	Status         ConstructionProjectStatus `json:"status"`
+	ContractAmount float64                   `json:"contractAmount"`
+	TotalBudget    float64                   `json:"totalBudget"`
+	TotalActual    float64                   `json:"totalActual"`
+	BillingTotal   float64                   `json:"billingTotal"`
+	VariancePct    float64                   `json:"variancePct"`
 }
 
 type ProjectModuleRecord struct {
@@ -537,6 +685,92 @@ type WatchProgress struct {
 	UpdatedAt   string `json:"updatedAt"`
 }
 
+type BudgetStatus string
+
+const (
+	BudgetStatusDraft    BudgetStatus = "DRAFT"
+	BudgetStatusApproved BudgetStatus = "APPROVED"
+	BudgetStatusLocked   BudgetStatus = "LOCKED"
+)
+
+var AllBudgetStatus = []BudgetStatus{
+	BudgetStatusDraft,
+	BudgetStatusApproved,
+	BudgetStatusLocked,
+}
+
+func (e BudgetStatus) IsValid() bool {
+	switch e {
+	case BudgetStatusDraft, BudgetStatusApproved, BudgetStatusLocked:
+		return true
+	}
+	return false
+}
+
+func (e BudgetStatus) String() string {
+	return string(e)
+}
+
+func (e *BudgetStatus) UnmarshalGQL(v any) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = BudgetStatus(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid BudgetStatus", str)
+	}
+	return nil
+}
+
+func (e BudgetStatus) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+type BudgetType string
+
+const (
+	BudgetTypeEstimate        BudgetType = "ESTIMATE"
+	BudgetTypeExecutionBudget BudgetType = "EXECUTION_BUDGET"
+	BudgetTypeForecast        BudgetType = "FORECAST"
+)
+
+var AllBudgetType = []BudgetType{
+	BudgetTypeEstimate,
+	BudgetTypeExecutionBudget,
+	BudgetTypeForecast,
+}
+
+func (e BudgetType) IsValid() bool {
+	switch e {
+	case BudgetTypeEstimate, BudgetTypeExecutionBudget, BudgetTypeForecast:
+		return true
+	}
+	return false
+}
+
+func (e BudgetType) String() string {
+	return string(e)
+}
+
+func (e *BudgetType) UnmarshalGQL(v any) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = BudgetType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid BudgetType", str)
+	}
+	return nil
+}
+
+func (e BudgetType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
 type ConstructionProjectStatus string
 
 const (
@@ -579,6 +813,55 @@ func (e *ConstructionProjectStatus) UnmarshalGQL(v any) error {
 }
 
 func (e ConstructionProjectStatus) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+type CostEntryType string
+
+const (
+	CostEntryTypeMaterial    CostEntryType = "MATERIAL"
+	CostEntryTypeLabor       CostEntryType = "LABOR"
+	CostEntryTypeSubcontract CostEntryType = "SUBCONTRACT"
+	CostEntryTypeEquipment   CostEntryType = "EQUIPMENT"
+	CostEntryTypeOverhead    CostEntryType = "OVERHEAD"
+	CostEntryTypeOther       CostEntryType = "OTHER"
+)
+
+var AllCostEntryType = []CostEntryType{
+	CostEntryTypeMaterial,
+	CostEntryTypeLabor,
+	CostEntryTypeSubcontract,
+	CostEntryTypeEquipment,
+	CostEntryTypeOverhead,
+	CostEntryTypeOther,
+}
+
+func (e CostEntryType) IsValid() bool {
+	switch e {
+	case CostEntryTypeMaterial, CostEntryTypeLabor, CostEntryTypeSubcontract, CostEntryTypeEquipment, CostEntryTypeOverhead, CostEntryTypeOther:
+		return true
+	}
+	return false
+}
+
+func (e CostEntryType) String() string {
+	return string(e)
+}
+
+func (e *CostEntryType) UnmarshalGQL(v any) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = CostEntryType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid CostEntryType", str)
+	}
+	return nil
+}
+
+func (e CostEntryType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
@@ -699,6 +982,7 @@ const (
 	SaasModuleCodeAnalytics        SaasModuleCode = "ANALYTICS"
 	SaasModuleCodeAPIIntegration   SaasModuleCode = "API_INTEGRATION"
 	SaasModuleCodeBim              SaasModuleCode = "BIM"
+	SaasModuleCodeBudgetMgmt       SaasModuleCode = "BUDGET_MGMT"
 )
 
 var AllSaasModuleCode = []SaasModuleCode{
@@ -726,11 +1010,12 @@ var AllSaasModuleCode = []SaasModuleCode{
 	SaasModuleCodeAnalytics,
 	SaasModuleCodeAPIIntegration,
 	SaasModuleCodeBim,
+	SaasModuleCodeBudgetMgmt,
 }
 
 func (e SaasModuleCode) IsValid() bool {
 	switch e {
-	case SaasModuleCodeDx, SaasModuleCodeCrm, SaasModuleCodeAttendance, SaasModuleCodeEcontract, SaasModuleCodeChatbot, SaasModuleCodeDocRag, SaasModuleCodeConstructionMgmt, SaasModuleCodeDrawings, SaasModuleCodeBlackboard, SaasModuleCodeInspection, SaasModuleCodeProjectBoard, SaasModuleCodeInquiryProfit, SaasModuleCodeOrders, SaasModuleCodeRemoteSite, SaasModuleCodeDocApproval, SaasModuleCodeScan3d, SaasModuleCodeBilling, SaasModuleCodeWorkRate, SaasModuleCodeSiteAccess, SaasModuleCodeEDelivery, SaasModuleCodeBm, SaasModuleCodeAnalytics, SaasModuleCodeAPIIntegration, SaasModuleCodeBim:
+	case SaasModuleCodeDx, SaasModuleCodeCrm, SaasModuleCodeAttendance, SaasModuleCodeEcontract, SaasModuleCodeChatbot, SaasModuleCodeDocRag, SaasModuleCodeConstructionMgmt, SaasModuleCodeDrawings, SaasModuleCodeBlackboard, SaasModuleCodeInspection, SaasModuleCodeProjectBoard, SaasModuleCodeInquiryProfit, SaasModuleCodeOrders, SaasModuleCodeRemoteSite, SaasModuleCodeDocApproval, SaasModuleCodeScan3d, SaasModuleCodeBilling, SaasModuleCodeWorkRate, SaasModuleCodeSiteAccess, SaasModuleCodeEDelivery, SaasModuleCodeBm, SaasModuleCodeAnalytics, SaasModuleCodeAPIIntegration, SaasModuleCodeBim, SaasModuleCodeBudgetMgmt:
 		return true
 	}
 	return false

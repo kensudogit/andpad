@@ -46,6 +46,10 @@ export type AndpadAnalyticsDashboard = {
   __typename?: 'AndpadAnalyticsDashboard';
   activeProjects: Scalars['Int']['output'];
   billingTotal: Scalars['Float']['output'];
+  budgetTotal: Scalars['Float']['output'];
+  budgetVariancePct: Scalars['Float']['output'];
+  costByMonth: Array<MonthlyCostMetric>;
+  costTotal: Scalars['Float']['output'];
   generatedAt: Scalars['String']['output'];
   kpis: Array<AndpadAnalyticsKpi>;
   moduleUsage: Array<ModuleUsageMetric>;
@@ -85,6 +89,17 @@ export type AttendanceRecord = {
   userName: Scalars['String']['output'];
 };
 
+export type BillingReconciliationItem = {
+  __typename?: 'BillingReconciliationItem';
+  billingAmount: Scalars['Float']['output'];
+  billingDate: Maybe<Scalars['String']['output']>;
+  billingRecordId: Scalars['ID']['output'];
+  costAmount: Scalars['Float']['output'];
+  status: Scalars['String']['output'];
+  title: Scalars['String']['output'];
+  varianceAmount: Scalars['Float']['output'];
+};
+
 export type BimModel = {
   __typename?: 'BimModel';
   createdAt: Scalars['String']['output'];
@@ -106,6 +121,71 @@ export type Bookmark = {
   learnerId: Scalars['ID']['output'];
   videoId: Scalars['ID']['output'];
 };
+
+export type BudgetCategorySummary = {
+  __typename?: 'BudgetCategorySummary';
+  actualAmount: Scalars['Float']['output'];
+  budgetAmount: Scalars['Float']['output'];
+  categoryCode: Scalars['String']['output'];
+  categoryName: Scalars['String']['output'];
+  varianceAmount: Scalars['Float']['output'];
+};
+
+export type BudgetDashboard = {
+  __typename?: 'BudgetDashboard';
+  billingBalance: Scalars['Float']['output'];
+  billingTotal: Scalars['Float']['output'];
+  categorySummary: Array<BudgetCategorySummary>;
+  completionPct: Scalars['Float']['output'];
+  contractAmount: Scalars['Float']['output'];
+  estimateBudgetTotal: Scalars['Float']['output'];
+  generatedAt: Scalars['String']['output'];
+  grossMarginPct: Scalars['Float']['output'];
+  inquiryProfitTotal: Scalars['Float']['output'];
+  lineItems: Array<BudgetLineItem>;
+  monthlyCosts: Array<MonthlyCostMetric>;
+  projectId: Scalars['ID']['output'];
+  projectName: Scalars['String']['output'];
+  recentCosts: Array<CostEntry>;
+  reconciliation: Array<BillingReconciliationItem>;
+  totalActual: Scalars['Float']['output'];
+  totalBudget: Scalars['Float']['output'];
+  totalCommitted: Scalars['Float']['output'];
+  totalEstimate: Scalars['Float']['output'];
+  totalForecast: Scalars['Float']['output'];
+  varianceAmount: Scalars['Float']['output'];
+  variancePct: Scalars['Float']['output'];
+};
+
+export type BudgetLineItem = {
+  __typename?: 'BudgetLineItem';
+  actualAmount: Scalars['Float']['output'];
+  budgetAmount: Scalars['Float']['output'];
+  budgetId: Scalars['ID']['output'];
+  categoryCode: Scalars['String']['output'];
+  categoryName: Scalars['String']['output'];
+  committedAmount: Scalars['Float']['output'];
+  createdAt: Scalars['String']['output'];
+  description: Scalars['String']['output'];
+  estimateAmount: Scalars['Float']['output'];
+  id: Scalars['ID']['output'];
+  sortOrder: Scalars['Int']['output'];
+  varianceAmount: Scalars['Float']['output'];
+  variancePct: Scalars['Float']['output'];
+  wbsCode: Scalars['String']['output'];
+};
+
+export enum BudgetStatus {
+  Approved = 'APPROVED',
+  Draft = 'DRAFT',
+  Locked = 'LOCKED'
+}
+
+export enum BudgetType {
+  Estimate = 'ESTIMATE',
+  ExecutionBudget = 'EXECUTION_BUDGET',
+  Forecast = 'FORECAST'
+}
 
 export type CategoryMetric = {
   __typename?: 'CategoryMetric';
@@ -186,6 +266,32 @@ export type ContractTemplate = {
   name: Scalars['String']['output'];
 };
 
+export type CostEntry = {
+  __typename?: 'CostEntry';
+  amount: Scalars['Float']['output'];
+  createdAt: Scalars['String']['output'];
+  description: Scalars['String']['output'];
+  entryDate: Scalars['String']['output'];
+  entryType: CostEntryType;
+  id: Scalars['ID']['output'];
+  invoiceNo: Scalars['String']['output'];
+  lineItemId: Scalars['String']['output'];
+  lineItemName: Scalars['String']['output'];
+  projectId: Scalars['ID']['output'];
+  projectName: Scalars['String']['output'];
+  recordedBy: Scalars['String']['output'];
+  vendorName: Scalars['String']['output'];
+};
+
+export enum CostEntryType {
+  Equipment = 'EQUIPMENT',
+  Labor = 'LABOR',
+  Material = 'MATERIAL',
+  Other = 'OTHER',
+  Overhead = 'OVERHEAD',
+  Subcontract = 'SUBCONTRACT'
+}
+
 export type CreateApiIntegrationInput = {
   apiKeyHint?: InputMaybe<Scalars['String']['input']>;
   endpointUrl?: InputMaybe<Scalars['String']['input']>;
@@ -200,6 +306,18 @@ export type CreateBimModelInput = {
   title: Scalars['String']['input'];
   uploadedBy?: InputMaybe<Scalars['String']['input']>;
   viewerUrl?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CreateBudgetLineItemInput = {
+  budgetAmount?: InputMaybe<Scalars['Float']['input']>;
+  budgetId: Scalars['ID']['input'];
+  categoryCode: Scalars['String']['input'];
+  categoryName: Scalars['String']['input'];
+  committedAmount?: InputMaybe<Scalars['Float']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  estimateAmount?: InputMaybe<Scalars['Float']['input']>;
+  sortOrder?: InputMaybe<Scalars['Int']['input']>;
+  wbsCode?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CreateConstructionProjectInput = {
@@ -217,6 +335,18 @@ export type CreateContractInput = {
   partyName: Scalars['String']['input'];
   templateId?: InputMaybe<Scalars['ID']['input']>;
   title: Scalars['String']['input'];
+};
+
+export type CreateCostEntryInput = {
+  amount: Scalars['Float']['input'];
+  description: Scalars['String']['input'];
+  entryDate?: InputMaybe<Scalars['String']['input']>;
+  entryType?: InputMaybe<CostEntryType>;
+  invoiceNo?: InputMaybe<Scalars['String']['input']>;
+  lineItemId?: InputMaybe<Scalars['ID']['input']>;
+  projectId: Scalars['ID']['input'];
+  recordedBy?: InputMaybe<Scalars['String']['input']>;
+  vendorName?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CreateCrmContactInput = {
@@ -241,6 +371,16 @@ export type CreateLeaveRequestInput = {
   endDate: Scalars['String']['input'];
   reason?: InputMaybe<Scalars['String']['input']>;
   startDate: Scalars['String']['input'];
+};
+
+export type CreateProjectBudgetInput = {
+  budgetType?: InputMaybe<BudgetType>;
+  contractAmount?: InputMaybe<Scalars['Float']['input']>;
+  name: Scalars['String']['input'];
+  notes?: InputMaybe<Scalars['String']['input']>;
+  projectId: Scalars['ID']['input'];
+  status?: InputMaybe<BudgetStatus>;
+  versionNo?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type CreateProjectModuleRecordInput = {
@@ -388,20 +528,31 @@ export type ModuleUsageMetric = {
   recordCount: Scalars['Int']['output'];
 };
 
+export type MonthlyCostMetric = {
+  __typename?: 'MonthlyCostMetric';
+  amount: Scalars['Float']['output'];
+  month: Scalars['String']['output'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   approveLeaveRequest: LeaveRequest;
+  approveProjectBudget: ProjectBudget;
   clockIn: AttendanceRecord;
   clockOut: AttendanceRecord;
   createApiIntegration: ApiIntegration;
   createBimModel: BimModel;
+  createBudgetLineItem: BudgetLineItem;
   createConstructionProject: ConstructionProject;
   createContract: Contract;
   createContractTemplate: ContractTemplate;
+  createCostEntry: CostEntry;
+  createCostFromBilling: CostEntry;
   createCrmContact: CrmContact;
   createCrmInteraction: CrmInteraction;
   createDxInitiative: DxInitiative;
   createLeaveRequest: LeaveRequest;
+  createProjectBudget: ProjectBudget;
   createProjectModuleRecord: ProjectModuleRecord;
   createRagDocument: RagDocument;
   createVideoNote: VideoNote;
@@ -425,6 +576,11 @@ export type MutationApproveLeaveRequestArgs = {
 };
 
 
+export type MutationApproveProjectBudgetArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
 export type MutationClockInArgs = {
   note?: InputMaybe<Scalars['String']['input']>;
 };
@@ -437,6 +593,11 @@ export type MutationCreateApiIntegrationArgs = {
 
 export type MutationCreateBimModelArgs = {
   input: CreateBimModelInput;
+};
+
+
+export type MutationCreateBudgetLineItemArgs = {
+  input: CreateBudgetLineItemInput;
 };
 
 
@@ -453,6 +614,17 @@ export type MutationCreateContractArgs = {
 export type MutationCreateContractTemplateArgs = {
   body: Scalars['String']['input'];
   name: Scalars['String']['input'];
+};
+
+
+export type MutationCreateCostEntryArgs = {
+  input: CreateCostEntryInput;
+};
+
+
+export type MutationCreateCostFromBillingArgs = {
+  billingRecordId: Scalars['ID']['input'];
+  projectId: Scalars['ID']['input'];
 };
 
 
@@ -475,6 +647,11 @@ export type MutationCreateDxInitiativeArgs = {
 
 export type MutationCreateLeaveRequestArgs = {
   input: CreateLeaveRequestInput;
+};
+
+
+export type MutationCreateProjectBudgetArgs = {
+  input: CreateProjectBudgetInput;
 };
 
 
@@ -585,6 +762,37 @@ export enum PlanTier {
   Starter = 'STARTER'
 }
 
+export type ProjectBudget = {
+  __typename?: 'ProjectBudget';
+  approvedAt: Maybe<Scalars['String']['output']>;
+  budgetType: BudgetType;
+  contractAmount: Scalars['Float']['output'];
+  createdAt: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  notes: Scalars['String']['output'];
+  projectId: Scalars['ID']['output'];
+  projectName: Scalars['String']['output'];
+  status: BudgetStatus;
+  totalActual: Scalars['Float']['output'];
+  totalBudget: Scalars['Float']['output'];
+  totalCommitted: Scalars['Float']['output'];
+  totalEstimate: Scalars['Float']['output'];
+  versionNo: Scalars['Int']['output'];
+};
+
+export type ProjectBudgetSummary = {
+  __typename?: 'ProjectBudgetSummary';
+  billingTotal: Scalars['Float']['output'];
+  contractAmount: Scalars['Float']['output'];
+  projectId: Scalars['ID']['output'];
+  projectName: Scalars['String']['output'];
+  status: ConstructionProjectStatus;
+  totalActual: Scalars['Float']['output'];
+  totalBudget: Scalars['Float']['output'];
+  variancePct: Scalars['Float']['output'];
+};
+
 export type ProjectModuleRecord = {
   __typename?: 'ProjectModuleRecord';
   amount: Maybe<Scalars['Float']['output']>;
@@ -614,11 +822,14 @@ export type Query = {
   attendanceRecords: Array<AttendanceRecord>;
   bimModel: Maybe<BimModel>;
   bimModels: Array<BimModel>;
+  budgetDashboard: BudgetDashboard;
+  budgetLineItems: Array<BudgetLineItem>;
   constructionProjects: Array<ConstructionProject>;
   consultThread: Maybe<ConsultThread>;
   consultThreads: Array<ConsultThread>;
   contractTemplates: Array<ContractTemplate>;
   contracts: Array<Contract>;
+  costEntries: Array<CostEntry>;
   crmContacts: Array<CrmContact>;
   crmInteractions: Array<CrmInteraction>;
   currentSession: Maybe<Session>;
@@ -636,6 +847,8 @@ export type Query = {
   myProgress: Array<WatchProgress>;
   myQuizAttempts: Array<QuizAttempt>;
   organization: Organization;
+  projectBudgetSummaries: Array<ProjectBudgetSummary>;
+  projectBudgets: Array<ProjectBudget>;
   projectModuleRecords: Array<ProjectModuleRecord>;
   quiz: Maybe<Quiz>;
   quizzes: Array<Quiz>;
@@ -671,8 +884,24 @@ export type QueryBimModelsArgs = {
 };
 
 
+export type QueryBudgetDashboardArgs = {
+  projectId: Scalars['ID']['input'];
+};
+
+
+export type QueryBudgetLineItemsArgs = {
+  budgetId: Scalars['ID']['input'];
+};
+
+
 export type QueryConsultThreadArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type QueryCostEntriesArgs = {
+  lineItemId?: InputMaybe<Scalars['ID']['input']>;
+  projectId: Scalars['ID']['input'];
 };
 
 
@@ -714,6 +943,12 @@ export type QueryMyProgressArgs = {
 
 export type QueryMyQuizAttemptsArgs = {
   learnerId: Scalars['ID']['input'];
+};
+
+
+export type QueryProjectBudgetsArgs = {
+  budgetType?: InputMaybe<BudgetType>;
+  projectId?: InputMaybe<Scalars['ID']['input']>;
 };
 
 
@@ -835,6 +1070,7 @@ export enum SaasModuleCode {
   Bim = 'BIM',
   Blackboard = 'BLACKBOARD',
   Bm = 'BM',
+  BudgetMgmt = 'BUDGET_MGMT',
   Chatbot = 'CHATBOT',
   ConstructionMgmt = 'CONSTRUCTION_MGMT',
   Crm = 'CRM',
@@ -1013,7 +1249,7 @@ export type BoardAnalyticsPageQueryVariables = Exact<{
 }>;
 
 
-export type BoardAnalyticsPageQuery = { __typename?: 'Query', andpadAnalytics: { __typename?: 'AndpadAnalyticsDashboard', recordsByWeek: Array<number>, projectHealthScore: number, periodDays: number, billingTotal: number, activeProjects: number, generatedAt: string, kpis: Array<{ __typename?: 'AndpadAnalyticsKpi', label: string, value: number, unit: string | null, trendPct: number | null }>, projectsByStatus: Array<{ __typename?: 'ProjectStatusCount', status: ConstructionProjectStatus, count: number }>, moduleUsage: Array<{ __typename?: 'ModuleUsageMetric', moduleCode: SaasModuleCode, moduleName: string, recordCount: number }> } };
+export type BoardAnalyticsPageQuery = { __typename?: 'Query', andpadAnalytics: { __typename?: 'AndpadAnalyticsDashboard', recordsByWeek: Array<number>, projectHealthScore: number, periodDays: number, billingTotal: number, activeProjects: number, budgetTotal: number, costTotal: number, budgetVariancePct: number, generatedAt: string, kpis: Array<{ __typename?: 'AndpadAnalyticsKpi', label: string, value: number, unit: string | null, trendPct: number | null }>, projectsByStatus: Array<{ __typename?: 'ProjectStatusCount', status: ConstructionProjectStatus, count: number }>, moduleUsage: Array<{ __typename?: 'ModuleUsageMetric', moduleCode: SaasModuleCode, moduleName: string, recordCount: number }>, costByMonth: Array<{ __typename?: 'MonthlyCostMetric', month: string, amount: number }> } };
 
 export type GenerateAnalyticsInsightMutationVariables = Exact<{
   periodDays?: InputMaybe<Scalars['Int']['input']>;
@@ -1021,6 +1257,80 @@ export type GenerateAnalyticsInsightMutationVariables = Exact<{
 
 
 export type GenerateAnalyticsInsightMutation = { __typename?: 'Mutation', generateAnalyticsInsight: { __typename?: 'AnalyticsInsight', summary: string, strengths: Array<string>, risks: Array<string>, recommendations: Array<string>, generatedAt: string } };
+
+export type BudgetLineItemFieldsFragment = { __typename?: 'BudgetLineItem', id: string, budgetId: string, categoryCode: string, categoryName: string, wbsCode: string, description: string, estimateAmount: number, budgetAmount: number, committedAmount: number, actualAmount: number, varianceAmount: number, variancePct: number, sortOrder: number, createdAt: string };
+
+export type CostEntryFieldsFragment = { __typename?: 'CostEntry', id: string, projectId: string, projectName: string, lineItemId: string, lineItemName: string, entryType: CostEntryType, vendorName: string, description: string, amount: number, entryDate: string, invoiceNo: string, recordedBy: string, createdAt: string };
+
+export type BudgetCategorySummaryFieldsFragment = { __typename?: 'BudgetCategorySummary', categoryCode: string, categoryName: string, budgetAmount: number, actualAmount: number, varianceAmount: number };
+
+export type BudgetDashboardFieldsFragment = { __typename?: 'BudgetDashboard', projectId: string, projectName: string, contractAmount: number, totalEstimate: number, totalBudget: number, totalCommitted: number, totalActual: number, totalForecast: number, varianceAmount: number, variancePct: number, completionPct: number, estimateBudgetTotal: number, grossMarginPct: number, inquiryProfitTotal: number, billingTotal: number, billingBalance: number, generatedAt: string, monthlyCosts: Array<{ __typename?: 'MonthlyCostMetric', month: string, amount: number }>, reconciliation: Array<{ __typename?: 'BillingReconciliationItem', billingRecordId: string, title: string, billingAmount: number, costAmount: number, varianceAmount: number, status: string, billingDate: string | null }>, lineItems: Array<{ __typename?: 'BudgetLineItem', id: string, budgetId: string, categoryCode: string, categoryName: string, wbsCode: string, description: string, estimateAmount: number, budgetAmount: number, committedAmount: number, actualAmount: number, varianceAmount: number, variancePct: number, sortOrder: number, createdAt: string }>, recentCosts: Array<{ __typename?: 'CostEntry', id: string, projectId: string, projectName: string, lineItemId: string, lineItemName: string, entryType: CostEntryType, vendorName: string, description: string, amount: number, entryDate: string, invoiceNo: string, recordedBy: string, createdAt: string }>, categorySummary: Array<{ __typename?: 'BudgetCategorySummary', categoryCode: string, categoryName: string, budgetAmount: number, actualAmount: number, varianceAmount: number }> };
+
+export type ProjectBudgetFieldsFragment = { __typename?: 'ProjectBudget', id: string, projectId: string, projectName: string, name: string, budgetType: BudgetType, status: BudgetStatus, versionNo: number, contractAmount: number, totalEstimate: number, totalBudget: number, totalCommitted: number, totalActual: number, notes: string, approvedAt: string | null, createdAt: string };
+
+export type ProjectBudgetSummariesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ProjectBudgetSummariesQuery = { __typename?: 'Query', projectBudgetSummaries: Array<{ __typename?: 'ProjectBudgetSummary', projectId: string, projectName: string, status: ConstructionProjectStatus, contractAmount: number, totalBudget: number, totalActual: number, billingTotal: number, variancePct: number }> };
+
+export type BudgetDashboardQueryVariables = Exact<{
+  projectId: Scalars['ID']['input'];
+}>;
+
+
+export type BudgetDashboardQuery = { __typename?: 'Query', budgetDashboard: { __typename?: 'BudgetDashboard', projectId: string, projectName: string, contractAmount: number, totalEstimate: number, totalBudget: number, totalCommitted: number, totalActual: number, totalForecast: number, varianceAmount: number, variancePct: number, completionPct: number, estimateBudgetTotal: number, grossMarginPct: number, inquiryProfitTotal: number, billingTotal: number, billingBalance: number, generatedAt: string, monthlyCosts: Array<{ __typename?: 'MonthlyCostMetric', month: string, amount: number }>, reconciliation: Array<{ __typename?: 'BillingReconciliationItem', billingRecordId: string, title: string, billingAmount: number, costAmount: number, varianceAmount: number, status: string, billingDate: string | null }>, lineItems: Array<{ __typename?: 'BudgetLineItem', id: string, budgetId: string, categoryCode: string, categoryName: string, wbsCode: string, description: string, estimateAmount: number, budgetAmount: number, committedAmount: number, actualAmount: number, varianceAmount: number, variancePct: number, sortOrder: number, createdAt: string }>, recentCosts: Array<{ __typename?: 'CostEntry', id: string, projectId: string, projectName: string, lineItemId: string, lineItemName: string, entryType: CostEntryType, vendorName: string, description: string, amount: number, entryDate: string, invoiceNo: string, recordedBy: string, createdAt: string }>, categorySummary: Array<{ __typename?: 'BudgetCategorySummary', categoryCode: string, categoryName: string, budgetAmount: number, actualAmount: number, varianceAmount: number }> } };
+
+export type ProjectBudgetsQueryVariables = Exact<{
+  projectId?: InputMaybe<Scalars['ID']['input']>;
+  budgetType?: InputMaybe<BudgetType>;
+}>;
+
+
+export type ProjectBudgetsQuery = { __typename?: 'Query', projectBudgets: Array<{ __typename?: 'ProjectBudget', id: string, projectId: string, projectName: string, name: string, budgetType: BudgetType, status: BudgetStatus, versionNo: number, contractAmount: number, totalEstimate: number, totalBudget: number, totalCommitted: number, totalActual: number, notes: string, approvedAt: string | null, createdAt: string }> };
+
+export type CostEntriesQueryVariables = Exact<{
+  projectId: Scalars['ID']['input'];
+  lineItemId?: InputMaybe<Scalars['ID']['input']>;
+}>;
+
+
+export type CostEntriesQuery = { __typename?: 'Query', costEntries: Array<{ __typename?: 'CostEntry', id: string, projectId: string, projectName: string, lineItemId: string, lineItemName: string, entryType: CostEntryType, vendorName: string, description: string, amount: number, entryDate: string, invoiceNo: string, recordedBy: string, createdAt: string }> };
+
+export type CreateCostEntryMutationVariables = Exact<{
+  input: CreateCostEntryInput;
+}>;
+
+
+export type CreateCostEntryMutation = { __typename?: 'Mutation', createCostEntry: { __typename?: 'CostEntry', id: string, projectId: string, projectName: string, lineItemId: string, lineItemName: string, entryType: CostEntryType, vendorName: string, description: string, amount: number, entryDate: string, invoiceNo: string, recordedBy: string, createdAt: string } };
+
+export type CreateBudgetLineItemMutationVariables = Exact<{
+  input: CreateBudgetLineItemInput;
+}>;
+
+
+export type CreateBudgetLineItemMutation = { __typename?: 'Mutation', createBudgetLineItem: { __typename?: 'BudgetLineItem', id: string, budgetId: string, categoryCode: string, categoryName: string, wbsCode: string, description: string, estimateAmount: number, budgetAmount: number, committedAmount: number, actualAmount: number, varianceAmount: number, variancePct: number, sortOrder: number, createdAt: string } };
+
+export type CreateCostFromBillingMutationVariables = Exact<{
+  billingRecordId: Scalars['ID']['input'];
+  projectId: Scalars['ID']['input'];
+}>;
+
+
+export type CreateCostFromBillingMutation = { __typename?: 'Mutation', createCostFromBilling: { __typename?: 'CostEntry', id: string, projectId: string, projectName: string, lineItemId: string, lineItemName: string, entryType: CostEntryType, vendorName: string, description: string, amount: number, entryDate: string, invoiceNo: string, recordedBy: string, createdAt: string } };
+
+export type ApproveProjectBudgetMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type ApproveProjectBudgetMutation = { __typename?: 'Mutation', approveProjectBudget: { __typename?: 'ProjectBudget', id: string, projectId: string, projectName: string, name: string, budgetType: BudgetType, status: BudgetStatus, versionNo: number, contractAmount: number, totalEstimate: number, totalBudget: number, totalCommitted: number, totalActual: number, notes: string, approvedAt: string | null, createdAt: string } };
+
+export type CreateProjectBudgetMutationVariables = Exact<{
+  input: CreateProjectBudgetInput;
+}>;
+
+
+export type CreateProjectBudgetMutation = { __typename?: 'Mutation', createProjectBudget: { __typename?: 'ProjectBudget', id: string, projectId: string, projectName: string, name: string, budgetType: BudgetType, status: BudgetStatus, versionNo: number, contractAmount: number, totalEstimate: number, totalBudget: number, totalCommitted: number, totalActual: number, notes: string, approvedAt: string | null, createdAt: string } };
 
 export type ConstructionProjectFieldsFragment = { __typename?: 'ConstructionProject', id: string, name: string, siteAddress: string, status: ConstructionProjectStatus, managerName: string, startDate: string | null, endDate: string | null, recordCount: number, createdAt: string };
 
@@ -1060,14 +1370,14 @@ export type DashboardPageQuery = { __typename?: 'Query', dashboard: { __typename
 
 export type AndpadAnalyticsKpiFieldsFragment = { __typename?: 'AndpadAnalyticsKpi', label: string, value: number, unit: string | null, trendPct: number | null };
 
-export type AndpadAnalyticsDashboardFieldsFragment = { __typename?: 'AndpadAnalyticsDashboard', periodDays: number, billingTotal: number, activeProjects: number, recordsByWeek: Array<number>, projectHealthScore: number, generatedAt: string, kpis: Array<{ __typename?: 'AndpadAnalyticsKpi', label: string, value: number, unit: string | null, trendPct: number | null }>, projectsByStatus: Array<{ __typename?: 'ProjectStatusCount', status: ConstructionProjectStatus, count: number }>, moduleUsage: Array<{ __typename?: 'ModuleUsageMetric', moduleCode: SaasModuleCode, moduleName: string, recordCount: number }> };
+export type AndpadAnalyticsDashboardFieldsFragment = { __typename?: 'AndpadAnalyticsDashboard', periodDays: number, billingTotal: number, activeProjects: number, recordsByWeek: Array<number>, projectHealthScore: number, budgetTotal: number, costTotal: number, budgetVariancePct: number, generatedAt: string, kpis: Array<{ __typename?: 'AndpadAnalyticsKpi', label: string, value: number, unit: string | null, trendPct: number | null }>, projectsByStatus: Array<{ __typename?: 'ProjectStatusCount', status: ConstructionProjectStatus, count: number }>, moduleUsage: Array<{ __typename?: 'ModuleUsageMetric', moduleCode: SaasModuleCode, moduleName: string, recordCount: number }>, costByMonth: Array<{ __typename?: 'MonthlyCostMetric', month: string, amount: number }> };
 
 export type AndpadAnalyticsQueryVariables = Exact<{
   periodDays?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 
-export type AndpadAnalyticsQuery = { __typename?: 'Query', andpadAnalytics: { __typename?: 'AndpadAnalyticsDashboard', periodDays: number, billingTotal: number, activeProjects: number, recordsByWeek: Array<number>, projectHealthScore: number, generatedAt: string, kpis: Array<{ __typename?: 'AndpadAnalyticsKpi', label: string, value: number, unit: string | null, trendPct: number | null }>, projectsByStatus: Array<{ __typename?: 'ProjectStatusCount', status: ConstructionProjectStatus, count: number }>, moduleUsage: Array<{ __typename?: 'ModuleUsageMetric', moduleCode: SaasModuleCode, moduleName: string, recordCount: number }> } };
+export type AndpadAnalyticsQuery = { __typename?: 'Query', andpadAnalytics: { __typename?: 'AndpadAnalyticsDashboard', periodDays: number, billingTotal: number, activeProjects: number, recordsByWeek: Array<number>, projectHealthScore: number, budgetTotal: number, costTotal: number, budgetVariancePct: number, generatedAt: string, kpis: Array<{ __typename?: 'AndpadAnalyticsKpi', label: string, value: number, unit: string | null, trendPct: number | null }>, projectsByStatus: Array<{ __typename?: 'ProjectStatusCount', status: ConstructionProjectStatus, count: number }>, moduleUsage: Array<{ __typename?: 'ModuleUsageMetric', moduleCode: SaasModuleCode, moduleName: string, recordCount: number }>, costByMonth: Array<{ __typename?: 'MonthlyCostMetric', month: string, amount: number }> } };
 
 export type ApiIntegrationFieldsFragment = { __typename?: 'ApiIntegration', id: string, name: string, provider: string, endpointUrl: string, apiKeyHint: string, status: string, lastSyncAt: string | null, createdAt: string };
 
@@ -1416,10 +1726,15 @@ export type VideoDetailPageQueryVariables = Exact<{
 
 export type VideoDetailPageQuery = { __typename?: 'Query', video: { __typename?: 'Video', id: string, title: string, description: string, category: VideoCategory, procedure: string, skillLevel: SkillLevel, durationSec: number, thumbnailUrl: string, videoUrl: string, instructorId: string, instructorName: string | null, tags: Array<string>, viewCount: number, publishedAt: string } | null, videoNotes: Array<{ __typename?: 'VideoNote', id: string, timestampSec: number, body: string, createdAt: string }>, quizzes: Array<{ __typename?: 'Quiz', id: string, title: string, passingScore: number, questions: Array<{ __typename?: 'QuizQuestion', id: string, prompt: string, choices: Array<{ __typename?: 'QuizChoice', id: string, label: string }> }> }>, myProgress: Array<{ __typename?: 'WatchProgress', videoId: string, positionSec: number, completed: boolean }>, myBookmarks: Array<{ __typename?: 'Bookmark', videoId: string }> };
 
+export const BudgetLineItemFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BudgetLineItemFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"BudgetLineItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"budgetId"}},{"kind":"Field","name":{"kind":"Name","value":"categoryCode"}},{"kind":"Field","name":{"kind":"Name","value":"categoryName"}},{"kind":"Field","name":{"kind":"Name","value":"wbsCode"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"estimateAmount"}},{"kind":"Field","name":{"kind":"Name","value":"budgetAmount"}},{"kind":"Field","name":{"kind":"Name","value":"committedAmount"}},{"kind":"Field","name":{"kind":"Name","value":"actualAmount"}},{"kind":"Field","name":{"kind":"Name","value":"varianceAmount"}},{"kind":"Field","name":{"kind":"Name","value":"variancePct"}},{"kind":"Field","name":{"kind":"Name","value":"sortOrder"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<BudgetLineItemFieldsFragment, unknown>;
+export const CostEntryFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CostEntryFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CostEntry"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"projectId"}},{"kind":"Field","name":{"kind":"Name","value":"projectName"}},{"kind":"Field","name":{"kind":"Name","value":"lineItemId"}},{"kind":"Field","name":{"kind":"Name","value":"lineItemName"}},{"kind":"Field","name":{"kind":"Name","value":"entryType"}},{"kind":"Field","name":{"kind":"Name","value":"vendorName"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"entryDate"}},{"kind":"Field","name":{"kind":"Name","value":"invoiceNo"}},{"kind":"Field","name":{"kind":"Name","value":"recordedBy"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<CostEntryFieldsFragment, unknown>;
+export const BudgetCategorySummaryFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BudgetCategorySummaryFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"BudgetCategorySummary"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"categoryCode"}},{"kind":"Field","name":{"kind":"Name","value":"categoryName"}},{"kind":"Field","name":{"kind":"Name","value":"budgetAmount"}},{"kind":"Field","name":{"kind":"Name","value":"actualAmount"}},{"kind":"Field","name":{"kind":"Name","value":"varianceAmount"}}]}}]} as unknown as DocumentNode<BudgetCategorySummaryFieldsFragment, unknown>;
+export const BudgetDashboardFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BudgetDashboardFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"BudgetDashboard"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"projectId"}},{"kind":"Field","name":{"kind":"Name","value":"projectName"}},{"kind":"Field","name":{"kind":"Name","value":"contractAmount"}},{"kind":"Field","name":{"kind":"Name","value":"totalEstimate"}},{"kind":"Field","name":{"kind":"Name","value":"totalBudget"}},{"kind":"Field","name":{"kind":"Name","value":"totalCommitted"}},{"kind":"Field","name":{"kind":"Name","value":"totalActual"}},{"kind":"Field","name":{"kind":"Name","value":"totalForecast"}},{"kind":"Field","name":{"kind":"Name","value":"varianceAmount"}},{"kind":"Field","name":{"kind":"Name","value":"variancePct"}},{"kind":"Field","name":{"kind":"Name","value":"completionPct"}},{"kind":"Field","name":{"kind":"Name","value":"estimateBudgetTotal"}},{"kind":"Field","name":{"kind":"Name","value":"grossMarginPct"}},{"kind":"Field","name":{"kind":"Name","value":"inquiryProfitTotal"}},{"kind":"Field","name":{"kind":"Name","value":"billingTotal"}},{"kind":"Field","name":{"kind":"Name","value":"billingBalance"}},{"kind":"Field","name":{"kind":"Name","value":"monthlyCosts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"month"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"reconciliation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"billingRecordId"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"billingAmount"}},{"kind":"Field","name":{"kind":"Name","value":"costAmount"}},{"kind":"Field","name":{"kind":"Name","value":"varianceAmount"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"billingDate"}}]}},{"kind":"Field","name":{"kind":"Name","value":"lineItems"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BudgetLineItemFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"recentCosts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"CostEntryFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"categorySummary"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BudgetCategorySummaryFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"generatedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BudgetLineItemFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"BudgetLineItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"budgetId"}},{"kind":"Field","name":{"kind":"Name","value":"categoryCode"}},{"kind":"Field","name":{"kind":"Name","value":"categoryName"}},{"kind":"Field","name":{"kind":"Name","value":"wbsCode"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"estimateAmount"}},{"kind":"Field","name":{"kind":"Name","value":"budgetAmount"}},{"kind":"Field","name":{"kind":"Name","value":"committedAmount"}},{"kind":"Field","name":{"kind":"Name","value":"actualAmount"}},{"kind":"Field","name":{"kind":"Name","value":"varianceAmount"}},{"kind":"Field","name":{"kind":"Name","value":"variancePct"}},{"kind":"Field","name":{"kind":"Name","value":"sortOrder"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CostEntryFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CostEntry"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"projectId"}},{"kind":"Field","name":{"kind":"Name","value":"projectName"}},{"kind":"Field","name":{"kind":"Name","value":"lineItemId"}},{"kind":"Field","name":{"kind":"Name","value":"lineItemName"}},{"kind":"Field","name":{"kind":"Name","value":"entryType"}},{"kind":"Field","name":{"kind":"Name","value":"vendorName"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"entryDate"}},{"kind":"Field","name":{"kind":"Name","value":"invoiceNo"}},{"kind":"Field","name":{"kind":"Name","value":"recordedBy"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BudgetCategorySummaryFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"BudgetCategorySummary"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"categoryCode"}},{"kind":"Field","name":{"kind":"Name","value":"categoryName"}},{"kind":"Field","name":{"kind":"Name","value":"budgetAmount"}},{"kind":"Field","name":{"kind":"Name","value":"actualAmount"}},{"kind":"Field","name":{"kind":"Name","value":"varianceAmount"}}]}}]} as unknown as DocumentNode<BudgetDashboardFieldsFragment, unknown>;
+export const ProjectBudgetFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ProjectBudgetFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ProjectBudget"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"projectId"}},{"kind":"Field","name":{"kind":"Name","value":"projectName"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"budgetType"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"versionNo"}},{"kind":"Field","name":{"kind":"Name","value":"contractAmount"}},{"kind":"Field","name":{"kind":"Name","value":"totalEstimate"}},{"kind":"Field","name":{"kind":"Name","value":"totalBudget"}},{"kind":"Field","name":{"kind":"Name","value":"totalCommitted"}},{"kind":"Field","name":{"kind":"Name","value":"totalActual"}},{"kind":"Field","name":{"kind":"Name","value":"notes"}},{"kind":"Field","name":{"kind":"Name","value":"approvedAt"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<ProjectBudgetFieldsFragment, unknown>;
 export const ConstructionProjectFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ConstructionProjectFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ConstructionProject"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"siteAddress"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"managerName"}},{"kind":"Field","name":{"kind":"Name","value":"startDate"}},{"kind":"Field","name":{"kind":"Name","value":"endDate"}},{"kind":"Field","name":{"kind":"Name","value":"recordCount"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<ConstructionProjectFieldsFragment, unknown>;
 export const ProjectModuleRecordFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ProjectModuleRecordFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ProjectModuleRecord"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"projectId"}},{"kind":"Field","name":{"kind":"Name","value":"projectName"}},{"kind":"Field","name":{"kind":"Name","value":"moduleCode"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"detail"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"personName"}},{"kind":"Field","name":{"kind":"Name","value":"recordDate"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<ProjectModuleRecordFieldsFragment, unknown>;
 export const AndpadAnalyticsKpiFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AndpadAnalyticsKpiFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AndpadAnalyticsKpi"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"trendPct"}}]}}]} as unknown as DocumentNode<AndpadAnalyticsKpiFieldsFragment, unknown>;
-export const AndpadAnalyticsDashboardFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AndpadAnalyticsDashboardFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AndpadAnalyticsDashboard"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"periodDays"}},{"kind":"Field","name":{"kind":"Name","value":"kpis"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AndpadAnalyticsKpiFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"projectsByStatus"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"count"}}]}},{"kind":"Field","name":{"kind":"Name","value":"moduleUsage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"moduleCode"}},{"kind":"Field","name":{"kind":"Name","value":"moduleName"}},{"kind":"Field","name":{"kind":"Name","value":"recordCount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"billingTotal"}},{"kind":"Field","name":{"kind":"Name","value":"activeProjects"}},{"kind":"Field","name":{"kind":"Name","value":"recordsByWeek"}},{"kind":"Field","name":{"kind":"Name","value":"projectHealthScore"}},{"kind":"Field","name":{"kind":"Name","value":"generatedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AndpadAnalyticsKpiFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AndpadAnalyticsKpi"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"trendPct"}}]}}]} as unknown as DocumentNode<AndpadAnalyticsDashboardFieldsFragment, unknown>;
+export const AndpadAnalyticsDashboardFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AndpadAnalyticsDashboardFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AndpadAnalyticsDashboard"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"periodDays"}},{"kind":"Field","name":{"kind":"Name","value":"kpis"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AndpadAnalyticsKpiFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"projectsByStatus"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"count"}}]}},{"kind":"Field","name":{"kind":"Name","value":"moduleUsage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"moduleCode"}},{"kind":"Field","name":{"kind":"Name","value":"moduleName"}},{"kind":"Field","name":{"kind":"Name","value":"recordCount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"billingTotal"}},{"kind":"Field","name":{"kind":"Name","value":"activeProjects"}},{"kind":"Field","name":{"kind":"Name","value":"recordsByWeek"}},{"kind":"Field","name":{"kind":"Name","value":"projectHealthScore"}},{"kind":"Field","name":{"kind":"Name","value":"budgetTotal"}},{"kind":"Field","name":{"kind":"Name","value":"costTotal"}},{"kind":"Field","name":{"kind":"Name","value":"budgetVariancePct"}},{"kind":"Field","name":{"kind":"Name","value":"costByMonth"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"month"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"generatedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AndpadAnalyticsKpiFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AndpadAnalyticsKpi"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"trendPct"}}]}}]} as unknown as DocumentNode<AndpadAnalyticsDashboardFieldsFragment, unknown>;
 export const ApiIntegrationFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ApiIntegrationFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ApiIntegration"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"provider"}},{"kind":"Field","name":{"kind":"Name","value":"endpointUrl"}},{"kind":"Field","name":{"kind":"Name","value":"apiKeyHint"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"lastSyncAt"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<ApiIntegrationFieldsFragment, unknown>;
 export const BimModelFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BimModelFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"BimModel"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"projectId"}},{"kind":"Field","name":{"kind":"Name","value":"projectName"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"format"}},{"kind":"Field","name":{"kind":"Name","value":"viewerUrl"}},{"kind":"Field","name":{"kind":"Name","value":"fileSizeMb"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"uploadedBy"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<BimModelFieldsFragment, unknown>;
 export const DxInitiativeFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"DxInitiativeFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"DxInitiative"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"progressPct"}},{"kind":"Field","name":{"kind":"Name","value":"ownerName"}},{"kind":"Field","name":{"kind":"Name","value":"dueDate"}},{"kind":"Field","name":{"kind":"Name","value":"taskCount"}},{"kind":"Field","name":{"kind":"Name","value":"tasksDone"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<DxInitiativeFieldsFragment, unknown>;
@@ -1433,14 +1748,23 @@ export const ConsultMessageFieldsFragmentDoc = {"kind":"Document","definitions":
 export const ConsultThreadFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ConsultThreadFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ConsultThread"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"messages"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ConsultMessageFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ConsultMessageFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ConsultMessage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"role"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<ConsultThreadFieldsFragment, unknown>;
 export const RagDocumentFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"RagDocumentFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RagDocument"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"tags"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<RagDocumentFieldsFragment, unknown>;
 export const RagSearchHitFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"RagSearchHitFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RagSearchHit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"documentId"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"snippet"}},{"kind":"Field","name":{"kind":"Name","value":"score"}}]}}]} as unknown as DocumentNode<RagSearchHitFieldsFragment, unknown>;
-export const BoardAnalyticsPageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"BoardAnalyticsPage"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"periodDays"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"andpadAnalytics"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"periodDays"},"value":{"kind":"Variable","name":{"kind":"Name","value":"periodDays"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AndpadAnalyticsDashboardFields"}},{"kind":"Field","name":{"kind":"Name","value":"recordsByWeek"}},{"kind":"Field","name":{"kind":"Name","value":"projectHealthScore"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AndpadAnalyticsKpiFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AndpadAnalyticsKpi"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"trendPct"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AndpadAnalyticsDashboardFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AndpadAnalyticsDashboard"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"periodDays"}},{"kind":"Field","name":{"kind":"Name","value":"kpis"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AndpadAnalyticsKpiFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"projectsByStatus"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"count"}}]}},{"kind":"Field","name":{"kind":"Name","value":"moduleUsage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"moduleCode"}},{"kind":"Field","name":{"kind":"Name","value":"moduleName"}},{"kind":"Field","name":{"kind":"Name","value":"recordCount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"billingTotal"}},{"kind":"Field","name":{"kind":"Name","value":"activeProjects"}},{"kind":"Field","name":{"kind":"Name","value":"recordsByWeek"}},{"kind":"Field","name":{"kind":"Name","value":"projectHealthScore"}},{"kind":"Field","name":{"kind":"Name","value":"generatedAt"}}]}}]} as unknown as DocumentNode<BoardAnalyticsPageQuery, BoardAnalyticsPageQueryVariables>;
+export const BoardAnalyticsPageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"BoardAnalyticsPage"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"periodDays"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"andpadAnalytics"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"periodDays"},"value":{"kind":"Variable","name":{"kind":"Name","value":"periodDays"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AndpadAnalyticsDashboardFields"}},{"kind":"Field","name":{"kind":"Name","value":"recordsByWeek"}},{"kind":"Field","name":{"kind":"Name","value":"projectHealthScore"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AndpadAnalyticsKpiFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AndpadAnalyticsKpi"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"trendPct"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AndpadAnalyticsDashboardFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AndpadAnalyticsDashboard"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"periodDays"}},{"kind":"Field","name":{"kind":"Name","value":"kpis"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AndpadAnalyticsKpiFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"projectsByStatus"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"count"}}]}},{"kind":"Field","name":{"kind":"Name","value":"moduleUsage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"moduleCode"}},{"kind":"Field","name":{"kind":"Name","value":"moduleName"}},{"kind":"Field","name":{"kind":"Name","value":"recordCount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"billingTotal"}},{"kind":"Field","name":{"kind":"Name","value":"activeProjects"}},{"kind":"Field","name":{"kind":"Name","value":"recordsByWeek"}},{"kind":"Field","name":{"kind":"Name","value":"projectHealthScore"}},{"kind":"Field","name":{"kind":"Name","value":"budgetTotal"}},{"kind":"Field","name":{"kind":"Name","value":"costTotal"}},{"kind":"Field","name":{"kind":"Name","value":"budgetVariancePct"}},{"kind":"Field","name":{"kind":"Name","value":"costByMonth"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"month"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"generatedAt"}}]}}]} as unknown as DocumentNode<BoardAnalyticsPageQuery, BoardAnalyticsPageQueryVariables>;
 export const GenerateAnalyticsInsightDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"GenerateAnalyticsInsight"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"periodDays"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"generateAnalyticsInsight"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"periodDays"},"value":{"kind":"Variable","name":{"kind":"Name","value":"periodDays"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"summary"}},{"kind":"Field","name":{"kind":"Name","value":"strengths"}},{"kind":"Field","name":{"kind":"Name","value":"risks"}},{"kind":"Field","name":{"kind":"Name","value":"recommendations"}},{"kind":"Field","name":{"kind":"Name","value":"generatedAt"}}]}}]}}]} as unknown as DocumentNode<GenerateAnalyticsInsightMutation, GenerateAnalyticsInsightMutationVariables>;
+export const ProjectBudgetSummariesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ProjectBudgetSummaries"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"projectBudgetSummaries"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"projectId"}},{"kind":"Field","name":{"kind":"Name","value":"projectName"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"contractAmount"}},{"kind":"Field","name":{"kind":"Name","value":"totalBudget"}},{"kind":"Field","name":{"kind":"Name","value":"totalActual"}},{"kind":"Field","name":{"kind":"Name","value":"billingTotal"}},{"kind":"Field","name":{"kind":"Name","value":"variancePct"}}]}}]}}]} as unknown as DocumentNode<ProjectBudgetSummariesQuery, ProjectBudgetSummariesQueryVariables>;
+export const BudgetDashboardDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"BudgetDashboard"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"projectId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"budgetDashboard"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"projectId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"projectId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BudgetDashboardFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BudgetLineItemFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"BudgetLineItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"budgetId"}},{"kind":"Field","name":{"kind":"Name","value":"categoryCode"}},{"kind":"Field","name":{"kind":"Name","value":"categoryName"}},{"kind":"Field","name":{"kind":"Name","value":"wbsCode"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"estimateAmount"}},{"kind":"Field","name":{"kind":"Name","value":"budgetAmount"}},{"kind":"Field","name":{"kind":"Name","value":"committedAmount"}},{"kind":"Field","name":{"kind":"Name","value":"actualAmount"}},{"kind":"Field","name":{"kind":"Name","value":"varianceAmount"}},{"kind":"Field","name":{"kind":"Name","value":"variancePct"}},{"kind":"Field","name":{"kind":"Name","value":"sortOrder"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CostEntryFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CostEntry"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"projectId"}},{"kind":"Field","name":{"kind":"Name","value":"projectName"}},{"kind":"Field","name":{"kind":"Name","value":"lineItemId"}},{"kind":"Field","name":{"kind":"Name","value":"lineItemName"}},{"kind":"Field","name":{"kind":"Name","value":"entryType"}},{"kind":"Field","name":{"kind":"Name","value":"vendorName"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"entryDate"}},{"kind":"Field","name":{"kind":"Name","value":"invoiceNo"}},{"kind":"Field","name":{"kind":"Name","value":"recordedBy"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BudgetCategorySummaryFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"BudgetCategorySummary"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"categoryCode"}},{"kind":"Field","name":{"kind":"Name","value":"categoryName"}},{"kind":"Field","name":{"kind":"Name","value":"budgetAmount"}},{"kind":"Field","name":{"kind":"Name","value":"actualAmount"}},{"kind":"Field","name":{"kind":"Name","value":"varianceAmount"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BudgetDashboardFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"BudgetDashboard"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"projectId"}},{"kind":"Field","name":{"kind":"Name","value":"projectName"}},{"kind":"Field","name":{"kind":"Name","value":"contractAmount"}},{"kind":"Field","name":{"kind":"Name","value":"totalEstimate"}},{"kind":"Field","name":{"kind":"Name","value":"totalBudget"}},{"kind":"Field","name":{"kind":"Name","value":"totalCommitted"}},{"kind":"Field","name":{"kind":"Name","value":"totalActual"}},{"kind":"Field","name":{"kind":"Name","value":"totalForecast"}},{"kind":"Field","name":{"kind":"Name","value":"varianceAmount"}},{"kind":"Field","name":{"kind":"Name","value":"variancePct"}},{"kind":"Field","name":{"kind":"Name","value":"completionPct"}},{"kind":"Field","name":{"kind":"Name","value":"estimateBudgetTotal"}},{"kind":"Field","name":{"kind":"Name","value":"grossMarginPct"}},{"kind":"Field","name":{"kind":"Name","value":"inquiryProfitTotal"}},{"kind":"Field","name":{"kind":"Name","value":"billingTotal"}},{"kind":"Field","name":{"kind":"Name","value":"billingBalance"}},{"kind":"Field","name":{"kind":"Name","value":"monthlyCosts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"month"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"reconciliation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"billingRecordId"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"billingAmount"}},{"kind":"Field","name":{"kind":"Name","value":"costAmount"}},{"kind":"Field","name":{"kind":"Name","value":"varianceAmount"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"billingDate"}}]}},{"kind":"Field","name":{"kind":"Name","value":"lineItems"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BudgetLineItemFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"recentCosts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"CostEntryFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"categorySummary"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BudgetCategorySummaryFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"generatedAt"}}]}}]} as unknown as DocumentNode<BudgetDashboardQuery, BudgetDashboardQueryVariables>;
+export const ProjectBudgetsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ProjectBudgets"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"projectId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"budgetType"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"BudgetType"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"projectBudgets"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"projectId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"projectId"}}},{"kind":"Argument","name":{"kind":"Name","value":"budgetType"},"value":{"kind":"Variable","name":{"kind":"Name","value":"budgetType"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ProjectBudgetFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ProjectBudgetFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ProjectBudget"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"projectId"}},{"kind":"Field","name":{"kind":"Name","value":"projectName"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"budgetType"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"versionNo"}},{"kind":"Field","name":{"kind":"Name","value":"contractAmount"}},{"kind":"Field","name":{"kind":"Name","value":"totalEstimate"}},{"kind":"Field","name":{"kind":"Name","value":"totalBudget"}},{"kind":"Field","name":{"kind":"Name","value":"totalCommitted"}},{"kind":"Field","name":{"kind":"Name","value":"totalActual"}},{"kind":"Field","name":{"kind":"Name","value":"notes"}},{"kind":"Field","name":{"kind":"Name","value":"approvedAt"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<ProjectBudgetsQuery, ProjectBudgetsQueryVariables>;
+export const CostEntriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"CostEntries"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"projectId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"lineItemId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"costEntries"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"projectId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"projectId"}}},{"kind":"Argument","name":{"kind":"Name","value":"lineItemId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"lineItemId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"CostEntryFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CostEntryFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CostEntry"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"projectId"}},{"kind":"Field","name":{"kind":"Name","value":"projectName"}},{"kind":"Field","name":{"kind":"Name","value":"lineItemId"}},{"kind":"Field","name":{"kind":"Name","value":"lineItemName"}},{"kind":"Field","name":{"kind":"Name","value":"entryType"}},{"kind":"Field","name":{"kind":"Name","value":"vendorName"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"entryDate"}},{"kind":"Field","name":{"kind":"Name","value":"invoiceNo"}},{"kind":"Field","name":{"kind":"Name","value":"recordedBy"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<CostEntriesQuery, CostEntriesQueryVariables>;
+export const CreateCostEntryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateCostEntry"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateCostEntryInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createCostEntry"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"CostEntryFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CostEntryFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CostEntry"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"projectId"}},{"kind":"Field","name":{"kind":"Name","value":"projectName"}},{"kind":"Field","name":{"kind":"Name","value":"lineItemId"}},{"kind":"Field","name":{"kind":"Name","value":"lineItemName"}},{"kind":"Field","name":{"kind":"Name","value":"entryType"}},{"kind":"Field","name":{"kind":"Name","value":"vendorName"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"entryDate"}},{"kind":"Field","name":{"kind":"Name","value":"invoiceNo"}},{"kind":"Field","name":{"kind":"Name","value":"recordedBy"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<CreateCostEntryMutation, CreateCostEntryMutationVariables>;
+export const CreateBudgetLineItemDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateBudgetLineItem"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateBudgetLineItemInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createBudgetLineItem"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BudgetLineItemFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BudgetLineItemFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"BudgetLineItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"budgetId"}},{"kind":"Field","name":{"kind":"Name","value":"categoryCode"}},{"kind":"Field","name":{"kind":"Name","value":"categoryName"}},{"kind":"Field","name":{"kind":"Name","value":"wbsCode"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"estimateAmount"}},{"kind":"Field","name":{"kind":"Name","value":"budgetAmount"}},{"kind":"Field","name":{"kind":"Name","value":"committedAmount"}},{"kind":"Field","name":{"kind":"Name","value":"actualAmount"}},{"kind":"Field","name":{"kind":"Name","value":"varianceAmount"}},{"kind":"Field","name":{"kind":"Name","value":"variancePct"}},{"kind":"Field","name":{"kind":"Name","value":"sortOrder"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<CreateBudgetLineItemMutation, CreateBudgetLineItemMutationVariables>;
+export const CreateCostFromBillingDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateCostFromBilling"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"billingRecordId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"projectId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createCostFromBilling"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"billingRecordId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"billingRecordId"}}},{"kind":"Argument","name":{"kind":"Name","value":"projectId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"projectId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"CostEntryFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CostEntryFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CostEntry"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"projectId"}},{"kind":"Field","name":{"kind":"Name","value":"projectName"}},{"kind":"Field","name":{"kind":"Name","value":"lineItemId"}},{"kind":"Field","name":{"kind":"Name","value":"lineItemName"}},{"kind":"Field","name":{"kind":"Name","value":"entryType"}},{"kind":"Field","name":{"kind":"Name","value":"vendorName"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"entryDate"}},{"kind":"Field","name":{"kind":"Name","value":"invoiceNo"}},{"kind":"Field","name":{"kind":"Name","value":"recordedBy"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<CreateCostFromBillingMutation, CreateCostFromBillingMutationVariables>;
+export const ApproveProjectBudgetDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ApproveProjectBudget"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"approveProjectBudget"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ProjectBudgetFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ProjectBudgetFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ProjectBudget"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"projectId"}},{"kind":"Field","name":{"kind":"Name","value":"projectName"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"budgetType"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"versionNo"}},{"kind":"Field","name":{"kind":"Name","value":"contractAmount"}},{"kind":"Field","name":{"kind":"Name","value":"totalEstimate"}},{"kind":"Field","name":{"kind":"Name","value":"totalBudget"}},{"kind":"Field","name":{"kind":"Name","value":"totalCommitted"}},{"kind":"Field","name":{"kind":"Name","value":"totalActual"}},{"kind":"Field","name":{"kind":"Name","value":"notes"}},{"kind":"Field","name":{"kind":"Name","value":"approvedAt"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<ApproveProjectBudgetMutation, ApproveProjectBudgetMutationVariables>;
+export const CreateProjectBudgetDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateProjectBudget"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateProjectBudgetInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createProjectBudget"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ProjectBudgetFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ProjectBudgetFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ProjectBudget"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"projectId"}},{"kind":"Field","name":{"kind":"Name","value":"projectName"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"budgetType"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"versionNo"}},{"kind":"Field","name":{"kind":"Name","value":"contractAmount"}},{"kind":"Field","name":{"kind":"Name","value":"totalEstimate"}},{"kind":"Field","name":{"kind":"Name","value":"totalBudget"}},{"kind":"Field","name":{"kind":"Name","value":"totalCommitted"}},{"kind":"Field","name":{"kind":"Name","value":"totalActual"}},{"kind":"Field","name":{"kind":"Name","value":"notes"}},{"kind":"Field","name":{"kind":"Name","value":"approvedAt"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<CreateProjectBudgetMutation, CreateProjectBudgetMutationVariables>;
 export const ConstructionProjectsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ConstructionProjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"constructionProjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ConstructionProjectFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ConstructionProjectFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ConstructionProject"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"siteAddress"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"managerName"}},{"kind":"Field","name":{"kind":"Name","value":"startDate"}},{"kind":"Field","name":{"kind":"Name","value":"endDate"}},{"kind":"Field","name":{"kind":"Name","value":"recordCount"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<ConstructionProjectsQuery, ConstructionProjectsQueryVariables>;
 export const ProjectModuleRecordsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ProjectModuleRecords"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"moduleCode"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SaasModuleCode"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"projectId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"projectModuleRecords"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"moduleCode"},"value":{"kind":"Variable","name":{"kind":"Name","value":"moduleCode"}}},{"kind":"Argument","name":{"kind":"Name","value":"projectId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"projectId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ProjectModuleRecordFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ProjectModuleRecordFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ProjectModuleRecord"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"projectId"}},{"kind":"Field","name":{"kind":"Name","value":"projectName"}},{"kind":"Field","name":{"kind":"Name","value":"moduleCode"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"detail"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"personName"}},{"kind":"Field","name":{"kind":"Name","value":"recordDate"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<ProjectModuleRecordsQuery, ProjectModuleRecordsQueryVariables>;
 export const CreateConstructionProjectDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateConstructionProject"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateConstructionProjectInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createConstructionProject"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ConstructionProjectFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ConstructionProjectFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ConstructionProject"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"siteAddress"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"managerName"}},{"kind":"Field","name":{"kind":"Name","value":"startDate"}},{"kind":"Field","name":{"kind":"Name","value":"endDate"}},{"kind":"Field","name":{"kind":"Name","value":"recordCount"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<CreateConstructionProjectMutation, CreateConstructionProjectMutationVariables>;
 export const CreateProjectModuleRecordDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateProjectModuleRecord"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateProjectModuleRecordInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createProjectModuleRecord"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ProjectModuleRecordFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ProjectModuleRecordFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ProjectModuleRecord"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"projectId"}},{"kind":"Field","name":{"kind":"Name","value":"projectName"}},{"kind":"Field","name":{"kind":"Name","value":"moduleCode"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"detail"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"personName"}},{"kind":"Field","name":{"kind":"Name","value":"recordDate"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<CreateProjectModuleRecordMutation, CreateProjectModuleRecordMutationVariables>;
 export const DashboardPageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"DashboardPage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"dashboard"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"videosTotal"}},{"kind":"Field","name":{"kind":"Name","value":"learningPathsTotal"}},{"kind":"Field","name":{"kind":"Name","value":"quizzesTotal"}},{"kind":"Field","name":{"kind":"Name","value":"completionsThisMonth"}},{"kind":"Field","name":{"kind":"Name","value":"watchHoursThisMonth"}},{"kind":"Field","name":{"kind":"Name","value":"activeLearners"}}]}},{"kind":"Field","name":{"kind":"Name","value":"featuredVideos"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"category"}},{"kind":"Field","name":{"kind":"Name","value":"skillLevel"}},{"kind":"Field","name":{"kind":"Name","value":"durationSec"}},{"kind":"Field","name":{"kind":"Name","value":"thumbnailUrl"}},{"kind":"Field","name":{"kind":"Name","value":"instructorName"}},{"kind":"Field","name":{"kind":"Name","value":"viewCount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"learningPaths"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"category"}},{"kind":"Field","name":{"kind":"Name","value":"skillLevel"}},{"kind":"Field","name":{"kind":"Name","value":"estimatedMinutes"}},{"kind":"Field","name":{"kind":"Name","value":"enrolledCount"}}]}}]}}]} as unknown as DocumentNode<DashboardPageQuery, DashboardPageQueryVariables>;
-export const AndpadAnalyticsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"AndpadAnalytics"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"periodDays"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"andpadAnalytics"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"periodDays"},"value":{"kind":"Variable","name":{"kind":"Name","value":"periodDays"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AndpadAnalyticsDashboardFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AndpadAnalyticsKpiFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AndpadAnalyticsKpi"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"trendPct"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AndpadAnalyticsDashboardFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AndpadAnalyticsDashboard"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"periodDays"}},{"kind":"Field","name":{"kind":"Name","value":"kpis"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AndpadAnalyticsKpiFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"projectsByStatus"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"count"}}]}},{"kind":"Field","name":{"kind":"Name","value":"moduleUsage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"moduleCode"}},{"kind":"Field","name":{"kind":"Name","value":"moduleName"}},{"kind":"Field","name":{"kind":"Name","value":"recordCount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"billingTotal"}},{"kind":"Field","name":{"kind":"Name","value":"activeProjects"}},{"kind":"Field","name":{"kind":"Name","value":"recordsByWeek"}},{"kind":"Field","name":{"kind":"Name","value":"projectHealthScore"}},{"kind":"Field","name":{"kind":"Name","value":"generatedAt"}}]}}]} as unknown as DocumentNode<AndpadAnalyticsQuery, AndpadAnalyticsQueryVariables>;
+export const AndpadAnalyticsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"AndpadAnalytics"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"periodDays"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"andpadAnalytics"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"periodDays"},"value":{"kind":"Variable","name":{"kind":"Name","value":"periodDays"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AndpadAnalyticsDashboardFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AndpadAnalyticsKpiFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AndpadAnalyticsKpi"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"trendPct"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AndpadAnalyticsDashboardFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AndpadAnalyticsDashboard"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"periodDays"}},{"kind":"Field","name":{"kind":"Name","value":"kpis"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AndpadAnalyticsKpiFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"projectsByStatus"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"count"}}]}},{"kind":"Field","name":{"kind":"Name","value":"moduleUsage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"moduleCode"}},{"kind":"Field","name":{"kind":"Name","value":"moduleName"}},{"kind":"Field","name":{"kind":"Name","value":"recordCount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"billingTotal"}},{"kind":"Field","name":{"kind":"Name","value":"activeProjects"}},{"kind":"Field","name":{"kind":"Name","value":"recordsByWeek"}},{"kind":"Field","name":{"kind":"Name","value":"projectHealthScore"}},{"kind":"Field","name":{"kind":"Name","value":"budgetTotal"}},{"kind":"Field","name":{"kind":"Name","value":"costTotal"}},{"kind":"Field","name":{"kind":"Name","value":"budgetVariancePct"}},{"kind":"Field","name":{"kind":"Name","value":"costByMonth"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"month"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"generatedAt"}}]}}]} as unknown as DocumentNode<AndpadAnalyticsQuery, AndpadAnalyticsQueryVariables>;
 export const ApiIntegrationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ApiIntegrations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"apiIntegrations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ApiIntegrationFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ApiIntegrationFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ApiIntegration"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"provider"}},{"kind":"Field","name":{"kind":"Name","value":"endpointUrl"}},{"kind":"Field","name":{"kind":"Name","value":"apiKeyHint"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"lastSyncAt"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<ApiIntegrationsQuery, ApiIntegrationsQueryVariables>;
 export const CreateApiIntegrationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateApiIntegration"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateApiIntegrationInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createApiIntegration"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ApiIntegrationFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ApiIntegrationFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ApiIntegration"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"provider"}},{"kind":"Field","name":{"kind":"Name","value":"endpointUrl"}},{"kind":"Field","name":{"kind":"Name","value":"apiKeyHint"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"lastSyncAt"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<CreateApiIntegrationMutation, CreateApiIntegrationMutationVariables>;
 export const SyncApiIntegrationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SyncApiIntegration"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"syncApiIntegration"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ApiIntegrationFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ApiIntegrationFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ApiIntegration"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"provider"}},{"kind":"Field","name":{"kind":"Name","value":"endpointUrl"}},{"kind":"Field","name":{"kind":"Name","value":"apiKeyHint"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"lastSyncAt"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<SyncApiIntegrationMutation, SyncApiIntegrationMutationVariables>;

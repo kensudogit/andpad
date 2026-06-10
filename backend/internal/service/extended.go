@@ -12,14 +12,26 @@ func (s *Service) AndpadAnalytics(ctx context.Context, periodDays int) (models.A
 	if s.memoryMode() {
 		trend := 8.5
 		return models.AndpadAnalyticsDashboard{
-			PeriodDays: periodDays, ActiveProjects: 1, BillingTotal: 12500000,
+			PeriodDays: periodDays, ActiveProjects: 1, BillingTotal: 980_000_000,
+			BudgetTotal: 4_680_000_000, CostTotal: 865_000_000, BudgetVariancePct: 54.2,
 			GeneratedAt: time.Now(), ProjectHealthScore: 78,
 			RecordsByWeek: []float64{2, 4, 3, 5},
+			CostByMonth: []models.MonthlyCostMetric{
+				{Month: "2026-01", Amount: 320_000_000},
+				{Month: "2026-02", Amount: 410_000_000},
+				{Month: "2026-03", Amount: 385_000_000},
+				{Month: "2026-04", Amount: 450_000_000},
+				{Month: "2026-05", Amount: 520_000_000},
+				{Month: "2026-06", Amount: 86_500_000},
+			},
 			Kpis: []models.AndpadAnalyticsKpi{
 				{Label: "進行中案件", Value: 1, Unit: "件", TrendPct: &trend},
 				{Label: "登録案件", Value: 1, Unit: "件"},
 				{Label: "期間内記録", Value: 3, Unit: "件"},
-				{Label: "請求合計", Value: 12500000, Unit: "円"},
+				{Label: "請求合計", Value: 980_000_000, Unit: "円"},
+				{Label: "実行予算合計", Value: 4_680_000_000, Unit: "円"},
+				{Label: "期間内原価", Value: 865_000_000, Unit: "円"},
+				{Label: "予算差異率", Value: 54.2, Unit: "%"},
 			},
 			ProjectsByStatus: []models.ProjectStatusCount{
 				{Status: models.ProjectInProgress, Count: 1},

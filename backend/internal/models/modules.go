@@ -29,6 +29,7 @@ const (
 	ModuleAnalytics        SaasModuleCode = "ANALYTICS"
 	ModuleAPIIntegration   SaasModuleCode = "API_INTEGRATION"
 	ModuleBIM              SaasModuleCode = "BIM"
+	ModuleBudgetMgmt       SaasModuleCode = "BUDGET_MGMT"
 )
 
 func IsConstructionModule(code SaasModuleCode) bool {
@@ -36,7 +37,8 @@ func IsConstructionModule(code SaasModuleCode) bool {
 	case ModuleConstructionMgmt, ModuleDrawings, ModuleBlackboard, ModuleInspection,
 		ModuleProjectBoard, ModuleInquiryProfit, ModuleOrders, ModuleRemoteSite,
 		ModuleDocApproval, ModuleScan3D, ModuleBilling, ModuleWorkRate, ModuleSiteAccess,
-		ModuleEDelivery, ModuleBM, ModuleAnalytics, ModuleAPIIntegration, ModuleBIM:
+		ModuleEDelivery, ModuleBM, ModuleAnalytics, ModuleAPIIntegration, ModuleBIM,
+		ModuleBudgetMgmt:
 		return true
 	default:
 		return false

@@ -20,6 +20,7 @@ export type ConstructionModuleSlug =
   | 'analytics'
   | 'api-integration'
   | 'bim'
+  | 'budget'
 
 export const constructionModuleSlugs: ConstructionModuleSlug[] = [
   'construction',
@@ -40,12 +41,14 @@ export const constructionModuleSlugs: ConstructionModuleSlug[] = [
   'analytics',
   'api-integration',
   'bim',
+  'budget',
 ]
 
 export const specializedModuleSlugs = new Set<ConstructionModuleSlug>([
   'analytics',
   'api-integration',
   'bim',
+  'budget',
 ])
 
 export const constructionModules = [
@@ -67,6 +70,7 @@ export const constructionModules = [
   { slug: 'analytics' as const, code: SaasModuleCode.Analytics, label: ui.modAnalytics, icon: '析', tone: 'cyan', href: '/saas/analytics' },
   { slug: 'api-integration' as const, code: SaasModuleCode.ApiIntegration, label: ui.modApiIntegration, icon: 'API', tone: 'indigo', href: '/saas/api-integration' },
   { slug: 'bim' as const, code: SaasModuleCode.Bim, label: ui.modBim, icon: 'BIM', tone: 'rose', href: '/saas/bim' },
+  { slug: 'budget' as const, code: SaasModuleCode.BudgetMgmt, label: ui.modBudget, icon: '予', tone: 'violet', href: '/saas/budget' },
 ] as const
 
 export function slugToModuleCode(slug: ConstructionModuleSlug): SaasModuleCode {
