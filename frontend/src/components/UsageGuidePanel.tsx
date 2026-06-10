@@ -6,7 +6,7 @@
  */
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-const STORAGE_KEY = 'dental-video-usage-guide-v8'
+const STORAGE_KEY = 'andpad-usage-guide-v1'
 const PANEL_WIDTH = 420
 
 type GuideStep = {
@@ -25,29 +25,29 @@ type FeaturedBlock = {
 
 const architectureFeatured: FeaturedBlock = {
   badge: 'Architecture',
-  title: 'BFF + 6 SaaS Microservices',
+  title: '統合デプロイ（Railway 本番）',
   body:
-    'Next.js は Gateway のみに接続。認証・学習・GraphQL BFF は Gateway (:8080)、SaaS 業務は独立プロセス (:8081–8086) に分離。テナント分離は org_id + JWT 転送で一貫。',
+    'Go API と Next.js を同一コンテナで起動。ブラウザは同一オリジンの /graphql · /auth のみ使用し、Next.js が内部 127.0.0.1:8081 へプロキシします。',
   variant: 'architecture',
   items: [
-    'Gateway — 認証 / 組織 / 学習 / GraphQL / org_modules ON-OFF',
-    'saas-dx :8081 · saas-crm :8082 · saas-attendance :8083',
-    'saas-contract :8084 · saas-chat :8085 · saas-rag :8086',
-    'GraphQL SDL が API 契約の Single Source of Truth',
-    'SAAS_MONOLITH=true でモノリスフォールバック（開発用）',
+    'Next.js — Web UI · /health（Railway ヘルスチェック）',
+    'Go API — GraphQL · 認証 · 組織 · 案件 · 19 モジュール',
+    'PostgreSQL — 起動時マイグレーション + org_demo シード',
+    'テナント分離 — org_id + JWT（sessionStorage）',
+    'ローカル上級者向け: docker compose / 6 マイクロサービス構成も可',
   ],
 }
 
 const saasFeatured: FeaturedBlock = {
   badge: 'SaaS',
-  title: '建設プロジェクト管理 19モジュール',
-  body: '/saas で施工管理・予算原価管理・電子納品・BIM・Analytics など19機能を ON/OFF。案件単位で記録を一元管理します。',
+  title: '施行管理モジュール 19 + 共通 SaaS',
+  body: '/saas で施工管理・予算原価・電子納品・BIM · Analytics など 19 機能と AI チャットボットを ON/OFF。案件単位で記録を一元管理します。',
   variant: 'saas',
   items: [
-    '施工管理 · 図面 · 電子納品 · BM · Analytics · API連携 · BIM',
-    '検査 · ボード · 受発注 · 請求 · 歩掛 · 入退場 ほか',
+    '施工管理 · 図面 · 黒板 · 検査 · ボード · 引合粗利 · 受発注',
+    '請求 · 歩掛 · 入退場 · 電子納品 · BM · 予算原価 · Analytics · BIM · API 連携',
     'デモ: demo@sakura-dental.jp / demo1234 → /projects → /saas',
-    '組織設定 /settings — プラン・利用量・Team ロール',
+    '組織設定 /settings — プラン · 利用量 · Team ロール',
   ],
 }
 
@@ -57,20 +57,19 @@ const techStack = [
   'Next.js 15 · Apollo',
   'PostgreSQL',
   'JWT · org_id',
-  'Docker Compose',
+  'Docker · Railway',
 ] as const
 
-const archDiagram = `Next.js :3000
-    │ GraphQL / REST
+const archDiagram = `Browser
+    │ HTTPS (同一オリジン)
     ▼
-Gateway (BFF) :8080 ── org_modules
-    ├─ saas-dx        :8081
-    ├─ saas-crm       :8082
-    ├─ saas-attendance:8083
-    ├─ saas-contract  :8084
-    ├─ saas-chat      :8085
-    └─ saas-rag       :8086
-         │ shared PostgreSQL + JWT_SECRET`
+Next.js :PORT          Railway /health
+    │ /graphql /auth /api/*
+    ▼
+Go API :8081           内部のみ
+    │
+    ▼
+PostgreSQL             マイグレーション自動適用`
 
 const L = {
   title: '利用手順',
@@ -80,9 +79,9 @@ const L = {
   collapse: '閉じる',
   heroTitle: 'ANDPAD 建設プロジェクト管理',
   heroLead:
-    '現場の効率化から経営改善まで一元管理。案件 × 13モジュール × AI Board。',
+    '現場の効率化から経営改善まで一元管理。案件 × 19 モジュール × AI Board · Analytics。',
   stackLabel: 'Tech stack',
-  diagramLabel: 'Service topology',
+  diagramLabel: 'Service topology（本番）',
   scrollHint: '↓ デプロイ・開発・機能別の手順は下へ',
   footer:
     '▼▲ で開閉 · ヘッダーをドラッグして移動 · 表示位置は自動保存されます。',
@@ -91,86 +90,88 @@ const L = {
       title: '1. 接続確認（最初に）',
       body: '本番・ローカル共通。障害切り分けの起点です。',
       items: [
-        '/health — Web / Gateway 生存確認',
-        '/status — PostgreSQL connected · JWT 設定の有無',
+        '/health — Web 生存確認（ok: true, service: andpad-web）',
+        '/status — PostgreSQL connected · GraphQL 接続 OK',
+        '統合デプロイでは API (127.0.0.1:8081) 表示は正常（ブラウザは /graphql を使用）',
         '左下「API 接続確認」から同内容を確認',
-        '各マイクロサービス: GET /health → ok + service 名',
       ],
     },
     {
       title: '2. デモログイン & テナント',
-      body: 'PostgreSQL 接続時は org_id でデータ完全分離。フロントは Gateway のみを知ります。',
+      body: 'PostgreSQL 接続時は org_id でデータ完全分離。フロントは同一オリジン API プロキシのみを使用します。',
       items: [
         '/login → demo@sakura-dental.jp / demo1234',
-        'JWT Cookie (dv_token) → GraphQL Authorization',
-        'Gateway が JWT を各 SaaS サービスへヘッダ転送',
+        'JWT → sessionStorage → GraphQL Authorization ヘッダ',
+        'デモ組織: サンプル建設株式会社（org_demo）',
       ],
     },
     {
-      title: '3. SaaS ハブ & モジュール',
-      body: '業務モジュールはプラガブル。無効モジュールは UI / API 双方でガード。',
+      title: '3. 案件 & 施行管理モジュール',
+      body: '業務モジュールはプラガブル。無効モジュールは UI / API 双方でガードされます。',
       items: [
-        '/saas — 6 モジュールの ON/OFF と各機能画面へ',
-        '/saas/dx · /crm · /attendance · /contracts · /chat · /rag',
+        '/projects — 案件一覧 · デモ現場（渋谷オフィスビル新築工事）',
+        '/saas — 19 モジュール ON/OFF · 各機能画面へ',
+        '/saas/budget — 予算 · 原価 · 請求突合 · CSV 出力',
+        '/saas/analytics — KPI · 予算原価タブ · 案件別サマリー',
         'GraphQL: saasModules · setSaasModuleEnabled',
       ],
     },
     {
-      title: '4. Docker ローカル（推奨）',
-      body: 'PostgreSQL + MinIO + Gateway + 6 マイクロサービス + Web を一括起動。',
+      title: '4. npm ローカル開発（推奨）',
+      body: 'Go API + Next.js のモノリス構成。DATABASE_URL 未設定時はメモリストア（学習のみ）。',
       items: [
-        'cp .env.example .env → OPENAI_API_KEY（AI Board / Chat / RAG）',
+        'npm run install:all → cd backend; go mod tidy',
+        'npm run dev:monolith — API :8080 + Web :3000',
+        '.env に DATABASE_URL を設定すると Postgres モード',
+        'npm run codegen（graphql/schema.graphql 変更後）',
+      ],
+    },
+    {
+      title: '5. Docker ローカル（上級）',
+      body: 'PostgreSQL + MinIO + Gateway + 6 マイクロサービス + Web を一括起動（レガシー構成）。',
+      items: [
+        'cp .env.example .env → OPENAI_API_KEY（AI Board / Chat）',
         'npm run docker:up',
         'Web http://localhost:3001 · Gateway http://localhost:18080/graphql',
-        'Gateway env: SAAS_DX_URL … SAAS_RAG_URL（compose 内 DNS）',
         '停止: npm run docker:down',
       ],
     },
     {
-      title: '5. npm ローカル開発',
-      body: 'Gateway と 6 サービスを concurrently で起動。DB 未設定時はメモリストア（学習のみ）。',
+      title: '6. AI Board & チャット',
+      body: '建設 PM KPI 集約 + OpenAI 経営インサイト。予算 · 原価データも KPI に反映されます。',
       items: [
-        'npm run install:all → cd backend; go mod tidy',
-        'npm run dev — gw + dx + crm + att + ctr + chat + rag + web',
-        'npm run dev:monolith — Gateway のみ（SaaS は DB 直アクセス）',
-        'マイクロサービス未起動時は Gateway が自動で in-process にフォールバック',
-        'npm run codegen（schema 変更後）',
+        '/board — 期間 KPI · 月次原価 · AI 経営インサイト生成',
+        '/saas/chatbot — AI チャット（OPENAI_API_KEY 要）',
+        'OPENAI_API_KEY 未設定時はルールベース / 案内メッセージ',
       ],
     },
     {
-      title: '6. 学習コンテンツ（Gateway 内）',
-      body: '動画・パス・テストは Gateway モノリス領域。SaaS とはプロセス分離。',
+      title: '7. 学習コンテンツ（デモ）',
+      body: '動画 · パス · テストはデモ用カタログ。建設 PM 本体とは独立した学習 UI です。',
       items: [
-        '動画ライブラリ — 分野・難易度・キーワード検索',
-        '学習パス — カリキュラム順 · 修了証',
-        '理解度テスト · マイ学習（進捗・ブックマーク）',
-      ],
-    },
-    {
-      title: '7. AI Board',
-      body: '建設 PM KPI 集約 + OpenAI 経営インサイト（Gateway 内）。',
-      items: [
-        '/board — 期間 KPI → AI 経営インサイト生成',
-        'OPENAI_API_KEY 未設定時はルールベース表示',
+        '/videos — 動画ライブラリ',
+        '/paths — 学習パス · 修了証',
+        '/quizzes · /learning — 理解度テスト · マイ学習',
       ],
     },
     {
       title: '8. Railway 本番',
-      body: '統合デプロイ（Gateway + Web）または将来マイクロサービス個別デプロイ。詳細 docs/RAILWAY.md。',
+      body: 'GitHub push → Dockerfile.unified 自動ビルド。詳細は docs/RAILWAY.md。',
       items: [
-        'GitHub + /railway.toml · DATABASE_URL Reference · JWT_SECRET',
-        'OPENAI_API_KEY · CORS_ORIGINS · APP_PUBLIC_URL',
-        'API_URL は統合デプロイでは不要',
-        'Redeploy → /status OK → /login',
+        'GitHub + /railway.toml · Root Directory は空',
+        'Variables: DATABASE_URL（Postgres Reference）· JWT_SECRET',
+        'OPENAI_API_KEY（任意）— CORS / APP_PUBLIC_URL は自動設定可',
+        'API_URL は設定しない（統合デプロイ）',
+        'Redeploy → /health OK → /status で PostgreSQL: connected → /login',
       ],
     },
     {
       title: '9. 開発者向け GraphQL',
       body: 'Schema-first · Codegen · Apollo Client + urql Subscription。',
       items: [
-        'graphql/schema.graphql → go generate · npm run codegen',
-        'GraphiQL http://localhost:8080/graphiql',
-        '本番 /graphql · Subscription は WS',
+        'graphql/schema.graphql → backend go generate · npm run codegen',
+        'ローカル GraphiQL http://localhost:8080/graphiql',
+        '本番 /graphql · Subscription は同一オリジン WS',
       ],
     },
   ] satisfies readonly GuideStep[],
