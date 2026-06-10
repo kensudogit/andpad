@@ -178,7 +178,7 @@ export const ui = {
   viewsCompletions: (views: number, completions: number) =>
     `${views} \u56de / ${completions} \u5b8c`,
   navSaas: 'SaaS',
-  saasHubTitle: '\u5efa\u8a2d\u30d3\u30b8\u30cd\u30b9\u30e2\u30b8\u30e5\u30fc\u30eb',
+  saasHubTitle: '\u65bd\u884c\u7ba1\u7406\u30e2\u30b8\u30e5\u30fc\u30eb',
   saasHubDesc:
     '\u65bd\u5de5\u7ba1\u7406\u30fb\u56f3\u9762\u30fb\u96fb\u5b50\u7d0d\u54c1\u30fbBIM\u30fbAnalytics\u30fb\u4e88\u7b97\u30fb\u539f\u4fa1\u7ba1\u7406\u7b49\u300119\u6a5f\u80fd\u3092\u6848\u4ef6\u5358\u4f4d\u3067\u5229\u7528\u3067\u304d\u307e\u3059\u3002',
   modConstruction: '\u65bd\u5de5\u7ba1\u7406',
