@@ -19,9 +19,20 @@ const nav = [
   { href: '/settings', label: ui.navSettings, short: ui.navSettings },
 ] as const
 
+// パスがナビ項目に一致するか（セグメント境界で判定）
+function matchesHref(pathname: string, href: string): boolean {
+  if (href === '/') return pathname === '/'
+  return pathname === href || pathname.startsWith(href + '/')
+}
+
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const [navOpen, setNavOpen] = useState(false)
+
+  // 一致する項目のうち最長 href（最も具体的）だけをアクティブにする
+  const activeHref = nav
+    .filter((item) => matchesHref(pathname, item.href))
+    .sort((a, b) => b.href.length - a.href.length)[0]?.href
 
   // ページ遷移時にモバイルメニューを閉じる
   useEffect(() => {
@@ -46,9 +57,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </div>
         <nav className="sidebar-nav">
           {nav.map((item) => {
-            const active =
-              // ホームのみ完全一致、他はプレフィックス一致
-              item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)
+            const active = item.href === activeHref
             return (
               <Link
                 key={item.href}
