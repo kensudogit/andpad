@@ -8,3 +8,5 @@ backend/bin/
 .env.railway
 .DS_Store
 .railway/
+frontend/public/test-reports/*
+!frontend/public/test-reports/.gitkeep

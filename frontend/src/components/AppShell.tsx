@@ -71,6 +71,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           })}
         </nav>
         <div className="sidebar-foot">
+          <Link href="/tests" className="status-link">
+            {ui.testsNav}
+          </Link>
           <Link href="/status" className="status-link">
             {ui.apiStatus}
           </Link>

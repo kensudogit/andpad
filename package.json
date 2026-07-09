@@ -26,6 +26,8 @@
     "typecheck": "npm run typecheck:scripts && npm run typecheck:web",
     "typecheck:scripts": "tsc -p tsconfig.json --noEmit",
     "typecheck:web": "cd frontend && npm run typecheck",
+    "test:go": "cd backend && go test ./... -count=1",
+    "test:go:report": "tsx scripts/generate-go-test-report.ts",
     "railway:help": "powershell -ExecutionPolicy Bypass -File scripts/railway-setup.ps1"
   },
   "devDependencies": {

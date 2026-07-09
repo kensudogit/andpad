@@ -15,6 +15,24 @@ export const ui = {
   navQuizzes: '\u7406\u89e3\u5ea6\u30c6\u30b9\u30c8',
   navInstructors: '\u8b1b\u5e2b',
   apiStatus: 'API \u63a5\u7d9a\u78ba\u8a8d',
+  testsNav: 'Go \u30c6\u30b9\u30c8',
+  testsPageTitle: 'Go \u30c6\u30b9\u30c8\u7d50\u679c',
+  testsPageDesc:
+    'backend \u306e go test \u7d50\u679c\u3092 HTML \u3068\u30ab\u30d0\u30ec\u30c3\u30b8\u3067\u78ba\u8a8d\u3067\u304d\u307e\u3059\u3002',
+  testsNoReport:
+    '\u30ec\u30dd\u30fc\u30c8\u304c\u307e\u3060\u751f\u6210\u3055\u308c\u3066\u3044\u307e\u305b\u3093\u3002\u5148\u306b npm run test:go:report \u3092\u5b9f\u884c\u3057\u3066\u304f\u3060\u3055\u3044\u3002',
+  testsResultLabel: '\u7d50\u679c',
+  testsPass: 'PASS',
+  testsFail: 'FAIL',
+  testsPackages: 'Packages',
+  testsCases: 'Test cases',
+  testsFailed: 'Failed packages',
+  testsOpenHtml: 'HTML \u30ec\u30dd\u30fc\u30c8\u3092\u958b\u304f',
+  testsOpenCoverage: '\u30ab\u30d0\u30ec\u30c3\u30b8 HTML',
+  testsRefreshHint:
+    '\u66f4\u65b0\u3059\u308b\u306b\u306f npm run test:go:report \u3092\u518d\u5b9f\u884c\u3057\u3001\u30da\u30fc\u30b8\u3092\u30ea\u30ed\u30fc\u30c9\u3057\u3066\u304f\u3060\u3055\u3044\u3002',
+  testsPackageList: '\u30d1\u30c3\u30b1\u30fc\u30b8\u4e00\u89a7',
+  testsEmbedTitle: 'HTML \u30ec\u30dd\u30fc\u30c8\u30d7\u30ec\u30d3\u30e5\u30fc',
   statusPageTitle: 'API \u63a5\u7d9a\u78ba\u8a8d',
   statusPageDesc:
     '\u30b5\u30fc\u30d0\u5074\u304b\u3089 Go API \u3078\u306e\u63a5\u7d9a\u72b6\u614b\u3067\u3059\u3002\u7d71\u5408\u30c7\u30d7\u30ed\u30a4\u3067\u306f 127.0.0.1 \u8868\u793a\u306f\u6b63\u5e38\u3067\u3059\u3002',
