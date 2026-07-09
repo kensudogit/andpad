@@ -1,0 +1,52 @@
+# ANDPAD Railway deploy via GitHub Actions (bypasses empty GitHub→Railway archive)
+#
+# Required GitHub Secrets:
+#   RAILWAY_TOKEN   — Account/Project token from Railway → Account Settings → Tokens
+#
+# Optional Variables:
+#   RAILWAY_SERVICE — service name (if multiple services in the project)
+
+name: Railway Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: railway-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify root Dockerfile
+        run: |
+          test -f Dockerfile
+          test -f railway.toml
+          ls -la Dockerfile railway.toml Dockerfile.unified
+          wc -c Dockerfile
+
+      - name: Install Railway CLI
+        run: curl -fsSL https://railway.com/install.sh | sh
+
+      - name: Deploy from repo root
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_SERVICE: ${{ vars.RAILWAY_SERVICE }}
+        run: |
+          set -euo pipefail
+          if [ -z "${RAILWAY_TOKEN:-}" ]; then
+            echo "Missing secret RAILWAY_TOKEN. Add it in GitHub → Settings → Secrets."
+            exit 1
+          fi
+          ARGS=(up --path-as-root . --ci)
+          if [ -n "${RAILWAY_SERVICE:-}" ]; then
+            ARGS+=(--service "$RAILWAY_SERVICE")
+          fi
+          echo "Running: railway ${ARGS[*]}"
+          railway "${ARGS[@]}"
