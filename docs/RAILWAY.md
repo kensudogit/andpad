@@ -12,7 +12,7 @@
 |------|-----|
 | **Root Directory** | **空**（リポジトリルート） |
 | **Config file path** | `/railway.toml` |
-| Builder | Dockerfile → `Dockerfile.unified` |
+| Builder | Dockerfile → `Dockerfile`（統合イメージ。旧名 `Dockerfile.unified` も同内容） |
 
 4. **+ New** → **Database** → **PostgreSQL**
 5. アプリサービス（Postgres ではない方）の **Variables**:
@@ -81,7 +81,8 @@ Dashboard で **Config file path** = `/railway.toml`、**Root Directory** = 空 
 | ファイル | 役割 |
 |----------|------|
 | `railway.toml` | ルートの Railway 設定（git デプロイ用） |
-| `Dockerfile.unified` | Go 1.25 + Next.js 統合イメージ |
+| `Dockerfile` | Go 1.25 + Next.js 統合イメージ（Railway デフォルト名） |
+| `Dockerfile.unified` | 同上のエイリアス（互換用） |
 | `scripts/start-unified.sh` | Web 先行起動 + API バックグラウンド |
 | `.env.railway.example` | 変数のメモ |
 | `frontend/railway.toml` | Web のみの 2 サービス構成用（通常は未使用） |
@@ -96,6 +97,7 @@ Dashboard で **Config file path** = `/railway.toml`、**Root Directory** = 空 
 | `JWT_SECRET looks like an API key` | Anthropic/OpenAI キーを JWT_SECRET に設定 | JWT_SECRET をランダム文字列に変更。API キーは `OPENAI_API_KEY` へ |
 | `Cannot reach API HTTP 503` | API 起動失敗（DB 未設定） | Deploy ログで `[unified] ERROR: DATABASE_URL` を確認 |
 | ビルド失敗 | Root Directory が `frontend` や `backend` になっている | **空**に戻し `/railway.toml` を使用 |
+| `couldn't locate the dockerfile at path Dockerfile` | ルートに `Dockerfile` がない / Config 未適用 | リポジトリルートに `Dockerfile` があること、Root Directory が空、Config = `/railway.toml` を確認して Redeploy |
 | ビルド成功だがデプロイが 5 分以上「Deploying」 | Next.js が PORT で待ち受けていない（旧版は Go API 待ちで Web 未起動） | 最新 `start-unified.sh` で Redeploy。`/health` が通っても `/status` で PostgreSQL 未接続なら `DATABASE_URL` を Reference 設定 |
 | `incompatible database` / `organizations table missing` | 別プロジェクトで使っていた Postgres を接続している | **新しい Postgres プラグイン**を追加し `DATABASE_URL` を差し替え（または public テーブルを全削除） |
 

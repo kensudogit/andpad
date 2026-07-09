@@ -12,8 +12,8 @@
 
 [build]
 builder = "DOCKERFILE"
-dockerfilePath = "Dockerfile.unified"
-watchPatterns = ["frontend/**", "backend/**", "graphql/**", "scripts/**", "Dockerfile.unified"]
+dockerfilePath = "Dockerfile"
+watchPatterns = ["frontend/**", "backend/**", "graphql/**", "scripts/**", "Dockerfile", "Dockerfile.unified"]
 
 [deploy]
 healthcheckPath = "/health"
