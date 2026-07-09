@@ -35,9 +35,17 @@
    - `GET https://<domain>/status` → PostgreSQL: connected
 9. デモログイン（DB シード済み）: `demo@sakura-dental.jp` / `demo1234`
 
-## 2. CLI（`railway link`）
+## 2. CLI（`railway link` / 空アーカイブ時の回避）
 
-`railway link` は対話式のため、**既存プロジェクト**へ接続する場合は Project ID を指定するのが確実です。
+GitHub 自動デプロイが `couldn't locate the dockerfile` で落ち、snapshot が数十 KB のときは **Root Directory / Dockerfile Path の UI 設定が空コンテキストを作っている**可能性が高いです。Dashboard を直したうえで、確実にルートから送るなら:
+
+```powershell
+cd C:\devlop\andpad
+railway login
+.\scripts\railway-up.ps1 -ProjectId <Project-ID>
+# または
+railway up --path-as-root . --ci
+```
 
 ### 既存プロジェクトに接続
 
@@ -53,7 +61,7 @@ railway variables set JWT_SECRET=your-long-random-secret
 git push origin main
 ```
 
-GitHub 未連携の場合は `railway up` でもデプロイできます。
+GitHub 未連携の場合は `railway up --path-as-root .` でもデプロイできます。
 
 ### 新規プロジェクト
 
@@ -63,10 +71,10 @@ railway login
 railway init
 railway add -d postgres
 railway variables set JWT_SECRET=your-long-random-secret
-railway up
+railway up --path-as-root .
 ```
 
-Dashboard で **Config file path** = `/railway.toml`、**Root Directory** = 空 を確認してください。
+Dashboard で **Config file path** = `/railway.toml`、**Root Directory** = 空、**Dockerfile Path** = 空 を確認してください。
 
 ## 3. git push 時の挙動
 
@@ -97,7 +105,7 @@ Dashboard で **Config file path** = `/railway.toml`、**Root Directory** = 空 
 | ログインが「ログイン中…」のまま | 上記 + プロキシタイムアウト | `/status` で PostgreSQL: connected を確認 |
 | `JWT_SECRET looks like an API key` | Anthropic/OpenAI キーを JWT_SECRET に設定 | JWT_SECRET をランダム文字列に変更。API キーは `OPENAI_API_KEY` へ |
 | `Cannot reach API HTTP 503` | API 起動失敗（DB 未設定） | Deploy ログで `[unified] ERROR: DATABASE_URL` を確認 |
-| `couldn't locate the dockerfile at path Dockerfile` | Root Directory が `frontend`/`backend`、または Config がサブディレクトリの `railway.toml` を参照 | **Root Directory = 空**、**Config file path = `/railway.toml`**（または `/railway.json`）。スナップショットが数十 KB ならほぼ空コンテキスト → Root Directory を必ず空に |
+| `couldn't locate the dockerfile at path Dockerfile` | **ほぼ空のビルドコンテキスト**（以前は snapshot ~55KB）。Root Directory が `frontend`/`backend`/`scripts` 等、または UI の Dockerfile Path 上書きでコンテキストが空 | ① **Root Directory を完全に空** ② **Config = `/railway.toml`** ③ **UI の Dockerfile Path を空**（Config のみ使う）④ 最新 commit で Redeploy。それでもダメなら `.\scripts\railway-up.ps1` で CLI デプロイ |
 | ビルド失敗 | Root Directory が `frontend` や `backend` になっている | **空**に戻し `/railway.toml` を使用 |
 | ビルド成功だがデプロイが 5 分以上「Deploying」 | Next.js が PORT で待ち受けていない（旧版は Go API 待ちで Web 未起動） | 最新 `start-unified.sh` で Redeploy。`/health` が通っても `/status` で PostgreSQL 未接続なら `DATABASE_URL` を Reference 設定 |
 | `incompatible database` / `organizations table missing` | 別プロジェクトで使っていた Postgres を接続している | **新しい Postgres プラグイン**を追加し `DATABASE_URL` を差し替え（または public テーブルを全削除） |

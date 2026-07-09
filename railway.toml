@@ -1,20 +1,19 @@
 # ANDPAD — unified Railway deploy (git push → auto build)
 #
-# Service Settings (CRITICAL):
-#   Root Directory     ->  leave EMPTY (repo root)
-#                          If set to frontend/backend, snapshot is ~55KB and Dockerfile is missing
-#   Config file path   ->  /railway.toml  (or /railway.json)
+# Service Settings (CRITICAL — empty archive / missing Dockerfile if wrong):
+#   Root Directory     ->  CLEAR / EMPTY (must be repo root)
+#   Config file path   ->  /railway.toml
+#   Dockerfile Path    ->  CLEAR in UI (use this file only; UI override can empty the context)
 #
-# Required Variables on THIS service (not Postgres):
+# Required Variables:
 #   DATABASE_URL  — Reference from Postgres plugin
 #   JWT_SECRET    — long random string (not an API key)
 #
-# Do NOT set API_URL. CORS_ORIGINS / APP_PUBLIC_URL auto-fill from RAILWAY_PUBLIC_DOMAIN.
+# Do NOT set API_URL.
 
 [build]
 builder = "DOCKERFILE"
 dockerfilePath = "Dockerfile"
-watchPatterns = ["frontend/**", "backend/**", "graphql/**", "scripts/**", "Dockerfile", "Dockerfile.unified", "railway.toml", "railway.json"]
 
 [deploy]
 healthcheckPath = "/health"
