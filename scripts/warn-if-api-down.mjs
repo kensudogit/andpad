@@ -1,4 +1,5 @@
-const url = process.env.API_URL?.trim() || 'http://localhost:8080'
+const port = process.env.GATEWAY_HOST_PORT?.trim() || '8080'
+const url = process.env.API_URL?.trim() || `http://localhost:${port}`
 
 try {
   const res = await fetch(`${url.replace(/\/+$/, '')}/health`, {
