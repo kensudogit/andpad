@@ -32,9 +32,9 @@ Write-Host "   railway variables set JWT_SECRET=<32+ random chars>"
 Write-Host "   # DATABASE_URL: set Reference to Postgres in Dashboard"
 Write-Host "5) Deploy: git push origin main   # or railway up if not using GitHub"
 Write-Host ""
-Write-Host "Dashboard checks:" -ForegroundColor Green
-Write-Host "  Root Directory: EMPTY"
-Write-Host "  Config file:    /railway.toml"
+Write-Host "Dashboard checks (CRITICAL):" -ForegroundColor Green
+Write-Host "  Root Directory: EMPTY  (if frontend/backend, snapshot ~55KB and Dockerfile missing)"
+Write-Host "  Config file:    /railway.toml  or  /railway.json"
 Write-Host "  Do NOT set API_URL on unified deploy"
 Write-Host "  CORS_ORIGINS / APP_PUBLIC_URL: optional (auto from RAILWAY_PUBLIC_DOMAIN)"
 Write-Host ""
