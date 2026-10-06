@@ -1,144 +1,130 @@
-# Dental Video � ?????????????????????
+# ANDPAD — Go / GraphQL Edition
 
-**GraphQL ??**????????: SaaS ????????Go API?gqlgen?+ Next.js 15 + PostgreSQL????????????????????????**AI Board**?KPI + OpenAI ??????????
+> **GraphQL-first SaaS Architecture** — A reference implementation combining a Go API, a shared GraphQL schema, a Next.js frontend, PostgreSQL persistence, real-time subscriptions, and an AI-assisted KPI board.
+>
+> **Stack:** Go · gqlgen · chi · GraphQL · PostgreSQL · JWT · Next.js 15 · React 19 · TypeScript · Apollo Client · Docker · OpenAI
 
-## ???????
+## Architecture
 
+```text
+graphql/schema.graphql
+        │
+        ├── backend/   Go + gqlgen + chi
+        │              GraphQL API / GraphiQL / Subscription
+        │
+        └── frontend/  Next.js 15 + React 19
+                       GraphQL Codegen + Apollo Client
 ```
-graphql/schema.graphql     ? API ? Single Source of Truth
-        ?
-        ??? backend/  Go 1.25 + gqlgen + chi  ?  POST /graphql, GraphiQL, Subscription
-        ?
-        ??? frontend/ Next.js 15 + GraphQL Codegen ? Typed Document Node + Apollo Client
-```
 
-| ??? | ?? |
-|--------|------|
-| ???? | GraphQL SDL (`graphql/schema.graphql`) |
-| API | Go, gqlgen, chi, PostgreSQL, JWT |
-| Web | Next.js 15, React 19, Apollo Client, urql |
-| ???? | Docker Compose??????, Railway???? |
+The GraphQL SDL in `graphql/schema.graphql` is the single source of truth shared by the API and frontend.
 
-## ??
+## Highlights
 
-| ?? | ?? |
-|------|------|
-| **???????** | ????????????????? |
-| **????** | ???????????? |
-| **???** | ??????? |
-| **?????** | GraphQL Subscription???????? |
-| **SaaS** | ????????????? |
-| **AI Board** | ?? KPI + OpenAI ????????? |
+| Area | Implementation |
+|---|---|
+| API | Go, gqlgen, chi and GraphQL |
+| Web | Next.js 15, React 19 and TypeScript |
+| Data | PostgreSQL |
+| Authentication | JWT-based authentication |
+| Type safety | GraphQL Codegen / Typed Document Node |
+| Real-time | GraphQL Subscription |
+| AI | KPI-oriented AI Board using OpenAI |
+| Infrastructure | Docker Compose and Railway deployment |
 
-?????? ID: `learner-demo`  
-Docker / PostgreSQL ?????????: `demo@sakura-dental.jp` / `demo1234`
+## Quick Start with Docker
 
-## ??
+### Requirements
 
-- **Node.js** 20+
-- **Go** 1.22+?API ????
-- **Docker**???: DB?MinIO ????????
-
-## ?????????Docker � ???
+- Node.js 20+
+- Go 1.22+
+- Docker / Docker Compose
 
 ```powershell
 cd C:\devlop\andpad
 copy .env.example .env
-# .env ? OPENAI_API_KEY ????? AI Board ???
+# Set OPENAI_API_KEY in .env when using AI Board features.
 
 npm run docker:up
 ```
 
-| URL | ?? |
-|-----|------|
-| http://localhost:3000 | Web UI |
-| http://localhost:3000/status | API ???? |
-| http://localhost:8080/graphql | GraphQL |
-| http://localhost:8080/graphiql | GraphiQL |
+| Service | URL |
+|---|---|
+| Web UI | http://localhost:3000 |
+| Status | http://localhost:3000/status |
+| GraphQL API | http://localhost:8080/graphql |
+| GraphiQL | http://localhost:8080/graphiql |
 
-??: `npm run docker:down`
+Stop the Docker environment with:
 
-## ???????npm?
+```powershell
+npm run docker:down
+```
+
+## Local Development
 
 ```powershell
 cd C:\devlop\andpad
 npm run install:all
-cd backend; go mod tidy; cd ..
+cd backend
+go mod tidy
+cd ..
 npm run dev
 ```
 
-- `DATABASE_URL` ??? ? **?????**?????????
-- `DATABASE_URL` ?? ? PostgreSQL?SaaS??????????
+When `DATABASE_URL` is configured, the application uses PostgreSQL-backed SaaS persistence.
 
-API ?????: `npm run stop:api`
+## GraphQL Development Workflow
 
-## SaaS?????
+1. Update `graphql/schema.graphql`.
+2. Regenerate the Go GraphQL implementation with gqlgen.
+3. Add or update frontend operations under `frontend/src/graphql/`.
+4. Run GraphQL Codegen for frontend types.
 
-PostgreSQL ????Docker ?? `DATABASE_URL` ? compose ??????:
+```powershell
+cd backend
+go generate ./...
 
-1. http://localhost:3000/login ?????
-2. http://localhost:3000/settings ????????????
-3. JWT ? Cookie `dv_token`?GraphQL ? Bearer ??
+cd ..\frontend
+npm run codegen
+```
 
 ## AI Board
 
-1. ?? **AI Board** ? `/board`
-2. ?? KPI ???????
-3. **AI ??????**?? `OPENAI_API_KEY`?
+The AI Board combines operational KPIs with AI-assisted analysis. Configure `OPENAI_API_KEY` to enable AI features.
 
-## Railway????
+## Deployment
 
-**???? 1 ?**? Go API + Next.js ???????????? [docs/RAILWAY.md](docs/RAILWAY.md)?
+Railway deployment documentation is available in `docs/RAILWAY.md`.
 
-| ?? | ? |
-|------|-----|
-| Root Directory | ?? |
-| Config file | `/railway.toml` |
-| ?? | `DATABASE_URL`?Postgres Reference?, `JWT_SECRET` |
-| ?? | `OPENAI_API_KEY`?`CORS_ORIGINS` / `APP_PUBLIC_URL` ????? Railway ????????? |
+Typical production configuration includes:
 
-> ???????? **`API_URL` ??????** ??????
+| Variable | Purpose |
+|---|---|
+| `PORT` | Go API port |
+| `DATABASE_URL` | PostgreSQL connection |
+| `JWT_SECRET` | Authentication signing secret |
+| `OPENAI_API_KEY` | AI Board features |
+| `API_URL` | Next.js-to-API connection |
 
-??: `https://<your-domain>/health` ? `ok: true`
+## Architecture Variants
 
-### Git ???? / CLI
+This repository is the **Go / GraphQL baseline** of a multi-language architecture series:
 
-```powershell
-npm run railway:help
-railway login
-railway link -p <Project-ID>
-railway variables set JWT_SECRET=your-secret
-git push origin main
-```
+| Repository | Backend / specialization |
+|---|---|
+| [andpad](https://github.com/kensudogit/andpad) | Go + gqlgen baseline |
+| [andpad_j](https://github.com/kensudogit/andpad_j) | Java 21 + Spring Boot + Spring GraphQL |
+| [andpad_kot](https://github.com/kensudogit/andpad_kot) | Kotlin + Spring Boot + GraphQL |
+| [andpad_mart](https://github.com/kensudogit/andpad_mart) | Java + Spring Boot + intra-mart integration |
 
-GitHub ???? `main` ?? push ????????????? `railway up`?
+The series demonstrates how the same GraphQL-oriented application architecture can be migrated across backend technologies while retaining a shared frontend and API contract.
 
-## GraphQL ?????
+## Engineering Focus
 
-1. `graphql/schema.graphql` ???
-2. ??????: `cd backend && go generate ./...`?gqlgen?
-3. ????: `frontend/src/graphql/*.graphql` ? Operation ??
-4. `npm run codegen`???? `cd frontend && npm run codegen`?
-
-## ?????API?
-
-| ?? | ?? | ?? |
-|------|------|------|
-| `PORT` | `8080` | Go API ??? |
-| `DATABASE_URL` | � | PostgreSQL???????????? |
-| `JWT_SECRET` | � | ???????? |
-| `OPENAI_API_KEY` | � | AI Board |
-| `API_URL` | � | Next.js ? API?????: `http://localhost:8080`? |
-
-Web ???????: `.env.example`, `.env.railway.example`
-
-## UI ?????
-
-???? **?????** ?????Docker / Railway / SaaS / ???????????????
-
-## ?????
-
-- S3 ????????MinIO / ?????????????
-- ????????????????
-- ???? GraphQL Subscription?WS ?????
-"# andpad" 
+- GraphQL schema as a single source of truth
+- Strong frontend/backend type integration
+- Multi-language backend migration
+- Real-time GraphQL communication
+- SaaS-oriented authentication and persistence
+- AI-assisted operational dashboards
+- Containerized development and cloud deployment
